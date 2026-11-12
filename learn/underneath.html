@@ -1,0 +1,86 @@
+---
+layout: portal
+title: What's underneath
+summary: For the curious - how the team is built from roles, playbooks, checks and adapters.
+next: {url: /learn/journey.html, title: "Back to the start: how a project goes"}
+---
+<style>
+body { --bp: #0d3b7a; background: var(--bp); }
+.bp { background-color: var(--bp); background-image: linear-gradient(#ffffff14 1px, transparent 1px), linear-gradient(90deg, #ffffff14 1px, transparent 1px), linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px); background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px; color: #e8f1ff; font-family: "JetBrains Mono", monospace; padding: 60px 0 90px; }
+nav.top { background: #0d3b7aee; }
+.bp h1 { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: clamp(2rem, 5vw, 3.4rem); letter-spacing: -.02em; }
+.bp .kicker { color: #9fd0ff; }
+.bp p { color: #c4dbf7; font-family: Inter, sans-serif; }
+.titleblock { display: inline-grid; grid-template-columns: auto auto; border: 2px solid #e8f1ff; font-size: .75rem; margin-top: 10px; }
+.titleblock span { padding: 6px 12px; border: 1px solid #e8f1ff66; }
+#plan { width: 100%; height: auto; margin-top: 30px; }
+#plan .ln { fill: none; stroke: #e8f1ff; stroke-width: 2; stroke-dasharray: var(--l); stroke-dashoffset: var(--l); }
+#plan.go .ln { animation: draw 2.2s ease forwards; }
+#plan .dash { fill: none; stroke: #9fd0ff; stroke-width: 1.5; stroke-dasharray: 6 6; opacity: 0; }
+#plan.go .dash { animation: fade .8s 1.6s forwards, flow 1.2s linear infinite; }
+#plan text { fill: #e8f1ff; font: 600 14px "JetBrains Mono", monospace; opacity: 0; }
+#plan text.s { font-weight: 400; font-size: 12px; fill: #9fd0ff; }
+#plan.go text { animation: fade .6s forwards; animation-delay: var(--d, 1s); }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+.specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 50px; }
+.spec { border: 1.5px solid #e8f1ffaa; padding: 20px; position: relative; text-decoration: none; color: inherit; transition: background .3s; }
+.spec:hover { background: #ffffff10; }
+.spec::before, .spec::after { content: ""; position: absolute; width: 12px; height: 12px; border-color: #e8f1ff; border-style: solid; }
+.spec::before { top: -6px; left: -6px; border-width: 2px 0 0 2px; } .spec::after { bottom: -6px; right: -6px; border-width: 0 2px 2px 0; }
+.spec .id { font-size: .75rem; color: #9fd0ff; }
+.spec h3 { font-family: "JetBrains Mono", monospace; font-size: 1.1rem; margin: .4em 0; }
+.spec p { font-size: .92rem; margin: 0; }
+footer, section.next { background: var(--bp); color: #c4dbf7; border-color: #ffffff22; }
+</style>
+
+<div class="bp"><div class="wrap">
+  <div class="kicker">Lesson 07 · 5 minutes · for the curious</div>
+  <h1>What's underneath</h1>
+  <p style="max-width:44em">The team isn't a special AI. It's plain text: job descriptions, a process, checks the agents can't switch off, and one shared record. That's why it works with whichever AI tool you already use, and why you can read every rule yourself.</p>
+  <div class="titleblock"><span>DRAWING</span><span>AGENTIC TEAM · ASSEMBLY</span><span>SCALE</span><span>1 PROJECT : 1 REPO</span></div>
+
+  <svg id="plan" viewBox="0 0 1000 520" role="img" aria-label="Diagram: the team's text files are installed into your project; adapters connect your AI tool; work is recorded on GitHub; automatic checks guard the main branch">
+    <rect class="ln" x="330" y="90" width="340" height="300" style="--l:1300"/>
+    <text x="345" y="80" style="--d:.6s">YOUR PROJECT REPOSITORY</text>
+    <rect class="ln" x="355" y="120" width="290" height="70" style="--l:720"/>
+    <text x="370" y="148" style="--d:1s">.team/roles/</text><text class="s" x="370" y="172" style="--d:1.1s">10 job descriptions</text>
+    <rect class="ln" x="355" y="205" width="290" height="70" style="--l:720"/>
+    <text x="370" y="233" style="--d:1.2s">.team/playbooks/</text><text class="s" x="370" y="257" style="--d:1.3s">the process, stage by stage</text>
+    <rect class="ln" x="355" y="290" width="135" height="80" style="--l:430"/>
+    <text x="368" y="322" style="--d:1.4s">AGENTS.md</text><text class="s" x="368" y="346" style="--d:1.5s">tells the AI</text>
+    <rect class="ln" x="505" y="290" width="140" height="80" style="--l:440"/>
+    <text x="518" y="322" style="--d:1.6s">TEAM.md</text><text class="s" x="518" y="346" style="--d:1.7s">who's hired</text>
+
+    <rect class="ln" x="30" y="140" width="210" height="200" style="--l:820"/>
+    <text x="45" y="130" style="--d:.8s">ADAPTERS</text>
+    <text class="s" x="50" y="180" style="--d:1.2s">claude-code/</text><text class="s" x="50" y="210" style="--d:1.3s">generic/ (Codex,</text><text class="s" x="50" y="230" style="--d:1.3s">  Cursor, Gemini…)</text><text class="s" x="50" y="260" style="--d:1.4s">github/ (labels)</text>
+    <text class="s" x="50" y="310" style="--d:1.5s">one thin install</text><text class="s" x="50" y="326" style="--d:1.5s">script per tool</text>
+    <path class="dash" d="M240 240 H330"/>
+
+    <rect class="ln" x="760" y="120" width="210" height="240" style="--l:900"/>
+    <text x="775" y="110" style="--d:.9s">GITHUB</text>
+    <text class="s" x="780" y="160" style="--d:1.3s">issues = tickets</text><text class="s" x="780" y="190" style="--d:1.4s">labels = who holds it</text><text class="s" x="780" y="220" style="--d:1.5s">comments = handoffs</text><text class="s" x="780" y="250" style="--d:1.6s">pull requests = work</text><text class="s" x="780" y="280" style="--d:1.7s">verification/ = proof</text>
+    <path class="dash" d="M670 200 H760"/><path class="dash" d="M760 300 H670"/>
+
+    <rect class="ln" x="330" y="440" width="640" height="60" style="--l:1400"/>
+    <text x="345" y="476" style="--d:1.8s">GATE KIT · automatic checks on every change, no agent can switch them off</text>
+    <path class="dash" d="M500 390 V440"/><path class="dash" d="M865 360 V440"/>
+  </svg>
+
+  <div class="specs">
+    <a class="spec reveal" href="{{ '/roles/' | relative_url }}"><div class="id">PART A</div><h3>Roles</h3><p>One job description per agent: what it does, what it never does, who checks it.</p></a>
+    <a class="spec reveal" href="{{ '/playbooks/' | relative_url }}"><div class="id">PART B</div><h3>Playbooks</h3><p>The process: engagement, research to spec, foundation, build, production, improve.</p></a>
+    <a class="spec reveal" href="{{ '/docs/github-state.html' | relative_url }}"><div class="id">PART C</div><h3>The shared record</h3><p>How every handoff and verdict is written on GitHub, so any agent can pick up the work.</p></a>
+    <a class="spec reveal" href="{{ '/adapters/' | relative_url }}"><div class="id">PART D</div><h3>Adapters</h3><p>How the team plugs into each AI tool, and how each role's tier maps to a model.</p></a>
+    <a class="spec reveal" href="{{ '/docs/how-we-work.html' | relative_url }}"><div class="id">PART E</div><h3>How we work</h3><p>The method, and the research behind each choice.</p></a>
+  </div>
+</div></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const plan = document.getElementById("plan");
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { plan.classList.add("go"); o.disconnect(); } }, { threshold: .3 }).observe(plan);
+});
+</script>

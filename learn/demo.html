@@ -1,0 +1,124 @@
+---
+layout: portal
+title: Watch a demo
+summary: See the setup and a first conversation with Ella play out, step by step.
+next: {url: /learn/principles.html, title: "The rules we follow"}
+youtube: ""
+---
+<style>
+.demo-hero { padding: 60px 0 20px; text-align: center; }
+.demo-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+.screen { max-width: 980px; margin: 20px auto 0; border-radius: 16px; overflow: hidden; background: #15131c; border: 1px solid var(--line); box-shadow: 0 50px 100px -40px #000, 0 0 0 1px #ffffff08; }
+.bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1e1b27; border-bottom: 1px solid var(--line); }
+.bar i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; } .bar i:nth-child(2) { background: #febc2e; } .bar i:nth-child(3) { background: #28c840; }
+.tabs { display: flex; gap: 6px; margin-left: 14px; }
+.tabs span { font-size: .8rem; padding: 4px 12px; border-radius: 8px; color: var(--muted); }
+.tabs span.on { background: #ffffff12; color: var(--text); }
+.pane { height: 430px; padding: 22px 24px; overflow: hidden; font: 14.5px/1.75 "JetBrains Mono", monospace; color: #e6e1ee; position: relative; }
+.pane .ln { white-space: pre-wrap; }
+.pane .pr { color: var(--green); } .pane .dim { color: #8a8399; } .pane .ok { color: var(--green); } .pane .warm { color: var(--warm); }
+.cursor { display: inline-block; width: 9px; height: 1.1em; background: var(--text); vertical-align: -2px; animation: cur 1s steps(1) infinite; }
+@keyframes cur { 50% { opacity: 0; } }
+.chat { font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; align-items: flex-end; gap: 8px; }
+.row.me { flex-direction: row-reverse; }
+.row .robot { flex: none; }
+.msg { max-width: 78%; padding: 12px 16px; border-radius: 16px; font-size: .95rem; line-height: 1.55; animation: pop .35s ease; }
+.msg.me { background: #ff6fae; color: #1a1020; border-bottom-right-radius: 4px; }
+.msg.ella { align-self: flex-start; background: #2a2536; border-bottom-left-radius: 4px; }
+.msg.ella b { color: #ff6fae; display: block; font-size: .8rem; margin-bottom: 2px; }
+.msg.plan { border: 1px solid #ff6fae66; background: #1e1a28; }
+.msg.plan ul { margin: 6px 0 0; padding-left: 18px; }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+.controls { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: #1e1b27; border-top: 1px solid var(--line); }
+.controls button { font: 600 .85rem Inter, sans-serif; background: #ffffff12; color: var(--text); border: 0; border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+.chapters { display: flex; gap: 6px; flex: 1; }
+.chapters div { flex: 1; height: 6px; border-radius: 6px; background: #ffffff14; overflow: hidden; cursor: pointer; }
+.chapters div i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--warm), var(--pink)); }
+.caption { text-align: center; margin: 22px auto 0; max-width: 40em; min-height: 3.2em; color: var(--muted); font-size: 1.05rem; }
+.caption b { color: var(--text); }
+.yt { max-width: 980px; margin: 70px auto 0; }
+</style>
+
+<header class="demo-hero"><div class="wrap">
+  <div class="kicker">Lesson 05 · 2 minutes</div>
+  <h1>Watch a demo</h1>
+  <p class="muted" style="max-width:38em;margin:0 auto">A short walkthrough: installing the team once, then a first chat with Ella. It plays by itself; pause it or jump to any chapter. The chat is an example, so your plan will differ.</p>
+</div></header>
+
+<div class="wrap" style="padding-bottom:90px">
+  <div class="screen" id="screen">
+    <div class="bar"><i></i><i></i><i></i><div class="tabs"><span id="tab-term" class="on">Terminal</span><span id="tab-chat">Your AI tool</span></div></div>
+    <div class="pane" id="pane"></div>
+    <div class="controls"><button id="play">Pause</button><div class="chapters" id="chapters"></div><button id="again">Replay</button></div>
+  </div>
+  <p class="caption" id="caption"></p>
+  {% if page.youtube != "" %}<div class="yt"><div class="kicker" style="text-align:center">Prefer a video?</div><div class="video"><iframe src="https://www.youtube-nocookie.com/embed/{{ page.youtube }}" title="Agentic Team demo" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>{% endif %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const pane = document.getElementById("pane"), cap = document.getElementById("caption");
+  const tabT = document.getElementById("tab-term"), tabC = document.getElementById("tab-chat");
+  const chapters = [
+    { tab: "term", caption: "<b>Once:</b> download the team to your computer.", steps: [
+      ["type", "git clone {{ site.github.repository_url }} ~/agentic-team"],
+      ["out", "<span class='dim'>Cloning into '/Users/you/agentic-team'...</span>"], ["out", "<span class='ok'>done.</span>"] ] },
+    { tab: "term", caption: "<b>Per project:</b> put the team into your project folder.", steps: [
+      ["type", "~/agentic-team/adapters/claude-code/install.sh ~/code/family-groceries"],
+      ["out", "<span class='dim'>installed architect</span>"], ["out", "<span class='dim'>installed budget-analyst</span>"], ["out", "<span class='dim'>installed critic</span>"], ["out", "<span class='dim'>installed engagement-lead   <span class='ok'>← Ella</span></span>"], ["out", "<span class='dim'>…  10 roles in all</span>"],
+      ["out", "wrote AGENTS.md <span class='dim'>(how your AI tool finds the team)</span>"],
+      ["out", "Claude Code subagents -> ~/code/family-groceries/.claude/agents"],
+      ["out", "<span class='warm'>Done. Open your AI tool in this folder and say hello to Ella.</span>"] ] },
+    { tab: "chat", caption: "<b>Say hello:</b> one line, with your idea in your own words.", steps: [
+      ["me", "You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list."],
+      ["ella", "Lovely idea. Two quick questions: is it just for your family, and should it work on phones?"],
+      ["me", "Just the four of us, on our phones."] ] },
+    { tab: "chat", caption: "<b>The plan:</b> one page, with the cost, before anything starts.", steps: [
+      ["plan", "<b>Ella · your one-page plan</b>Here's what I recommend:<ul><li><b style='display:inline;color:inherit'>Build:</b> one shared list that updates live on every phone</li><li><b style='display:inline;color:inherit'>You'll need:</b> free hosting and a free database. $0 a month at your size</li><li><b style='display:inline;color:inherit'>You'll do:</b> create one account (5 min), try the preview, say go</li><li><b style='display:inline;color:inherit'>Team:</b> Priya, Ian, Vera, Otto. Bea estimates 2 to 3 days of agent work</li></ul>Shall I start?"],
+      ["me", "Yes, go ahead."],
+      ["ella", "On it. I'll come back when the preview is ready for you to try. 🚀"] ] },
+  ];
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  let run = 0, paused = false;
+  const waitPlay = async () => { while (paused) await sleep(100); };
+  const bars = document.getElementById("chapters");
+  chapters.forEach((_, i) => { const d = document.createElement("div"); d.innerHTML = "<i></i>"; d.onclick = () => start(i); bars.appendChild(d); });
+  const setBar = (i, f) => { bars.children[i].firstChild.style.width = (f * 100) + "%"; };
+
+  async function start(from = 0) {
+    const me = ++run; paused = false; document.getElementById("play").textContent = "Pause";
+    chapters.forEach((_, i) => setBar(i, i < from ? 1 : 0));
+    for (let c = from; c < chapters.length; c++) {
+      const ch = chapters[c];
+      tabT.classList.toggle("on", ch.tab === "term"); tabC.classList.toggle("on", ch.tab === "chat");
+      cap.innerHTML = ch.caption;
+      if (c === from || ch.tab !== chapters[c - 1].tab) { pane.innerHTML = ""; pane.className = "pane" + (ch.tab === "chat" ? " chat" : ""); }
+      for (let s = 0; s < ch.steps.length; s++) {
+        const [kind, text] = ch.steps[s];
+        await waitPlay(); if (me !== run) return;
+        if (kind === "type") {
+          const ln = document.createElement("div"); ln.className = "ln"; ln.innerHTML = "<span class='pr'>❯ </span><span class='t'></span><span class='cursor'></span>"; pane.appendChild(ln);
+          const t = ln.querySelector(".t");
+          for (const ch2 of text) { await waitPlay(); if (me !== run) return; t.textContent += ch2; await sleep(28); }
+          ln.querySelector(".cursor").remove(); await sleep(500);
+        } else if (kind === "out") {
+          const ln = document.createElement("div"); ln.className = "ln"; ln.innerHTML = text; pane.appendChild(ln); await sleep(650);
+        } else {
+          const m = document.createElement("div"); m.className = "msg " + (kind === "me" ? "me" : kind === "plan" ? "ella plan" : "ella");
+          m.innerHTML = kind === "ella" ? "<b>Ella</b>" + text : text;
+          const row = document.createElement("div"); row.className = "row " + (kind === "me" ? "me" : "ella");
+          row.innerHTML = Robots.svg(kind === "me" ? "you" : "ella", { size: 40, label: false }); row.appendChild(m); pane.appendChild(row);
+          pane.scrollTo({ top: pane.scrollHeight, behavior: "smooth" });
+          await sleep(kind === "plan" ? 4200 : 1700 + text.length * 12);
+        }
+        setBar(c, (s + 1) / ch.steps.length);
+      }
+      await sleep(900);
+    }
+  }
+  document.getElementById("play").onclick = (e) => { paused = !paused; e.target.textContent = paused ? "Play" : "Pause"; };
+  document.getElementById("again").onclick = () => start(0);
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { start(0); o.disconnect(); } }, { threshold: .4 }).observe(document.getElementById("screen"));
+});
+</script>

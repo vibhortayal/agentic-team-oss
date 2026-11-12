@@ -1,0 +1,465 @@
+#!/usr/bin/env python3
+"""A local stand-in for the GitHub CLI, for sandbox runs of the team.
+
+It keeps issues, pull requests, labels, comments and reviews in one JSON file and
+uses a local bare git repo as the remote, so a whole project can run with no
+GitHub account, no Actions minutes and no emails. It covers the subset of `gh`
+the playbooks use; anything else fails loudly and is logged, so the gap shows up.
+
+Environment:
+  FAKE_GH_STATE      path of the state file (created if missing)
+  FAKE_GH_ORIGIN     path of the bare repo that plays the GitHub remote
+  FAKE_GH_ACTOR      who is acting: a role slug, "owner" or "harness"
+  FAKE_GH_CHECK_CMD  optional: command run on a PR head for `gh pr checks`
+"""
+import fcntl, json, os, subprocess, sys, tempfile, time
+from contextlib import contextmanager
+
+STATE = os.environ.get("FAKE_GH_STATE") or os.path.join(os.getcwd(), ".fake-gh.json")
+ORIGIN = os.environ.get("FAKE_GH_ORIGIN", "")
+ACTOR = os.environ.get("FAKE_GH_ACTOR", "agent")
+REPO = "sandbox/project"
+WEB = "https://github.invalid/" + REPO
+
+
+class Fail(Exception):
+    pass
+
+
+def now():
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+@contextmanager
+def state():
+    os.makedirs(os.path.dirname(os.path.abspath(STATE)), exist_ok=True)
+    with open(STATE + ".lock", "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            with open(STATE) as f:
+                s = json.load(f)
+        except FileNotFoundError:
+            s = {"next": 1, "items": {}, "labels": {}, "calls": [], "seq": 0}
+        yield s
+        tmp = STATE + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump(s, f, indent=1)
+        os.replace(tmp, STATE)
+
+
+def git(*args, cwd=None, check=True):
+    r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True)
+    if check and r.returncode:
+        raise Fail(r.stderr.strip() or "git %s failed" % args[0])
+    return r.stdout.strip()
+
+
+def origin_git(*args, check=True):
+    if not ORIGIN:
+        raise Fail("FAKE_GH_ORIGIN is not set")
+    return git("--git-dir", ORIGIN, *args, check=check)
+
+
+def head_sha(branch):
+    return origin_git("rev-parse", "--verify", "-q", "refs/heads/" + branch, check=False)
+
+
+# ---- argument parsing -------------------------------------------------------
+
+def parse(args, spec):
+    """spec: {name: (aliases, kind)} with kind 'flag', 'value' or 'multi'."""
+    by = {}
+    for name, (aliases, kind) in spec.items():
+        for a in ["--" + name, *aliases]:
+            by[a] = (name, kind)
+    for common in ("--repo", "-R"):
+        by.setdefault(common, ("repo", "value"))
+    opts, pos, i = {}, [], 0
+    while i < len(args):
+        a = args[i]
+        if a.startswith("-") and a != "-":
+            key, val = (a.split("=", 1) + [None])[:2] if a.startswith("--") and "=" in a else (a, None)
+            if key not in by:
+                raise Fail("unknown flag %s (the sandbox gh supports a subset of gh; see tools/sandbox/gh)" % key)
+            name, kind = by[key]
+            if kind == "flag":
+                opts[name] = True
+            else:
+                if val is None:
+                    i += 1
+                    if i >= len(args):
+                        raise Fail("flag %s needs a value" % key)
+                    val = args[i]
+                if kind == "multi":
+                    opts.setdefault(name, []).extend(v.strip() for v in val.split(",") if v.strip())
+                else:
+                    opts[name] = val
+        else:
+            pos.append(a)
+        i += 1
+    return opts, pos
+
+
+def body_of(opts):
+    if "body-file" in opts:
+        f = opts["body-file"]
+        return sys.stdin.read() if f == "-" else open(f).read()
+    return opts.get("body")
+
+
+# ---- views --------------------------------------------------------------------
+
+def login(name):
+    return {"login": name}
+
+
+def item_json(s, it, fields):
+    pr = it["kind"] == "pr"
+    base = {
+        "number": it["number"], "title": it["title"], "body": it["body"],
+        "state": it["state"], "author": login(it["author"]), "createdAt": it["createdAt"],
+        "url": "%s/%s/%d" % (WEB, "pull" if pr else "issues", it["number"]),
+        "labels": [{"name": l} for l in it["labels"]],
+        "comments": [{"id": c["id"], "author": login(c["author"]), "body": c["body"], "createdAt": c["createdAt"],
+                      "url": "%s/issues/%d#issuecomment-%d" % (WEB, it["number"], c["id"])} for c in it["comments"]],
+        "assignees": [], "closed": it["state"] != "OPEN", "isPullRequest": pr,
+    }
+    if pr:
+        sha = head_sha(it["head"]) or it.get("mergeHead", "")
+        base.update({
+            "headRefName": it["head"], "baseRefName": it["base"], "headRefOid": sha,
+            "isDraft": it.get("draft", False),
+            "mergedAt": it.get("mergedAt"), "mergedBy": login(it["mergedBy"]) if it.get("mergedBy") else None,
+            "reviews": [{"author": login(r["author"]), "state": r["state"], "body": r["body"],
+                         "commitOid": r["commit"], "submittedAt": r["createdAt"]} for r in it["reviews"]],
+            "reviewDecision": decision(it, sha), "statusCheckRollup": [],
+            "files": [{"path": p} for p in changed_files(it)],
+            "mergeable": "MERGEABLE" if it["state"] == "OPEN" else "UNKNOWN",
+        })
+    out = {}
+    for f in fields:
+        if f not in base:
+            raise Fail('Unknown JSON field: "%s"\nAvailable fields:\n  %s' % (f, "\n  ".join(sorted(base))))
+        out[f] = base[f]
+    return out
+
+
+def decision(it, sha):
+    latest = {}
+    for r in it["reviews"]:
+        if r["state"] in ("APPROVED", "CHANGES_REQUESTED"):
+            latest[r["author"]] = r
+    if any(r["state"] == "CHANGES_REQUESTED" for r in latest.values()):
+        return "CHANGES_REQUESTED"
+    if any(r["state"] == "APPROVED" and r["commit"] == sha for r in latest.values()):
+        return "APPROVED"
+    return "REVIEW_REQUIRED"
+
+
+def changed_files(it):
+    head = head_sha(it["head"]) or it.get("mergeHead")
+    if not head:
+        return []
+    base = it.get("mergeBase") or origin_git("merge-base", "refs/heads/" + it["base"], head, check=False)
+    return [p for p in origin_git("diff", "--name-only", base, head, check=False).splitlines() if p]
+
+
+def emit(data, opts):
+    if "jq" in opts:
+        r = subprocess.run(["jq", "-r", opts["jq"]], input=json.dumps(data), capture_output=True, text=True)
+        if r.returncode:
+            raise Fail(r.stderr.strip())
+        sys.stdout.write(r.stdout)
+    else:
+        print(json.dumps(data, indent=2))
+
+
+def show(s, it, opts):
+    if "json" in opts:
+        return emit(item_json(s, it, opts["json"].split(",")), opts)
+    print("#%d %s" % (it["number"], it["title"]))
+    print("state: %s · author: %s · labels: %s" % (it["state"], it["author"], ", ".join(it["labels"]) or "none"))
+    if it["kind"] == "pr":
+        print("head: %s (%s) → base: %s" % (it["head"], (head_sha(it["head"]) or "")[:12], it["base"]))
+        for r in it["reviews"]:
+            print("review: %s %s at %s" % (r["author"], r["state"], r["commit"][:12]))
+    print("--\n" + (it["body"] or ""))
+    for c in it["comments"]:  # always shown: agents need the thread
+        print("-- comment %d by %s at %s\n%s" % (c["id"], c["author"], c["createdAt"], c["body"]))
+
+
+def listing(s, kind, opts):
+    want_state = (opts.get("state") or "open").upper()
+    items = [it for it in s["items"].values() if it["kind"] == kind]
+    if want_state != "ALL":
+        items = [it for it in items if (it["state"] == want_state) or (want_state == "CLOSED" and it["state"] == "MERGED")]
+    for l in opts.get("label", []):
+        items = [it for it in items if l in it["labels"]]
+    if "head" in opts:
+        items = [it for it in items if it.get("head") == opts["head"]]
+    items.sort(key=lambda it: -it["number"])
+    items = items[: int(opts.get("limit", 30))]
+    if "json" in opts:
+        return emit([item_json(s, it, opts["json"].split(",")) for it in items], opts)
+    for it in items:
+        print("#%d\t%s\t%s\t%s" % (it["number"], it["title"], ", ".join(it["labels"]), it["state"]))
+
+
+# ---- commands -------------------------------------------------------------------
+
+LABELED = {"label": (["-l"], "multi")}
+JSONOPTS = {"json": ([], "value"), "jq": (["-q"], "value"), "template": (["-t"], "value")}
+
+
+def get(s, num, kind=None):
+    it = s["items"].get(str(int(str(num).lstrip("#")))) if str(num).lstrip("#").isdigit() else None
+    if not it or (kind == "pr" and it["kind"] != "pr"):
+        raise Fail("could not find %s %s in %s" % ("pull request" if kind == "pr" else "issue", num, REPO))
+    return it
+
+
+def current_pr(s):
+    branch = git("rev-parse", "--abbrev-ref", "HEAD")
+    for it in s["items"].values():
+        if it["kind"] == "pr" and it["head"] == branch and it["state"] == "OPEN":
+            return it
+    raise Fail('no pull requests found for branch "%s"' % branch)
+
+
+def check_labels(s, labels):
+    for l in labels:
+        if l not in s["labels"]:
+            raise Fail("could not add label: '%s' not found" % l)
+
+
+def create(s, kind, opts):
+    title = opts.get("title")
+    body = body_of(opts)
+    if not title or body is None:
+        raise Fail("--title and --body (or --body-file) are required when not running interactively")
+    labels = opts.get("label", [])
+    check_labels(s, labels)
+    it = {"number": s["next"], "kind": kind, "title": title, "body": body, "state": "OPEN",
+          "author": ACTOR, "createdAt": now(), "labels": list(dict.fromkeys(labels)), "comments": [], "reviews": []}
+    if kind == "pr":
+        head = opts.get("head") or git("rev-parse", "--abbrev-ref", "HEAD")
+        base = opts.get("base", "main")
+        if not head_sha(head):
+            raise Fail("branch %s is not on the remote; push it first (git push -u origin %s)" % (head, head))
+        if not head_sha(base):
+            raise Fail("base branch %s not found" % base)
+        for o in s["items"].values():
+            if o["kind"] == "pr" and o["head"] == head and o["state"] == "OPEN":
+                raise Fail('a pull request for branch "%s" into branch "%s" already exists:\n%s/pull/%d' % (head, base, WEB, o["number"]))
+        it.update({"head": head, "base": base, "draft": bool(opts.get("draft"))})
+    s["next"] += 1
+    s["items"][str(it["number"])] = it
+    print("%s/%s/%d" % (WEB, "pull" if kind == "pr" else "issues", it["number"]))
+
+
+def comment(s, it, opts):
+    body = body_of(opts)
+    if not body:
+        raise Fail("--body or --body-file is required")
+    s["seq"] += 1
+    it["comments"].append({"id": s["seq"], "author": ACTOR, "body": body, "createdAt": now()})
+    print("%s/issues/%d#issuecomment-%d" % (WEB, it["number"], s["seq"]))
+
+
+def edit(s, it, opts):
+    add, remove = opts.get("add-label", []), opts.get("remove-label", [])
+    check_labels(s, add)
+    it["labels"] = [l for l in it["labels"] if l not in remove]
+    it["labels"] += [l for l in add if l not in it["labels"]]
+    if "title" in opts:
+        it["title"] = opts["title"]
+    body = body_of(opts)
+    if body is not None:
+        it["body"] = body
+    s.setdefault("label_events", []).append({"number": it["number"], "actor": ACTOR, "add": add, "remove": remove, "at": now()})
+    print("%s/%s/%d" % (WEB, "pull" if it["kind"] == "pr" else "issues", it["number"]))
+
+
+def merge(s, it, opts):
+    if ACTOR != "owner":
+        raise Fail("merging is the owner's step; agents never merge (sandbox refused for actor '%s')" % ACTOR)
+    if it["state"] != "OPEN":
+        raise Fail("pull request #%d is not open" % it["number"])
+    head = head_sha(it["head"])
+    base_before = head_sha(it["base"])
+    with tempfile.TemporaryDirectory() as tmp:
+        git("clone", "-q", ORIGIN, tmp)
+        git("-c", "user.name=owner", "-c", "user.email=owner@sandbox.invalid", "checkout", "-q", it["base"], cwd=tmp)
+        r = subprocess.run(["git", "-c", "user.name=owner", "-c", "user.email=owner@sandbox.invalid", "merge", "--no-ff",
+                            "-q", "-m", "Merge pull request #%d" % it["number"], "origin/" + it["head"]],
+                           cwd=tmp, capture_output=True, text=True)
+        if r.returncode:
+            raise Fail("pull request #%d is not mergeable: the merge commit cannot be cleanly created" % it["number"])
+        git("push", "-q", "origin", it["base"], cwd=tmp)
+    it.update({"state": "MERGED", "mergedAt": now(), "mergedBy": ACTOR, "mergeHead": head, "mergeBase": base_before})
+    for linked in closes(it):
+        if linked in s["items"]:
+            s["items"][linked]["state"] = "CLOSED"
+    print("✓ Merged pull request #%d" % it["number"])
+
+
+def closes(it):
+    import re
+    return [m for m in re.findall(r"(?i)\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)", it["body"] or "")]
+
+
+def review(s, it, opts):
+    states = {"approve": "APPROVED", "request-changes": "CHANGES_REQUESTED", "comment": "COMMENTED"}
+    chosen = [states[k] for k in states if opts.get(k)]
+    if len(chosen) != 1:
+        raise Fail("pass exactly one of --approve, --request-changes, --comment")
+    if it["author"] == ACTOR and chosen[0] != "COMMENTED":
+        raise Fail("Can not approve or request changes on your own pull request")
+    body = body_of(opts) or ""
+    if chosen[0] != "APPROVED" and not body:
+        raise Fail("--body is required for this review")
+    it["reviews"].append({"author": ACTOR, "state": chosen[0], "body": body, "commit": head_sha(it["head"]), "createdAt": now()})
+    print("✓ Reviewed pull request #%d (%s)" % (it["number"], chosen[0].lower()))
+
+
+def checks(it):
+    cmd = os.environ.get("FAKE_GH_CHECK_CMD")
+    if not cmd:
+        print("no checks reported on the '%s' branch" % it["head"])
+        return 0
+    with tempfile.TemporaryDirectory() as tmp:
+        git("clone", "-q", "--branch", it["head"], ORIGIN, tmp)
+        r = subprocess.run(cmd, shell=True, cwd=tmp, capture_output=True, text=True, timeout=600)
+    print("tests\t%s\t%s" % ("pass" if r.returncode == 0 else "fail", cmd))
+    if r.returncode:
+        sys.stdout.write((r.stdout + r.stderr)[-3000:])
+    return 1 if r.returncode else 0
+
+
+def run(argv):
+    if not argv:
+        raise Fail("usage: gh <issue|pr|label|repo|auth> ...")
+    group, rest = argv[0], argv[1:]
+    if group == "auth":
+        print("Logged in to github.invalid (sandbox) as %s" % ACTOR)
+        return 0
+    if group in ("issue", "pr") and rest:
+        sub, args = rest[0], rest[1:]
+        kind = group
+        common = {**JSONOPTS, "comments": (["-c"] if sub == "view" else [], "flag")}
+        if sub == "create":
+            spec = {"title": (["-t"], "value"), "body": (["-b"], "value"), "body-file": (["-F"], "value"), **LABELED,
+                    "assignee": (["-a"], "multi"), "head": (["-H"], "value"), "base": (["-B"], "value"),
+                    "draft": (["-d"], "flag"), "milestone": (["-m"], "value")}
+            opts, _ = parse(args, spec)
+            with state() as s:
+                return create(s, kind, opts)
+        if sub == "list":
+            opts, _ = parse(args, {**JSONOPTS, **LABELED, "state": (["-s"], "value"), "limit": (["-L"], "value"),
+                                   "head": (["-H"], "value"), "base": (["-B"], "value"), "author": (["-A"], "value"),
+                                   "assignee": (["-a"], "value"), "search": (["-S"], "value")})
+            with state() as s:
+                return listing(s, kind, opts)
+        if sub in ("view", "comment", "edit", "close", "reopen", "diff", "checks", "merge", "review", "checkout", "ready"):
+            spec = {"view": common,
+                    "comment": {"body": (["-b"], "value"), "body-file": (["-F"], "value")},
+                    "edit": {"add-label": ([], "multi"), "remove-label": ([], "multi"), "title": (["-t"], "value"),
+                             "body": (["-b"], "value"), "body-file": (["-F"], "value"), "add-assignee": ([], "multi"),
+                             "remove-assignee": ([], "multi"), "base": (["-B"], "value")},
+                    "close": {"comment": (["-c"], "value"), "reason": (["-r"], "value"), "delete-branch": (["-d"], "flag")},
+                    "reopen": {"comment": (["-c"], "value")},
+                    "diff": {"name-only": ([], "flag"), "patch": ([], "flag"), "color": ([], "value")},
+                    "checks": {"watch": ([], "flag"), "required": ([], "flag"), "fail-fast": ([], "flag"), **JSONOPTS},
+                    "merge": {"merge": (["-m"], "flag"), "squash": (["-s"], "flag"), "rebase": (["-r"], "flag"),
+                              "delete-branch": (["-d"], "flag"), "auto": ([], "flag"), "admin": ([], "flag"),
+                              "body": (["-b"], "value"), "subject": (["-t"], "value")},
+                    "review": {"approve": (["-a"], "flag"), "request-changes": (["-r"], "flag"), "comment": (["-c"], "flag"),
+                               "body": (["-b"], "value"), "body-file": (["-F"], "value")},
+                    "checkout": {"force": (["-f"], "flag"), "branch": (["-b"], "value")},
+                    "ready": {"undo": ([], "flag")}}[sub]
+            opts, pos = parse(args, spec)
+            if kind == "issue" and sub in ("diff", "checks", "merge", "review", "checkout", "ready"):
+                raise Fail("unknown command \"%s\" for \"gh issue\"" % sub)
+            with state() as s:
+                it = get(s, pos[0], kind) if pos else (current_pr(s) if kind == "pr" else None)
+                if it is None:
+                    raise Fail("issue number is required")
+                if sub == "view":
+                    return show(s, it, opts)
+                if sub == "comment":
+                    return comment(s, it, opts)
+                if sub == "edit":
+                    return edit(s, it, opts)
+                if sub in ("close", "reopen"):
+                    if opts.get("comment"):
+                        comment(s, it, {"body": opts["comment"]})
+                    it["state"] = "CLOSED" if sub == "close" else "OPEN"
+                    print("✓ %s #%d" % ("Closed" if sub == "close" else "Reopened", it["number"]))
+                    return 0
+                if sub == "diff":
+                    head = head_sha(it["head"]) or it.get("mergeHead")
+                    base = it.get("mergeBase") or origin_git("merge-base", "refs/heads/" + it["base"], head)
+                    print(origin_git("diff", *(["--name-only"] if opts.get("name-only") else []), base, head))
+                    return 0
+                if sub == "checks":
+                    return checks(it)
+                if sub == "merge":
+                    return merge(s, it, opts)
+                if sub == "review":
+                    return review(s, it, opts)
+                if sub == "checkout":
+                    git("fetch", "-q", "origin", it["head"])
+                    git("checkout", "-q", "-B", opts.get("branch", it["head"]), "origin/" + it["head"])
+                    print("Switched to branch '%s'" % it["head"])
+                    return 0
+                if sub == "ready":
+                    it["draft"] = bool(opts.get("undo"))
+                    return 0
+    if group == "label" and rest:
+        sub, args = rest[0], rest[1:]
+        if sub == "create":
+            opts, pos = parse(args, {"color": (["-c"], "value"), "description": (["-d"], "value"), "force": (["-f"], "flag")})
+            with state() as s:
+                if pos[0] in s["labels"] and not opts.get("force"):
+                    raise Fail("label with name \"%s\" already exists; use `--force` to update its color and description" % pos[0])
+                s["labels"][pos[0]] = {"color": opts.get("color", ""), "description": opts.get("description", "")}
+                print("✓ Label \"%s\" created in %s" % (pos[0], REPO))
+                return 0
+        if sub == "list":
+            opts, _ = parse(args, {**JSONOPTS, "limit": (["-L"], "value"), "search": (["-S"], "value")})
+            with state() as s:
+                rows = [{"name": n, **v} for n, v in sorted(s["labels"].items())]
+                if "json" in opts:
+                    return emit([{k: r.get(k) for k in opts["json"].split(",")} for r in rows], opts)
+                for r in rows:
+                    print("%s\t%s" % (r["name"], r["description"]))
+                return 0
+    if group == "repo" and rest and rest[0] == "view":
+        opts, _ = parse(rest[1:], JSONOPTS)
+        data = {"name": "project", "nameWithOwner": REPO, "url": WEB, "defaultBranchRef": {"name": "main"},
+                "owner": {"login": "sandbox"}, "visibility": "PRIVATE"}
+        if "json" in opts:
+            return emit({k: data.get(k) for k in opts["json"].split(",")}, opts)
+        print("%s\n%s" % (REPO, WEB))
+        return 0
+    raise Fail("`gh %s` is not available in the sandbox; use gh issue, pr, label or repo view" % " ".join(argv[:2]))
+
+
+def log(argv, ok, err=""):
+    try:
+        with state() as s:
+            s["calls"].append({"actor": ACTOR, "argv": argv, "ok": ok, "error": err[:300], "at": now()})
+    except Exception:
+        pass
+
+
+if __name__ == "__main__":
+    argv = sys.argv[1:]
+    try:
+        code = run(argv) or 0
+        log(argv, code == 0)
+        sys.exit(code)
+    except Fail as e:
+        print(str(e), file=sys.stderr)
+        log(argv, False, str(e))
+        sys.exit(1)

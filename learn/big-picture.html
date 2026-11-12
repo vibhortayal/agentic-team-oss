@@ -1,0 +1,121 @@
+---
+layout: portal
+title: The whole picture
+summary: Ella, the team, your GitHub record and the automatic checks, all in one frame.
+next: {url: /learn/team.html, title: "Meet the team"}
+---
+<style>
+.iso-hero { padding: 60px 0 10px; text-align: center; }
+.iso-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+.stage { display: grid; grid-template-columns: 1.6fr 1fr; gap: 28px; align-items: center; padding-bottom: 80px; }
+@media (max-width: 900px) { .stage { grid-template-columns: 1fr; } }
+#world { width: 100%; height: auto; display: block; }
+#world .blk { cursor: pointer; transition: transform .3s, filter .3s; transform-box: fill-box; }
+#world .blk:hover, #world .blk.sel { filter: brightness(1.25) drop-shadow(0 0 12px #ffffff40); }
+#world text { font: 600 13px Inter, sans-serif; fill: #f4efe8; pointer-events: none; }
+#world .bob { animation: bob 3s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+.info { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; min-height: 260px; }
+.info .tag { font: 600 .75rem "JetBrains Mono", monospace; color: var(--c, var(--warm)); text-transform: uppercase; letter-spacing: .08em; }
+.info h2 { font-size: 1.7rem; margin: .3em 0; }
+.info p { color: var(--muted); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.pills button { font: inherit; font-size: .85rem; color: var(--text); background: #ffffff0d; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.pills button:hover, .pills button.sel { border-color: var(--warm); color: var(--warm); }
+</style>
+
+<header class="iso-hero"><div class="wrap">
+  <div class="kicker">Lesson 02 · 3 minutes</div>
+  <h1>The whole picture, in one frame</h1>
+  <p class="muted" style="max-width:40em;margin:0 auto">This little world is your project. The glowing dots are messages and work moving around. Click any building to see what it does.</p>
+</div></header>
+
+<div class="wrap stage">
+  <svg id="world" viewBox="-440 -300 880 600" role="img" aria-label="An isometric map: you talk to Ella, Ella works with the team, everything is recorded on GitHub, the checks guard the way to your live app"></svg>
+  <div>
+    <div class="info" id="info" aria-live="polite"></div>
+    <div class="pills" id="pills"></div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const svg = document.getElementById("world"), NS = "http://www.w3.org/2000/svg";
+  const S = 34, C = Math.cos(Math.PI / 6), Sn = 0.5;
+  const P = (x, y, z = 0) => [(x - y) * C * S, (x + y) * Sn * S - z * S];
+  const pts = (a) => a.map((p) => P(...p).join(",")).join(" ");
+  const shade = (hex, f) => "#" + hex.slice(1).match(/../g).map((h) => Math.max(0, Math.min(255, Math.round(parseInt(h, 16) * f))).toString(16).padStart(2, "0")).join("");
+  const el = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+
+  const places = {
+    you:    { x: -7, y: 1, w: 2, d: 2, h: 1.2, c: "#ffb45e", icon: "🧑", bots: ["you"], name: "You", tag: "The owner",
+              text: "You talk to one agent only: Ella. You approve the plan and its cost, try each preview, okay any new spending, and say go for the launch. Everything else runs without you." },
+    ella:   { x: -3, y: -3, w: 2.4, d: 2.4, h: 2.4, c: "#ff6fae", icon: "🤖", bots: ["ella"], name: "Ella", tag: "Your single point of contact",
+              text: "Ella interviews you, writes the plan with Bea's estimate, picks the team and runs it in the background. She comes back only with decisions, each with one recommendation." },
+    team:   { x: 2.4, y: -6.6, w: 3.4, d: 2.4, h: 1.6, c: "#b28dff", icon: "👥", bots: ["priya", "ian", "vera", "otto"], name: "The team", tag: "Nine specialists",
+              text: "Priya specs the work, Ian builds it, Vera checks it, Otto launches it, Bea tracks the money, and Rohan, Quinn, Arjun and Max help when a project needs them." },
+    github: { x: 3.2, y: -2.6, w: 2.4, d: 2.4, h: 1, c: "#6aa8ff", icon: "🗂️", name: "GitHub", tag: "The shared record",
+              text: "Every decision, task, handoff and check result is written down in your project's own GitHub repository. Agents never rely on memory, and you can always see what happened and why." },
+    gates:  { x: 0.1, y: 2.8, w: 0.8, d: 3.4, h: 1.8, c: "#5ee08a", icon: "🚦", name: "Checks", tag: "Automatic gates",
+              text: "Before anything reaches your app, automatic checks run that no agent can switch off. The agent that built something can never approve its own work." },
+    app:    { x: 4.8, y: 3.4, w: 2.2, d: 2.2, h: 2.8, c: "#4fd1c5", icon: "🚀", name: "Your app", tag: "Live",
+              text: "Only work that passed Vera, passed every check and got your yes goes live. Otto launches it step by step and keeps watch afterwards." },
+  };
+
+  // ground
+  el("polygon", { points: pts([[-8, -8], [7.5, -8], [7.5, 7.5], [-8, 7.5]]), fill: "#1b1724", stroke: "#2e2939" });
+  for (let i = -8; i <= 7; i++) {
+    el("polyline", { points: pts([[i, -8], [i, 7.5]]), stroke: "#ffffff08", fill: "none" });
+    el("polyline", { points: pts([[-8, i], [7.5, i]]), stroke: "#ffffff08", fill: "none" });
+  }
+
+  // paths with moving dots
+  const center = (p) => [p.x + p.w / 2, p.y + p.d / 2];
+  const routes = [["you", "ella", "#ffb45e"], ["ella", "team", "#ff6fae"], ["team", "github", "#b28dff"], ["ella", "github", "#ff6fae"], ["github", "gates", "#6aa8ff"], ["gates", "app", "#5ee08a"]];
+  routes.forEach(([a, b, col], i) => {
+    const [x1, y1] = center(places[a]), [x2, y2] = center(places[b]);
+    const d = "M" + P(x1, y1).join(",") + " L" + P(x2, y1).join(",") + " L" + P(x2, y2).join(",");
+    el("path", { d, stroke: col, "stroke-opacity": .35, "stroke-width": 3, fill: "none", "stroke-dasharray": "2 7", "stroke-linecap": "round" });
+    for (let k = 0; k < 2; k++) {
+      const dot = el("circle", { r: 4.5, fill: col });
+      const am = el("animateMotion", { dur: (3 + i * .4) + "s", repeatCount: "indefinite", path: d, begin: (k * 1.6 + i * .3) + "s" }, dot);
+    }
+  });
+
+  // buildings, back to front
+  const labels = [];
+  const order = Object.entries(places).sort(([, a], [, b]) => (a.x + a.y) - (b.x + b.y));
+  for (const [key, p] of order) {
+    const g = el("g", { class: "blk", tabindex: 0, role: "button", "aria-label": p.name });
+    g.dataset.key = key;
+    const { x, y, w, d, h, c } = p;
+    el("polygon", { points: pts([[x, y + d, 0], [x + w, y + d, 0], [x + w, y + d, h], [x, y + d, h]]), fill: shade(c, .62) }, g);
+    el("polygon", { points: pts([[x + w, y, 0], [x + w, y + d, 0], [x + w, y + d, h], [x + w, y, h]]), fill: shade(c, .45) }, g);
+    el("polygon", { points: pts([[x, y, h], [x + w, y, h], [x + w, y + d, h], [x, y + d, h]]), fill: c }, g);
+    const [tx, ty] = P(x + w / 2, y + d / 2, h);
+    if (p.bots) {
+      p.bots.forEach((id, i) => { const n = p.bots.length, w2 = n > 1 ? 40 : 58, im = el("image", { href: Robots.dataUrl(id), width: w2, height: w2 * 148 / 120, x: tx - w2 / 2 + (i - (n - 1) / 2) * 34, y: ty - w2 * 148 / 120 + 10 }, g); });
+    } else {
+      const ic = el("text", { x: tx, y: ty - 16, "text-anchor": "middle", style: "font-size:30px", class: "bob" }, g); ic.textContent = p.icon;
+      ic.style.animationDelay = (-Math.random() * 3) + "s";
+    }
+    labels.push([P(x + w / 2, y + d, 0), p.name]);
+    g.addEventListener("click", () => show(key)); g.addEventListener("keydown", (e) => { if (e.key === "Enter") show(key); });
+  }
+  // names on top of everything, so no building hides one
+  for (const [[lx, ly], name] of labels) { const t = el("text", { x: lx, y: ly + 20, "text-anchor": "middle" }); t.textContent = name; }
+
+  const info = document.getElementById("info"), pills = document.getElementById("pills");
+  for (const [key, p] of Object.entries(places)) {
+    const b = document.createElement("button"); b.textContent = p.icon + " " + p.name; b.dataset.key = key;
+    b.onclick = () => show(key); pills.appendChild(b);
+  }
+  function show(key) {
+    const p = places[key];
+    info.style.setProperty("--c", p.c);
+    info.innerHTML = `<div class="tag">${p.tag}</div><h2>${p.icon} ${p.name}</h2><p>${p.text}</p>`;
+    document.querySelectorAll("[data-key]").forEach((n) => n.classList.toggle("sel", n.dataset.key === key));
+  }
+  show("ella");
+});
+</script>

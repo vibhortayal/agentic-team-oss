@@ -1,0 +1,225 @@
+---
+layout: portal
+title: Home
+---
+<style>
+.hero-scene { min-height: 380px; gap: 0; align-items: flex-end; }
+.plan-card { align-self: flex-start; margin: 0 -24px; z-index: 2; line-height: 1.7; width: 215px; flex: none; }
+@media (max-width: 520px) { .hero-scene [data-bot] svg { width: 96px; height: auto; } .plan-card { width: 160px; font-size: .74rem; margin: 0 -14px; } }
+.lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.lesson { position: relative; display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; overflow: hidden; transition: transform .3s, border-color .3s; }
+.lesson::before { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, color-mix(in srgb, var(--c) 22%, transparent), transparent 55%); opacity: .6; transition: opacity .3s; }
+.lesson:hover { transform: translateY(-6px); border-color: var(--c); }
+.lesson:hover::before { opacity: 1; }
+.lesson > * { position: relative; }
+.lesson .n { font: 600 .8rem "JetBrains Mono", monospace; color: var(--c); }
+.lesson .ico { display: block; font-size: 2.2rem; margin: 10px 0 6px; transition: transform .4s; }
+.lesson:hover .ico { transform: scale(1.15) rotate(-6deg); }
+.lesson h3 { font-size: 1.25rem; margin-bottom: .3em; }
+.lesson p { color: var(--muted); font-size: .95rem; margin: 0 0 14px; }
+.lesson .meta { font-size: .8rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+/* why cards */
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+
+/* journey */
+.journey { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; counter-reset: step; }
+.journey::before { content: ""; position: absolute; top: 34px; left: 6%; right: 6%; height: 3px; background: linear-gradient(90deg, var(--warm), var(--pink), var(--teal), var(--green)); border-radius: 3px; transform-origin: left; transform: scaleX(var(--progress, 0)); transition: transform 1.6s ease; }
+.step { text-align: center; position: relative; }
+.step .dot { width: 70px; height: 70px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; font-size: 1.7rem; background: var(--card); border: 2px solid var(--line); position: relative; z-index: 1; transition: border-color .4s, box-shadow .4s; }
+.step.on .dot { border-color: var(--warm); box-shadow: 0 0 0 6px #ffb45e1f; }
+.step h3 { font-size: 1.05rem; margin-bottom: .3em; }
+.step p { font-size: .88rem; color: var(--muted); margin: 0; }
+.step .you { display: inline-block; margin-top: 10px; font-size: .75rem; font-weight: 600; color: var(--pink); background: #ff6fae1a; border-radius: 999px; padding: 3px 10px; }
+@media (max-width: 860px) {
+  .journey { grid-template-columns: 1fr; gap: 22px; }
+  .journey::before { top: 0; bottom: 0; left: 34px; right: auto; width: 3px; height: auto; transform-origin: top; transform: scaleY(var(--progress, 0)); }
+  .step { display: grid; grid-template-columns: 70px 1fr; gap: 16px; text-align: left; align-items: center; }
+  .step .dot { margin: 0; }
+}
+
+/* team */
+.lineup { border-radius: var(--radius); width: 100%; display: block; margin-bottom: 36px; box-shadow: 0 0 0 1px var(--line); }
+.team { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.agent { display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; position: relative; overflow: hidden; transition: transform .25s, border-color .25s; }
+.agent::after { content: ""; position: absolute; inset: auto -40% -60% auto; width: 160px; height: 160px; border-radius: 50%; background: var(--c); opacity: .14; transition: opacity .3s, transform .4s; }
+.agent:hover { transform: translateY(-5px) rotate(-.5deg); border-color: var(--c); }
+.agent:hover::after { opacity: .3; transform: scale(1.3); }
+.agent .mini { display: block; margin: -4px 0 4px -6px; }
+.agent .face { width: 46px; height: 46px; border-radius: 14px; background: var(--c); color: #140f1a; display: grid; place-items: center; font-family: Fraunces, serif; font-weight: 700; font-size: 1.3rem; margin-bottom: 10px; }
+.agent h3 { font-size: 1.15rem; margin: 0; }
+.agent .role { color: var(--c); font-size: .85rem; font-weight: 600; }
+.agent p { color: var(--muted); font-size: .9rem; margin: 8px 0 0; }
+.agent.lead { grid-column: span 2; background: linear-gradient(135deg, #ff6fae22, var(--card) 60%); }
+.agent.lead .badge { position: absolute; top: 16px; right: 16px; font-size: .72rem; font-weight: 600; background: var(--pink); color: #1a1020; padding: 3px 10px; border-radius: 999px; }
+@media (max-width: 480px) { .agent.lead { grid-column: auto; } }
+
+/* split */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.split + .split { margin-top: 80px; }
+.split.flip .shot { order: 2; }
+@media (max-width: 860px) { .split { grid-template-columns: 1fr; } .split.flip .shot { order: 0; } }
+.ticks { list-style: none; padding: 0; margin: 0; }
+.ticks li { padding-left: 32px; position: relative; margin-bottom: .7em; color: var(--muted); }
+.ticks li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+/* need */
+.need { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 10px; }
+.need .card { padding: 20px; }
+
+/* cta */
+.cta { text-align: center; padding: 100px 0; position: relative; overflow: hidden; }
+.cta::before { content: ""; position: absolute; inset: 0; background: radial-gradient(closest-side at 50% 60%, #ffb45e22, transparent); z-index: -1; }
+.cta h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.prompt { max-width: 720px; margin: 24px auto 30px; text-align: left; background: #0a0910; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; font: 14px/1.6 ui-monospace, Menlo, monospace; color: #e6dff0; overflow-x: auto; }
+.prompt .p { color: var(--green); user-select: none; }
+.grid4 .reveal:nth-child(2), .team .reveal:nth-child(3n+2) { transition-delay: .1s; }
+.grid4 .reveal:nth-child(3), .team .reveal:nth-child(3n) { transition-delay: .2s; }
+.grid4 .reveal:nth-child(4) { transition-delay: .3s; }
+</style>
+
+<header class="hero"><div class="wrap">
+  <div>
+    <div class="kicker">Your own software team, made of AI agents</div>
+    <h1>Tell it your idea.<br><em>A team builds it.</em></h1>
+    <p class="lead">You talk to one friendly agent, Ella. She asks about your idea, shows you a short plan with the cost, and then runs a whole team that plans, builds, checks and launches it. She only comes back when something is yours to decide.</p>
+    <div class="ctas">
+      <a class="btn primary" href="#learn">Start learning →</a>
+      <a class="btn ghost" href="{{ '/learn/demo.html' | relative_url }}">▶ Watch the demo</a>
+    </div>
+  </div>
+  <div class="shot reveal">
+    <div class="scene hero-scene" role="img" aria-label="You chat with Ella, a pink robot, who shows a one-page plan with the cost">
+      <span data-bot="you" data-size="150" data-label="no"></span>
+      <div class="bubble-card plan-card"><b>📋 Your plan</b><br>✓ What we'll build<br>✓ What you'll need<br>✓ Who's on the team<br><span style="color:var(--warm)">💰 $0 to start · you approve</span></div>
+      <span data-bot="ella" data-size="170" data-label="no"></span>
+    </div>
+  </div>
+</div></header>
+
+<section id="learn"><div class="wrap">
+  <div class="center reveal">
+    <div class="kicker">Learning portal</div>
+    <h2>Learn it in short, visual lessons</h2>
+    <p class="muted">No jargon needed. Each lesson takes a few minutes, and you can go in any order.</p>
+  </div>
+  <div class="lessons">
+    <a class="lesson reveal" style="--c:#ffb45e" href="{{ '/learn/journey.html' | relative_url }}"><span class="n">01</span><span class="ico">🚇</span><h3>How a project goes</h3><p>Ride the line from idea to launch, and see where you step in.</p><span class="meta">3 min · map</span></a>
+    <a class="lesson reveal" style="--c:#4fd1c5" href="{{ '/learn/big-picture.html' | relative_url }}"><span class="n">02</span><span class="ico">🏙️</span><h3>The whole picture</h3><p>Ella, the team, GitHub and the checks, in one little world.</p><span class="meta">3 min · explorer</span></a>
+    <a class="lesson reveal" style="--c:#ff6fae" href="{{ '/learn/team.html' | relative_url }}"><span class="n">03</span><span class="ico">🤖</span><h3>Meet the team</h3><p>Ten agents, one job each. Open their cards.</p><span class="meta">4 min · cards</span></a>
+    <a class="lesson reveal" style="--c:#5ee08a" href="{{ '/learn/first-project.html' | relative_url }}"><span class="n">04</span><span class="ico">✏️</span><h3>Your first project</h3><p>A step-by-step lesson, from no accounts to your first chat with Ella.</p><span class="meta">8 min · tutorial</span></a>
+    <a class="lesson reveal" style="--c:#6aa8ff" href="{{ '/learn/demo.html' | relative_url }}"><span class="n">05</span><span class="ico">▶️</span><h3>Watch a demo</h3><p>See the setup and a real conversation with Ella play out.</p><span class="meta">2 min · demo</span></a>
+    <a class="lesson reveal" style="--c:#b28dff" href="{{ '/learn/principles.html' | relative_url }}"><span class="n">06</span><span class="ico">📐</span><h3>The rules we follow</h3><p>Why the team works the way it does, in plain words.</p><span class="meta">4 min · principles</span></a>
+    <a class="lesson reveal" style="--c:#9fb3c8" href="{{ '/learn/underneath.html' | relative_url }}"><span class="n">07</span><span class="ico">📘</span><h3>What's underneath</h3><p>For the curious: roles, playbooks, checks and adapters.</p><span class="meta">5 min · blueprint</span></a>
+  </div>
+</div></section>
+
+<section class="alt" id="why"><div class="wrap">
+  <div class="center reveal">
+    <div class="kicker">Why not just ask a chatbot?</div>
+    <h2>A chat assistant improvises. A team follows a method.</h2>
+    <p class="muted">Ella uses whichever AI you already have. What the team adds is discipline.</p>
+  </div>
+  <div class="grid4">
+    <div class="card reveal"><div class="icon">🧭</div><h3>The same proven steps</h3><p>Every project goes idea, plan, build, check, launch. No new plan invented each time.</p></div>
+    <div class="card reveal"><div class="icon">🗂️</div><h3>Nothing is forgotten</h3><p>Every decision and every step is written down in your project's own GitHub, in your name.</p></div>
+    <div class="card reveal"><div class="icon">🔍</div><h3>Nobody marks their own homework</h3><p>One agent builds, a different one checks it against what you agreed, and automatic checks stop shortcuts.</p></div>
+    <div class="card reveal"><div class="icon">✋</div><h3>Nothing happens without your yes</h3><p>No spending, no launch and nothing that can't be undone until you say go.</p></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="center reveal">
+    <div class="kicker">How a project goes</div>
+    <h2>Six steps, and you're only needed at a few</h2>
+    <p class="muted">Everything between the pink checkpoints runs on its own. <a href="{{ '/learn/journey.html' | relative_url }}">Ride the full line →</a></p>
+  </div>
+  <div class="journey" id="journey">
+    <div class="step"><div class="dot">💡</div><div><h3>Idea</h3><p>You chat with Ella in plain words.</p></div></div>
+    <div class="step"><div class="dot">📋</div><div><h3>Plan</h3><p>A one-page plan: what, who, cost.</p><span class="you">You approve</span></div></div>
+    <div class="step"><div class="dot">🛠️</div><div><h3>Build</h3><p>Agents write the code.</p></div></div>
+    <div class="step"><div class="dot">✅</div><div><h3>Check</h3><p>A separate agent tests it.</p><span class="you">You try the preview</span></div></div>
+    <div class="step"><div class="dot">🚀</div><div><h3>Launch</h3><p>Your app goes live.</p><span class="you">You say go</span></div></div>
+    <div class="step"><div class="dot">🌱</div><div><h3>Keep it running</h3><p>Fixes, updates, support.</p></div></div>
+  </div>
+</div></section>
+
+<section class="alt" id="team"><div class="wrap">
+  <div class="center reveal">
+    <div class="kicker">Meet the team</div>
+    <h2>Ten agents, one job each</h2>
+    <p class="muted">You only ever talk to Ella. She brings in the others when your project needs them. <a href="{{ '/learn/team.html' | relative_url }}">Open their cards →</a></p>
+  </div>
+  <div class="scene reveal" style="margin-bottom:36px;min-height:0"><div class="parade"><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="ella" data-size="96"></span><br>Ella</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="priya" data-size="80"></span><br>Priya</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="rohan" data-size="80"></span><br>Rohan</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="quinn" data-size="80"></span><br>Quinn</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="arjun" data-size="80"></span><br>Arjun</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="ian" data-size="80"></span><br>Ian</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="vera" data-size="80"></span><br>Vera</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="max" data-size="80"></span><br>Max</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="bea" data-size="80"></span><br>Bea</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="otto" data-size="80"></span><br>Otto</a></div></div>
+  <div class="team">
+    <a class="agent lead reveal" style="--c:#ff6fae" href="{{ '/roles/engagement-lead.html' | relative_url }}"><span class="badge">Your contact</span><span class="mini" data-bot="ella" data-size="58" data-label="no"></span><h3>Ella</h3><div class="role">Engagement Lead</div><p>Your guide on every project. Interviews you, plans the work, runs the team and brings you only the decisions, each with one recommendation.</p></a>
+    <a class="agent reveal" style="--c:#b28dff" href="{{ '/roles/product-manager.html' | relative_url }}"><span class="mini" data-bot="priya" data-size="58" data-label="no"></span><h3>Priya</h3><div class="role">Product Manager</div><p>Turns your idea into a clear, testable plan.</p></a>
+    <a class="agent reveal" style="--c:#6aa8ff" href="{{ '/roles/researcher.html' | relative_url }}"><span class="mini" data-bot="rohan" data-size="58" data-label="no"></span><h3>Rohan</h3><div class="role">Researcher</div><p>Finds real evidence before big choices.</p></a>
+    <a class="agent reveal" style="--c:#ff8f5e" href="{{ '/roles/critic.html' | relative_url }}"><span class="mini" data-bot="quinn" data-size="58" data-label="no"></span><h3>Quinn</h3><div class="role">Critic</div><p>Pokes holes in a plan before money is spent.</p></a>
+    <a class="agent reveal" style="--c:#4fd1c5" href="{{ '/roles/architect.html' | relative_url }}"><span class="mini" data-bot="arjun" data-size="58" data-label="no"></span><h3>Arjun</h3><div class="role">Architect</div><p>Breaks big builds into safe pieces.</p></a>
+    <a class="agent reveal" style="--c:#ffd35e" href="{{ '/roles/implementer.html' | relative_url }}"><span class="mini" data-bot="ian" data-size="58" data-label="no"></span><h3>Ian</h3><div class="role">Implementer</div><p>Builds one piece at a time, with its own tests.</p></a>
+    <a class="agent reveal" style="--c:#5ee08a" href="{{ '/roles/verifier.html' | relative_url }}"><span class="mini" data-bot="vera" data-size="58" data-label="no"></span><h3>Vera</h3><div class="role">Verifier</div><p>Checks the work independently, and can say no.</p></a>
+    <a class="agent reveal" style="--c:#9fb3c8" href="{{ '/roles/evaluator.html' | relative_url }}"><span class="mini" data-bot="max" data-size="58" data-label="no"></span><h3>Max</h3><div class="role">Evaluator</div><p>Measures AI quality and keeps the team sharp.</p></a>
+    <a class="agent reveal" style="--c:#ffb45e" href="{{ '/roles/budget-analyst.html' | relative_url }}"><span class="mini" data-bot="bea" data-size="58" data-label="no"></span><h3>Bea</h3><div class="role">Budget Analyst</div><p>Prices everything up front and tracks the spend.</p></a>
+    <a class="agent reveal" style="--c:#c8e85e" href="{{ '/roles/ops.html' | relative_url }}"><span class="mini" data-bot="otto" data-size="58" data-label="no"></span><h3>Otto</h3><div class="role">Ops</div><p>Launches with your OK and keeps it running.</p></a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="split">
+    <div class="shot reveal"><div class="scene" role="img" aria-label="Vera, the green robot, holds up a red BLOCKED sign while Ian looks on with his wrench"><span data-bot="ian" data-size="130" data-label="no"></span><div class="sign" style="--g:#e8322b;align-self:center">⛔ BLOCKED<br><small style="font-weight:600;letter-spacing:0">2 checks failed · fix and resend</small></div><span data-bot="vera" data-size="150" data-label="no"></span></div></div>
+    <div class="reveal">
+      <div class="kicker">Checked, not just claimed</div>
+      <h2>When it isn't right, Vera says so</h2>
+      <p class="muted">Vera writes her checks from your plan before she sees any code. If Ian's work doesn't pass, she blocks it and he fixes it. You never have to take an AI's word that something works.</p>
+    </div>
+  </div>
+  <div class="split flip">
+    <div class="shot reveal"><div class="scene" role="img" aria-label="A green ALL CHECKS PASSED sign lights up between Vera and you, ready for your yes"><span data-bot="vera" data-size="120" data-label="no"></span><div style="display:grid;gap:12px;align-self:center;justify-items:center"><div class="sign" style="--g:#22a55a">✅ ALL CHECKS PASSED</div><div class="bubble-card" style="animation-delay:-2s">Ready for your preview 👀</div></div><span data-bot="you" data-size="130" data-label="no"></span></div></div>
+    <div class="reveal">
+      <div class="kicker">You stay in charge</div>
+      <h2>Green lights, then your yes</h2>
+      <ul class="ticks">
+        <li>A piece of work is done when the checker passes it and every automatic check is green.</li>
+        <li>Then you try it and approve it. Nothing goes live without you.</li>
+        <li>Ella tells you before trying anything she isn't sure of, and what it might cost.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="alt"><div class="wrap">
+  <div class="center reveal">
+    <div class="kicker">Before you start</div>
+    <h2>What you'll need</h2>
+    <p class="muted">If any of this is new, Ella walks you through it.</p>
+  </div>
+  <div class="need">
+    <div class="card reveal"><div class="icon">🐙</div><h3>A GitHub account</h3><p>Free. Your project and its whole history live there. <a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one</a></p></div>
+    <div class="card reveal"><div class="icon">🤖</div><h3>An AI coding tool</h3><p>Claude Code, Codex, Cursor, Gemini CLI or another. The agents run inside it.</p></div>
+    <div class="card reveal"><div class="icon">⌨️</div><h3>Git and a terminal</h3><p>To copy the team into your project, once. <a href="https://git-scm.com/downloads">Install Git</a></p></div>
+    <div class="card reveal"><div class="icon">🔐</div><h3>A password manager</h3><p>Such as Bitwarden (free), for your project's keys. Never paste them in a chat.</p></div>
+  </div>
+</div></section>
+
+<section class="cta" id="start"><div class="wrap">
+  <div class="parade reveal" style="margin-bottom:24px" aria-hidden="true"><span data-bot="you" data-size="90"></span><span data-bot="ella" data-size="90"></span><span data-bot="ian" data-size="74"></span><span data-bot="vera" data-size="74"></span><span data-bot="otto" data-size="74"></span></div>
+  <h2 class="reveal">Ready when you are</h2>
+  <p class="muted reveal">Put the team in your project, open your AI tool and paste one line:</p>
+  <div class="prompt reveal"><span class="p">›</span> You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <em>&lt;your idea, in your own words&gt;</em></div>
+  <div class="ctas reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a class="btn primary" href="{{ '/start/#your-first-project-step-by-step' | relative_url }}">Step-by-step setup guide →</a>
+    <a class="btn ghost" href="{{ site.github.repository_url }}">View on GitHub</a>
+  </div>
+</div></section>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const journey = document.getElementById("journey");
+  const steps = journey.querySelectorAll(".step");
+  new IntersectionObserver(([e], obs) => {
+    if (!e.isIntersecting) return;
+    journey.style.setProperty("--progress", 1);
+    steps.forEach((s, i) => setTimeout(() => s.classList.add("on"), 250 * i));
+    obs.disconnect();
+  }, { threshold: 0.4 }).observe(journey);
+});
+</script>

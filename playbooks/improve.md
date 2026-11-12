@@ -47,8 +47,29 @@ Before a team version is tagged, a fresh agent on a different model reviews the 
 
 Keep quality and performance apart; never fold them into one score. Quality: independent PASS at an exact revision, negative control blocked, owner interventions during a dark run (target zero), evidence complete. Performance: time to first useful response, wall-clock per unit, rework rounds, token and API cost per unit.
 
+## Testing the team
+
+Three layers, cheapest first. Run the first two after any change to a role, playbook, template or tool.
+
+| Layer | Command | Model? | Runs |
+|---|---|---|---|
+| Free checks: role files, vendor names, links and anchors, labels, the handoff table, case format, every installer, the gate self-test | `python3 tools/teamcheck.py` | No | Every pull request here (about a minute) |
+| Tool self-test: planted mistakes the checks and the handoff replayer must catch, and a scripted fix loop through the harness | `python3 tools/sandbox/selftest.py` | No | Every pull request here |
+| Role cases and end-to-end projects | `tools/sandbox/run.sh <adapter> --max-usd <cap> <case...>` | Yes | On demand, locally, in Docker |
+
+The model layer never runs in CI. Each case gets a fresh copy of a tiny fixture project with the team installed, a local remote, and a stand-in `gh` that keeps issues, labels and comments in a file, so nothing touches GitHub. Agents run with full permissions, which is why it runs in Docker. In an end-to-end case the runner plays the main session (it starts each role from the next prompt in the latest team comment) and the owner (it answers and approves from the case, and merges only a head with a PASS). Afterwards the replayer checks every handoff (`python3 tools/teamcheck.py replay`).
+
+**Spend** is capped and visible: `--max-usd` caps the whole run, each session gets what's left as its own cap, and no session starts once it's spent. Every session's tokens and cost go into the run's `ledger.csv`, in the budget ledger's format, next to `report.md`. An adapter that can't report cost needs `--allow-unpriced`, and then only turn and time caps apply. Start with one case and a small cap; check the real cost before running the whole set.
+
 ## Frozen cases
 
-Each case in `evals/<case-id>/` has `task.md` (the ticket exactly as an agent gets it), `repo/` (a tiny starting repo, or a pinned public repo and commit), `expected.md` (what a correct result does, and the planted defect for a negative case) and `kind` (`positive` or `negative`, where Vera must BLOCK). A case never changes once used in a comparison; add a new one instead. Every set has at least one negative case, and no case carries project words.
+Each case is `evals/<case-id>/case.md`: frontmatter with `role` (a role, or `e2e` for a whole flow), `kind` (`negative` when the role must block, refuse or push back) and `fixture` (a starting project in `evals/fixtures/`), then these sections:
 
-The set starts empty. Each project's retro adds at least one positive and one negative case from a real ticket. Until there are three, compare on the project's own recent tickets and say so in the PR.
+- **Task:** the prompt exactly as the agent gets it.
+- **Setup:** a bash block that seeds issues, branches and earlier handoffs, using the helpers in `evals/fixtures/lib.sh`.
+- **Expected:** what a correct result does, and the planted defect for a negative case.
+- **Checks:** one per line, run against the result without a model: `event` and `no-event` (a new team comment whose event matches, e.g. `from=verifier verdict=BLOCK`), `label <n> has|lacks <label>`, `file` and `no-file <branch-glob> <path-glob> [contains <text>]`, `same <branch-glob> <path>` (unchanged since setup), `run <branch-glob> <shell command>`, `merged` and `not-merged <issue>`, `main-unchanged`.
+- **Rubric:** yes/no questions for a judge model, only for what a check can't decide (did Ella explain the risk plainly). Every answer must be yes.
+- **Owner:** what the simulated owner says when asked (end-to-end cases).
+
+Prefer checks to rubric questions; judges cost money and disagree. A case never changes once used in a comparison; add a new one instead. Every set has at least one negative case, and no case carries project words. The seed set covers every role and two end-to-end flows on the word-count fixture; each project's retro adds at least one positive and one negative case from a real ticket.

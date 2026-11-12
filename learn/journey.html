@@ -1,0 +1,101 @@
+---
+layout: portal
+title: How a project goes
+theme: light
+summary: Ride the line from idea to launch and see the few stops where you step in.
+next: {url: /learn/big-picture.html, title: "The whole picture"}
+---
+<style>
+.map-hero { padding: 70px 0 30px; }
+.map-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+.legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; font-size: .9rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 16px; height: 16px; border-radius: 50%; border: 4px solid #e8452c; background: #fff; }
+.legend i.x { border-color: #1d1a22; box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1d1a22; width: 12px; height: 12px; }
+
+.line { position: relative; padding: 30px 0 80px; }
+.track { position: absolute; left: 47px; top: 0; bottom: 60px; width: 10px; border-radius: 10px; background: #e7e1d8; }
+.track .fill { position: absolute; inset: 0 0 auto 0; height: 0; border-radius: 10px; background: linear-gradient(#e8452c, #f59f1b 30%, #2e9e5b 60%, #2563eb); }
+.train { position: absolute; left: 30px; top: 0; width: 44px; height: 50px; border-radius: 12px; background: #1d1a22; padding-top: 2px; color: #fff; display: grid; place-items: center; font-size: 18px; box-shadow: 0 6px 16px -4px #0006; z-index: 2; transition: top .15s linear; }
+.stop { position: relative; display: grid; grid-template-columns: 104px 1fr; align-items: start; min-height: 220px; }
+.stop .pin { margin: 14px 0 0 33px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 7px solid #e8452c; z-index: 1; transition: transform .4s; }
+.stop.you .pin { border-color: #1d1a22; box-shadow: 0 0 0 5px #fff, 0 0 0 10px #1d1a22; }
+.stop.in .pin { transform: scale(1.12); }
+.stop .board { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; box-shadow: 0 10px 30px -18px #0004; }
+.stop .zone { font: 600 .75rem "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stop h2 { font-family: Inter, sans-serif; font-weight: 800; font-size: 1.7rem; margin: .2em 0 .3em; letter-spacing: -.01em; }
+.stop p { color: var(--muted); }
+.riders { display: flex; flex-wrap: wrap; gap: 8px; }
+.rider { font-size: .82rem; font-weight: 600; padding: 2px 12px 2px 2px; border-radius: 999px; background: #f3eee6; display: inline-flex; align-items: center; gap: 6px; }
+.rider b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: .72rem; background: var(--c); }
+.youdo { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #1d1a22; color: #fff; font-size: .92rem; }
+.youdo strong { color: #ffcf6e; }
+@media (max-width: 600px) {
+  .track { left: 27px; } .train { left: 14px; }
+  .stop { grid-template-columns: 64px 1fr; } .stop .pin { margin-left: 13px; }
+}
+</style>
+
+<header class="map-hero"><div class="wrap">
+  <div class="kicker">Lesson 01 · 3 minutes</div>
+  <h1>How a project goes</h1>
+  <p class="muted" style="font-size:1.15rem;max-width:40em">Every project rides the same line, through six stops. The train moves on its own. You only get off at the stops with a double ring, where something is yours to decide. Scroll to ride it.</p>
+  <div class="legend"><span><i></i> The team handles it</span><span><i class="x"></i> You step in</span></div>
+</div></header>
+
+<div class="wrap line" id="line">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="train" id="train" aria-hidden="true"><span data-bot="ella" data-size="30" data-label="no"></span></div>
+
+  <div class="stop reveal"><div class="pin"></div><div class="board">
+    <div class="zone">Stop 1 · Idea</div><h2>You chat with Ella</h2>
+    <p>Tell her what you want in your own words, like you'd tell a friend. She asks questions until she understands who it's for and what "done" looks like.</p>
+    <div class="riders"><span class="rider"><span data-bot="ella" data-size="30" data-label="no"></span>Ella</span></div>
+  </div></div>
+
+  <div class="stop you reveal"><div class="pin"></div><div class="board">
+    <div class="zone">Stop 2 · Plan</div><h2>A one-page plan, with the price</h2>
+    <p>Ella brings back a short plan: what we'll build, what outside services you'll need and what they cost each month, the few things you'll do, who's on the team, and when she'll need you. Bea prices it. Quinn pokes holes in it first.</p>
+    <div class="riders"><span class="rider"><span data-bot="ella" data-size="30" data-label="no"></span>Ella</span><span class="rider"><span data-bot="bea" data-size="30" data-label="no"></span>Bea</span><span class="rider"><span data-bot="quinn" data-size="30" data-label="no"></span>Quinn</span><span class="rider"><span data-bot="rohan" data-size="30" data-label="no"></span>Rohan</span></div>
+    <div class="youdo"><span data-bot="you" data-size="34" data-label="no"></span><span><strong>You:</strong> read it, ask "tell me more" about anything, and approve the plan and its cost.</span></div>
+  </div></div>
+
+  <div class="stop reveal"><div class="pin"></div><div class="board">
+    <div class="zone">Stop 3 · Build</div><h2>Agents write the code</h2>
+    <p>Priya turns the plan into small, testable pieces. Ian builds one piece at a time and writes his own tests. Big projects get Arjun to plan the order.</p>
+    <div class="riders"><span class="rider"><span data-bot="priya" data-size="30" data-label="no"></span>Priya</span><span class="rider"><span data-bot="ian" data-size="30" data-label="no"></span>Ian</span><span class="rider"><span data-bot="arjun" data-size="30" data-label="no"></span>Arjun</span></div>
+  </div></div>
+
+  <div class="stop you reveal"><div class="pin"></div><div class="board">
+    <div class="zone">Stop 4 · Check</div><h2>A different agent tests it</h2>
+    <p>Vera wrote her checks from the plan before any code existed. If the work doesn't pass, she blocks it and Ian fixes it. Automatic checks catch shortcuts nobody can switch off.</p>
+    <div class="riders"><span class="rider"><span data-bot="vera" data-size="30" data-label="no"></span>Vera</span></div>
+    <div class="youdo"><span data-bot="you" data-size="34" data-label="no"></span><span><strong>You:</strong> try the preview, a real working version, and say if it's right.</span></div>
+  </div></div>
+
+  <div class="stop you reveal"><div class="pin"></div><div class="board">
+    <div class="zone">Stop 5 · Launch</div><h2>Your app goes live</h2>
+    <p>Otto puts it online, step by step, and watches that it's healthy. Nothing launches and nothing is spent without your yes.</p>
+    <div class="riders"><span class="rider"><span data-bot="otto" data-size="30" data-label="no"></span>Otto</span></div>
+    <div class="youdo"><span data-bot="you" data-size="34" data-label="no"></span><span><strong>You:</strong> say go.</span></div>
+  </div></div>
+
+  <div class="stop reveal"><div class="pin"></div><div class="board">
+    <div class="zone">Stop 6 · Keep it running</div><h2>Fixes, updates, support</h2>
+    <p>New ideas and bug reports go back to Ella, and the line runs again for each one. Bea sends a short weekly note on what was spent.</p>
+    <div class="riders"><span class="rider"><span data-bot="ella" data-size="30" data-label="no"></span>Ella</span><span class="rider"><span data-bot="otto" data-size="30" data-label="no"></span>Otto</span><span class="rider"><span data-bot="bea" data-size="30" data-label="no"></span>Bea</span></div>
+  </div></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const line = document.getElementById("line"), fill = document.getElementById("fill"), train = document.getElementById("train");
+  const ride = () => {
+    const r = line.getBoundingClientRect(), h = line.offsetHeight - 100;
+    const p = Math.min(1, Math.max(0, (innerHeight * 0.55 - r.top) / h));
+    fill.style.height = (p * 100) + "%";
+    train.style.top = (p * h) + "px";
+  };
+  addEventListener("scroll", ride, { passive: true }); addEventListener("resize", ride); ride();
+});
+</script>

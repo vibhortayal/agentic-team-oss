@@ -1,0 +1,23 @@
+# Free checks for the team itself: no model, no secrets. The model cases never run here
+# (see playbooks/improve.md, Testing the team).
+name: team-checks
+on:
+  pull_request:
+    paths: [roles/**, playbooks/**, templates/**, adapters/**, docs/**, tools/**, evals/**, principles.md, README.md, AGENTS.md, .github/workflows/team-checks.yml]
+concurrency:
+  group: team-checks-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free checks (roles, links, labels, handoff table, cases, installers, gate self-test)
+        run: python3 tools/teamcheck.py
+      - name: Tool self-test (planted mistakes, scripted fix loop)
+        run: |
+          git config --global user.name ci && git config --global user.email ci@ci.invalid
+          python3 tools/sandbox/selftest.py

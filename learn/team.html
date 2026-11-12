@@ -1,0 +1,91 @@
+---
+layout: portal
+title: Meet the team
+theme: light
+summary: Ten AI agents, one job each. You only ever talk to Ella.
+next: {url: /learn/first-project.html, title: "Your first project"}
+---
+<style>
+body { background: #f4ede1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E"); }
+.pop-hero { padding: 70px 0 30px; text-align: center; }
+.pop-hero h1 { font-size: clamp(2.3rem, 5vw, 3.8rem); }
+.lineup { width: min(900px, 100%); display: block; margin: 30px auto 0; border-radius: 18px; border: 10px solid #fff; box-shadow: 0 2px 0 #e2d8c6, 0 24px 40px -24px #5a3e1b66; transform: rotate(-1deg); }
+.book { perspective: 1400px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 26px; padding: 40px 0 90px; }
+.page { position: relative; height: 320px; cursor: pointer; transform-style: preserve-3d; transform-origin: bottom center; transform: rotateX(80deg); opacity: 0; transition: transform 1s cubic-bezier(.2,1.4,.4,1), opacity .5s; }
+.page.in { transform: rotateX(0); opacity: 1; }
+.page .inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.3,1.3,.5,1); }
+.page.flip .inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; background: #fffdf8; padding: 22px; box-shadow: 0 1px 0 #e7dccb, 0 3px 0 #fff, 0 5px 0 #e7dccb, 0 18px 30px -16px #5a3e1b55; overflow: hidden; }
+.face.back { transform: rotateY(180deg); background: var(--c); color: #1d1a22; }
+.face::before { content: ""; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; border-radius: 50%; background: var(--c); opacity: .25; }
+.mini { display: block; margin: -8px 0 2px -10px; }
+.bot { position: relative; width: 84px; height: 84px; margin-bottom: 12px; }
+.bot .head { position: absolute; inset: 10px 4px 0; border-radius: 26px; background: var(--c); box-shadow: inset 0 -6px 0 #0002; animation: tilt 4s ease-in-out infinite; }
+.bot .head::before { content: ""; position: absolute; inset: 14px 12px 18px; border-radius: 16px; background: #1d1a22; }
+.bot .head i { position: absolute; top: 26px; width: 10px; height: 13px; border-radius: 6px; background: #7ff3ff; box-shadow: 0 0 8px #7ff3ff; animation: blink 5s infinite; }
+.bot .head i:first-child { left: 24px; } .bot .head i:last-child { right: 24px; }
+.bot .ant { position: absolute; left: 50%; top: -4px; width: 4px; height: 16px; background: #1d1a22; transform: translateX(-50%); }
+.bot .ant::after { content: ""; position: absolute; top: -8px; left: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+@keyframes tilt { 50% { transform: rotate(-4deg); } }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.page:nth-child(odd) .bot .head { animation-delay: -2s; }
+.face h2 { font-family: Fraunces, serif; font-size: 1.6rem; margin: 0; }
+.face .role { font-weight: 600; font-size: .9rem; color: #5f586a; }
+.face p { font-size: .95rem; color: #3d3746; margin: .7em 0 0; }
+.face.back p { color: #1d1a22; }
+.face .say { font-family: Caveat, cursive; font-size: 1.45rem; line-height: 1.2; }
+.face .turn { position: absolute; bottom: 14px; right: 16px; font-size: .75rem; color: #5f586a; }
+.face.back .turn { color: #1d1a22aa; }
+.page.lead { grid-column: span 2; }
+.page.lead .badge { position: absolute; top: 18px; right: 18px; z-index: 1; font-size: .72rem; font-weight: 700; background: #1d1a22; color: #fff; border-radius: 999px; padding: 4px 10px; }
+@media (max-width: 560px) { .page.lead { grid-column: auto; } }
+.memo { text-align: center; color: var(--muted); max-width: 640px; margin: 0 auto; }
+.memo b { color: var(--text); }
+</style>
+
+<header class="pop-hero"><div class="wrap">
+  <div class="kicker">Lesson 03 · 4 minutes</div>
+  <h1>Meet the team</h1>
+  <p class="muted" style="max-width:38em;margin:0 auto">Ten agents, one job each. You only talk to Ella; she brings in the others when your project needs them. Each one has a look of its own, so you can tell them apart at a glance. Tap a card to hear from them.</p>
+  <div class="scene" style="margin-top:30px;min-height:0" aria-hidden="true"><div class="parade"><span data-bot="you" data-size="104"></span><span data-bot="ella" data-size="104"></span><span data-bot="priya" data-size="78"></span><span data-bot="rohan" data-size="78"></span><span data-bot="quinn" data-size="78"></span><span data-bot="arjun" data-size="78"></span><span data-bot="ian" data-size="78"></span><span data-bot="vera" data-size="78"></span><span data-bot="max" data-size="78"></span><span data-bot="bea" data-size="78"></span><span data-bot="otto" data-size="78"></span></div></div>
+</div></header>
+
+<div class="wrap">
+  <div class="book" id="book"></div>
+  <p class="memo"><b>Elephants and fish.</b> Ella, Priya, Arjun, Bea and Otto remember your project through notes in its repository. Ian, Vera, Rohan, Quinn and Max start every task fresh, which keeps them honest and independent.</p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const base = "{{ '/roles/' | relative_url }}";
+  const team = [
+    ["Ella", "Engagement Lead", "#ff6fae", "engagement-lead", "Your guide on every project, from first idea to keeping it running. She plans, picks the team and brings you only the decisions.", "Hi, I'm Ella. Tell me your idea in your own words. I'll come back with a one-page plan and the cost, and I'll always tell you what I recommend.", true],
+    ["Priya", "Product Manager", "#b28dff", "product-manager", "Turns your idea into a clear, testable plan, and walks each piece of work through build and check.", "I write down exactly what 'done' means, so nobody has to guess."],
+    ["Rohan", "Researcher", "#6aa8ff", "researcher", "Answers questions from real sources before big decisions, and says what he couldn't check.", "Before you pick a tool or a price, I'll find out what's actually true."],
+    ["Quinn", "Critic", "#ff8f5e", "critic", "Finds how a plan could fail before any money or code is spent on it.", "My job is to be the friendly pessimist. Better I find the hole than your users."],
+    ["Arjun", "Architect", "#4fd1c5", "architect", "For bigger builds: splits the work into safe pieces and decides their order. Writes no code himself.", "Big projects get a map from me, so the pieces fit together."],
+    ["Ian", "Implementer", "#ffd35e", "implementer", "Builds one piece at a time, writes his own tests and checks his work against the plan.", "I build it. And no, I don't get to mark my own homework."],
+    ["Vera", "Verifier", "#5ee08a", "verifier", "Writes her checks from the plan before seeing the code. Gives one verdict, and can block.", "If it doesn't do what you asked, I say no, with proof. Ian fixes it."],
+    ["Max", "Evaluator", "#9fb3c8", "evaluator", "Measures the quality of AI features and keeps the team's own skills sharp.", "When quality is a score, I measure it the same way every time."],
+    ["Bea", "Budget Analyst", "#ffb45e", "budget-analyst", "Estimates cost and time up front, prices every change and tracks what's actually spent.", "You'll see the price before anything starts, and a short note every week."],
+    ["Otto", "Ops", "#c8e85e", "ops", "Sets up the safety checks, launches your app with your OK and keeps it healthy.", "I launch it step by step, and I'm watching if anything goes wrong."],
+  ];
+  const book = document.getElementById("book");
+  for (const [name, role, c, file, job, say, lead] of team) {
+    const d = document.createElement("div");
+    d.className = "page" + (lead ? " lead" : ""); d.style.setProperty("--c", c);
+    d.tabIndex = 0; d.setAttribute("role", "button"); d.setAttribute("aria-label", name + ", " + role + ". Tap to flip");
+    d.innerHTML = `${lead ? '<span class="badge">YOUR CONTACT</span>' : ""}<div class="inner">
+      <div class="face"><span class="mini" data-bot="${file === "engagement-lead" ? "ella" : name.toLowerCase()}" data-size="84" data-label="no"></span>
+        <h2>${name}</h2><div class="role">${role}</div><p>${job}</p><span class="turn">tap to flip ↻</span></div>
+      <div class="face back"><p class="say">“${say}”</p><p><a href="${base}${file}.html">Read ${name}'s full job description →</a></p><span class="turn">tap to flip back ↻</span></div>
+    </div>`;
+    const flip = (e) => { if (e.target.closest("a")) return; d.classList.toggle("flip"); };
+    d.addEventListener("click", flip); d.addEventListener("keydown", (e) => { if (e.key === "Enter") flip(e); });
+    book.appendChild(d);
+  }
+  Robots.fill(book);
+  const io = new IntersectionObserver((es) => es.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add("in"), i * 90); io.unobserve(e.target); } }), { threshold: .2 });
+  book.querySelectorAll(".page").forEach((p) => io.observe(p));
+});
+</script>

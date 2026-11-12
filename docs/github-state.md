@@ -92,7 +92,7 @@ A handoff, fix request or verdict body opens with the **evidence line**: `Rows:`
 
 Every comment that hands work on ends with a **next prompt**: one line in a code block that the next role's session can be started with, for example `You are the Verifier. Read .team/roles/verifier.md and act on issue #42.` Ella uses it to start the next agent. When the next step is several independent fish runs (spec review, research), the comment carries one next prompt per run; Ella starts each, and the `role:` label stays with the role that asked. In a tool that can't start sessions, Ella gives the owner each line to paste.
 
-`kind` is one of `handoff`, `verdict`, `blocker`, `question`, `report`, `note`. `verdict` is `PASS`, `BLOCK` or `INCONCLUSIVE`. Add `"human":"<human: label>"` when the comment asks a person to act. Keep the JSON on one line.
+`from` and `to` are role names (`to` is `owner` when the comment asks a person to act). `kind` is one of `handoff`, `verdict`, `blocker`, `question`, `report`, `note`. `verdict` is `PASS`, `BLOCK` or `INCONCLUSIVE`. Add `"human":"<human: label>"` when the comment asks a person to act. Keep the JSON on one line.
 
 ## verdict.json
 

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.url == "/" %}Agentic Team: tell it your idea, a team of AI agents builds it{% else %}{{ page.title }} · Agentic Team{% endif %}</title>
+<meta name="description" content="{{ page.summary | default: 'Learn how a team of AI agents plans, builds, checks and launches your software project.' }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;800&family=Caveat:wght@600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/assets/portal/portal.css' | relative_url }}">
+</head>
+<body class="theme-{{ page.theme | default: 'dark' }}">
+<nav class="top"><div class="wrap">
+  <a class="brand" href="{{ '/' | relative_url }}">Agentic<span>.</span>Team</a>
+  <details class="menu">
+    <summary>Learn</summary>
+    <div class="menu-panel">
+      <a href="{{ '/learn/journey.html' | relative_url }}"><b>How a project goes</b><small>The six stops, on one line</small></a>
+      <a href="{{ '/learn/big-picture.html' | relative_url }}"><b>The whole picture</b><small>Everyone and everything, in one frame</small></a>
+      <a href="{{ '/learn/team.html' | relative_url }}"><b>Meet the team</b><small>Ten agents, one job each</small></a>
+      <a href="{{ '/learn/first-project.html' | relative_url }}"><b>Your first project</b><small>Step by step, from zero</small></a>
+      <a href="{{ '/learn/demo.html' | relative_url }}"><b>Watch a demo</b><small>Setup and a chat with Ella</small></a>
+      <a href="{{ '/learn/principles.html' | relative_url }}"><b>The rules we follow</b><small>Principles, in plain words</small></a>
+      <a href="{{ '/learn/underneath.html' | relative_url }}"><b>What's underneath</b><small>How the team is built</small></a>
+    </div>
+  </details>
+  <a class="link hide-sm" href="{{ '/start/' | relative_url }}">Docs</a>
+  <a class="link hide-sm" href="{{ site.github.repository_url }}">GitHub</a>
+</div></nav>
+{{ content }}
+{% if page.next %}<section class="next"><div class="wrap"><span class="muted">Next lesson</span><a href="{{ page.next.url | relative_url }}">{{ page.next.title }} →</a></div></section>{% endif %}
+<footer><div class="wrap">
+  <span>Agentic Team · open source under Apache-2.0</span>
+  <span><a href="{{ '/start/' | relative_url }}">Docs</a> · <a href="{{ '/ROADMAP.html' | relative_url }}">Roadmap</a> · <a href="{{ site.github.repository_url }}">GitHub</a></span>
+</div></footer>
+<script src="{{ '/assets/portal/robots.js' | relative_url }}"></script>
+<script src="{{ '/assets/portal/portal.js' | relative_url }}"></script>
+</body>
+</html>
