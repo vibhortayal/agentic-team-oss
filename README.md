@@ -31,7 +31,7 @@ ChatGPT can write code. But you'd have to copy it, set it up and fix it yourself
 
 This project makes no money. There are no ads, no sign-up and nothing to buy from us.
 
-- **The AI tool.** Usually a monthly plan from the AI company. This is where most of your money goes, because it pays for the AI doing the work. Check the price on the company's own website. Ella tells you before a long job uses a lot.
+- **The AI tool.** Usually a monthly plan from the AI company. This is where most of your money goes, because it pays for the AI doing the work. Check the price on the company's own website. Before a big job, Ella tells you roughly how much of your AI plan it will use.
 - **Putting your app online.** Often free to start. Many companies have a free plan that's enough for a small app. Ella picks free options first, and asks you before anything costs money.
 - **Your own web address.** Optional. A name like myapp.com costs a small fee each year.
 - **GitHub and this team.** Free.
@@ -41,7 +41,7 @@ Why spend on planning and checking at all? Because an app that's planned, tested
 ## Before you start, know this
 
 - It's new. It hasn't built a real app all the way from idea to launch yet. That's the next step.
-- It's slower than asking one AI, and it uses more AI, so your plan may cost more.
+- It's slower than asking one AI, because several agents plan and check the work. That uses more of your AI plan, so it may cost more.
 - Website builders like Lovable, Bolt or Replit make a first version faster. If you need something to show tonight, use one.
 - Tests can still miss mistakes. The work is only as good as the AI in your coding assistant.
 - It works best in Claude Code today. Codex and Cursor read the same instructions. Nobody has tried Gemini CLI yet.
@@ -82,7 +82,7 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 Set up Agentic Team here by following https://raw.githubusercontent.com/vibhortayal/agentic-team-oss/main/START.md. My idea: <what you want, in your own words>
 ```
 
-Your coding assistant copies the team to your computer and adds it to your folder. It saves a first snapshot, then Ella says hello. If something is missing, like Git, it tells you what to do.
+Your coding assistant downloads the team's instruction files and adds them to your folder. It saves a first snapshot, then Ella says hello. If something is missing, like Git, it tells you what to do.
 
 In Claude Code you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
 
