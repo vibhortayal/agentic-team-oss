@@ -98,7 +98,7 @@ That's the only line you need to remember. New ideas, changes, questions and OKs
 
 ## Learn more
 
-- [Meet the team](learn/docs-team.md): the ten agents and their jobs.
+- [Meet the team](learn/docs-team.md): the ten agents, their jobs, and why most projects need only a few.
 - [Playbooks](learn/docs-playbooks.md): the steps they follow at each stage.
 - [How we work](docs/how-we-work.md): our way of working, and a list of words you'll see.
 - [Principles](principles.md): the rules every agent follows.

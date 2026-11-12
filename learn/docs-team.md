@@ -12,6 +12,8 @@ has_toc: true
 
 **You only talk to Ella.** She's on every project and can't be removed; every other agent is optional. She interviews you, writes the proposal with Bea's estimate, and after you sign off she runs the rest: Priya specs and runs each ticket with Ian and Vera (or Arjun for a large multi-unit build), Otto releases, Bea reports. Ella comes back to you only for decisions, each with one recommendation, and she'll tell you when a shortcut puts the project at risk. You can always overrule her.
 
+**Do I need all ten?** No. The ten roles are the jobs a small software company has, from first idea to keeping the app running. Most projects need only a few. Ella picks the smallest team that does the job and writes down who and why in the brief; a small test app might use three or four. She's the only fixed member, and you can ask her to add or drop anyone.
+
 | Name | Role | Department | Tier | Job in one line | Mandate |
 |---|---|---|---|---|---|
 | **Ella** | Engagement Lead | Advisory | deep | The only agent you talk to, on every project: guides you through the process, runs intake, coordinates everyone else, brings you decisions | [roles/engagement-lead.md](../roles/engagement-lead.md) |
