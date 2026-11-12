@@ -12,9 +12,23 @@ youtube: ""
 .screen { max-width: 980px; margin: 20px auto 0; border-radius: 10px; overflow: hidden; background: #0d0d0f; color: #e9e9ec; box-shadow: 0 0 0 1px #00000014, 0 30px 60px -40px #0006; }
 .bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #0d0d0f; border-bottom: 1px solid #ffffff14; }
 .bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a3a40; }
-.tabs { display: flex; gap: 6px; margin-left: 14px; }
-.tabs span { font: .78rem "Geist Mono", monospace; padding: 4px 10px; border-radius: 4px; color: #8d8d96; }
-.tabs span.on { background: #ffffff14; color: #e9e9ec; }
+.apptitle { margin-left: 14px; font: .78rem "Geist Mono", monospace; color: #8d8d96; }
+.app { display: grid; grid-template-columns: 120px 1fr; }
+.side { border-right: 1px solid #ffffff14; padding: 14px 10px; display: flex; flex-direction: column; gap: 6px; }
+.side span { font: 500 .85rem Geist, Inter, sans-serif; color: #8d8d96; padding: 6px 10px; border-radius: 6px; }
+.side span.on { background: #ffffff14; color: #fff; }
+.side span.hl { box-shadow: 0 0 0 2px #f08a4b; color: #fff; }
+@media (max-width: 560px) { .app { grid-template-columns: 1fr; } .side { flex-direction: row; border-right: 0; border-bottom: 1px solid #ffffff14; } }
+.mock { display: grid; gap: 14px; align-content: end; height: 100%; font-family: Geist, Inter, sans-serif; }
+.mock .box { border: 1px solid #ffffff24; border-radius: 12px; padding: 14px; color: #8d8d96; min-height: 56px; }
+.mock .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.mock .btns span { border: 1px solid #ffffff24; border-radius: 6px; padding: 5px 10px; font-size: .85rem; color: #c9c9d0; }
+.mock .btns span.hl { border-color: #f08a4b; color: #fff; background: #f08a4b22; }
+.mock .menu { border: 1px solid #ffffff24; border-radius: 8px; padding: 6px; width: max-content; background: #1b1b1f; font-size: .88rem; }
+.mock .menu div { padding: 5px 10px; border-radius: 4px; color: #c9c9d0; }
+.mock .menu div.hl { background: #f08a4b33; color: #fff; }
+.msg.tool { align-self: flex-start; background: transparent; border: 1px dashed #ffffff30; color: #c9c9d0; font-size: .88rem; }
+.msg.tool .allow { display: inline-block; margin-top: 6px; background: #f08a4b; color: #111; border-radius: 4px; padding: 2px 10px; font-weight: 600; }
 .chathead { font: 12px "JetBrains Mono", monospace; color: var(--muted); border-bottom: 1px solid #ffffff14; padding-bottom: 8px; margin-bottom: 12px; }
 #caption code { font: .9em "JetBrains Mono", monospace; background: #ffffff14; padding: 1px 5px; border-radius: 4px; }
 .pane { height: 430px; padding: 22px 24px; overflow: hidden; font: 14.5px/1.75 "Geist Mono", monospace; color: #e6e1ee; position: relative; }
@@ -26,7 +40,7 @@ youtube: ""
 .row { display: flex; align-items: flex-end; gap: 8px; }
 .row.me { flex-direction: row-reverse; }
 .row .robot { flex: none; }
-.msg { max-width: 78%; padding: 12px 16px; border-radius: 16px; font-size: .95rem; line-height: 1.55; animation: pop .35s ease; }
+.msg { overflow-wrap: anywhere; max-width: 78%; padding: 12px 16px; border-radius: 16px; font-size: .95rem; line-height: 1.55; animation: pop .35s ease; }
 .msg.me { background: #2b2b30; color: #fff; border-bottom-right-radius: 4px; }
 .msg.ella { align-self: flex-start; background: #1b1b1f; border-bottom-left-radius: 4px; }
 .msg.ella b { color: #f08a4b; font-weight: 500; display: block; font-size: .8rem; margin-bottom: 2px; }
@@ -59,13 +73,14 @@ youtube: ""
 
 <header class="demo-hero"><div class="wrap">
   <h1>Watch a demo</h1>
-  <p class="muted" style="max-width:38em;margin:0 auto">A short walkthrough: installing the team once, then a first chat with Ella. It plays by itself. You can pause it or jump to any chapter. The chat is an example, so your plan will differ.</p>
+  <p class="muted" style="max-width:38em;margin:0 auto">A short walkthrough in the Claude app: open a folder, paste one line, then a first chat with Ella. No terminal. It plays by itself. You can pause it or jump to any chapter. The chat is an example, so your plan will differ.</p>
 </div></header>
 
 <div class="wrap" style="padding-bottom:90px">
   <div class="screen" id="screen">
-    <div class="bar"><i></i><i></i><i></i><div class="tabs"><span id="tab-term" class="on">Terminal</span><span id="tab-chat">Claude Code (your coding assistant)</span></div></div>
-    <div class="pane" id="pane"></div>
+    <div class="bar"><i></i><i></i><i></i><span class="apptitle">Claude app</span></div>
+    <div class="app"><aside class="side"><span>Chat</span><span id="side-code">Code</span></aside>
+    <div class="pane" id="pane"></div></div>
     <div class="controls"><button id="play">Pause</button><div class="chapters" id="chapters"></div><button id="again">Replay</button></div>
   </div>
   <p class="caption" id="caption"></p>
@@ -130,26 +145,21 @@ youtube: ""
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const pane = document.getElementById("pane"), cap = document.getElementById("caption");
-  const tabT = document.getElementById("tab-term"), tabC = document.getElementById("tab-chat");
+  const sideCode = document.getElementById("side-code");
   const chapters = [
-    { tab: "term", caption: "<b>Once:</b> download the team to your computer.", steps: [
-      ["type", "git clone {{ site.github.repository_url }} ~/agentic-team"],
-      ["out", "<span class='dim'>Cloning into '/Users/you/agentic-team'...</span>"], ["out", "<span class='ok'>done.</span>"] ] },
-    { tab: "term", caption: "<b>Per project:</b> make a folder for the project and put the team in it.", steps: [
-      ["type", "mkdir -p ~/code/family-groceries"],
-      ["type", "~/agentic-team/adapters/claude-code/install.sh ~/code/family-groceries"],
-      ["out", "<span class='dim'>installed architect</span>"], ["out", "<span class='dim'>installed budget-analyst</span>"], ["out", "<span class='dim'>installed critic</span>"], ["out", "<span class='dim'>installed engagement-lead   <span class='ok'>← Ella</span></span>"], ["out", "<span class='dim'>…  10 roles in all</span>"],
-      ["out", "wrote AGENTS.md <span class='dim'>(fill in the project lines)</span>"],
-      ["out", "wrote CLAUDE.md <span class='dim'>(imports AGENTS.md)</span>"],
-      ["out", "Claude Code subagents -> ~/code/family-groceries/.claude/agents"] ] },
-    { tab: "term", caption: "<b>Open your coding assistant in your project folder.</b> With Claude Code, type <code>claude</code> and press Enter, and a chat starts in the same window. With Codex, type <code>codex</code>. With Cursor, open the app, pick the folder and type in the chat box on the side. A chatbot like ChatGPT can't do this step, because it can't open the files on your computer.", steps: [
-      ["type", "cd ~/code/family-groceries"],
-      ["type", "claude"],
-      ["out", "<span class='warm'>Claude Code starts, right here in the terminal. From now on, what you type goes to the AI.</span>"] ] },
-    { tab: "chat", caption: "<b>Say hello:</b> one line, with your idea in your own words.", steps: [
-      ["head", "Claude Code · ~/code/family-groceries"],
-      ["me", "You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list."],
-      ["ella", "Two quick questions: is it just for your family, and should it work on phones?"],
+    { tab: "ui", caption: "<b>Once:</b> install the Claude app, sign in, and click <b>Code</b> in the side bar.", steps: [
+      ["ui", "<div class='mock'><div class='box'>What do you want to work on?</div><div class='btns'><span>Cloud</span><span>No folder</span></div></div>", "code"] ] },
+    { tab: "ui", caption: "<b>Per app:</b> pick <b>Local</b>, which means \"work on this computer\". Then <b>Open folder…</b> and make a new folder for your app.", steps: [
+      ["ui", "<div class='mock'><div class='menu'><div>Cloud</div><div class='hl'>Local</div></div><div class='box'>What do you want to work on?</div><div class='btns'><span class='hl'>Local</span><span>No folder</span></div></div>", "code"],
+      ["ui", "<div class='mock'><div class='menu'><div class='hl'>Open folder…</div></div><div class='box'>What do you want to work on?</div><div class='btns'><span>Local</span><span class='hl'>No folder</span></div></div>", "code"],
+      ["ui", "<div class='mock'><div class='box'>What do you want to work on?</div><div class='btns'><span>Local</span><span class='hl'>my-grocery-list</span></div></div>", "code"] ] },
+    { tab: "chat", caption: "<b>Paste one line</b> with your idea at the end. Claude sets the team up in your folder and asks before each step.", steps: [
+      ["head", "Code · Local · my-grocery-list"],
+      ["me", "Set up Agentic Team here by following https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/main/START.md. My idea: I want an app where my family can share a grocery list."],
+      ["tool", "I'll copy the team into this folder and save a first snapshot. OK?<br><span class='allow'>Allow</span>"],
+      ["tool", "Team added to my-grocery-list. First snapshot saved."] ] },
+    { tab: "chat", caption: "<b>Ella says hello</b> and asks about your idea, in plain words.", steps: [
+      ["ella", "Hi, I'm Ella. I'll guide you and run the team for you. A shared grocery list, nice. Two quick questions: is it just for your family, and should it work on phones?"],
       ["me", "Just the four of us, on our phones."] ] },
     { tab: "chat", caption: "<b>The plan:</b> one page, with the cost, before anything starts.", steps: [
       ["plan", "<b>Ella · your one-page plan</b>Here's what I recommend:<ul><li><b style='display:inline;color:inherit'>Build:</b> one shared list that updates live on every phone</li><li><b style='display:inline;color:inherit'>You'll need:</b> free hosting and a free database. $0 a month at your size</li><li><b style='display:inline;color:inherit'>You'll do:</b> create one account (5 min), try the preview, say go</li><li><b style='display:inline;color:inherit'>Team:</b> Priya, Ian, Vera, Otto. Bea estimates 2 to 3 days of agent work</li></ul>Shall I start?"],
@@ -168,13 +178,15 @@ document.addEventListener("DOMContentLoaded", () => {
     chapters.forEach((_, i) => setBar(i, i < from ? 1 : 0));
     for (let c = from; c < chapters.length; c++) {
       const ch = chapters[c];
-      tabT.classList.toggle("on", ch.tab === "term"); tabC.classList.toggle("on", ch.tab === "chat");
+      sideCode.classList.add("on"); sideCode.classList.toggle("hl", c === 0);
       cap.innerHTML = ch.caption;
       if (c === from || ch.tab !== chapters[c - 1].tab) { pane.innerHTML = ""; pane.className = "pane" + (ch.tab === "chat" ? " chat" : ""); }
       for (let s = 0; s < ch.steps.length; s++) {
         const [kind, text] = ch.steps[s];
         await waitPlay(); if (me !== run) return;
-        if (kind === "type") {
+        if (kind === "ui") {
+          pane.innerHTML = text; await sleep(c === 0 ? 3200 : 2400);
+        } else if (kind === "type") {
           const ln = document.createElement("div"); ln.className = "ln"; ln.innerHTML = "<span class='pr'>❯ </span><span class='t'></span><span class='cursor'></span>"; pane.appendChild(ln);
           const t = ln.querySelector(".t");
           for (const ch2 of text) { await waitPlay(); if (me !== run) return; t.textContent += ch2; await sleep(28); }
@@ -184,10 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (kind === "out") {
           const ln = document.createElement("div"); ln.className = "ln"; ln.innerHTML = text; pane.appendChild(ln); await sleep(650);
         } else {
-          const m = document.createElement("div"); m.className = "msg " + (kind === "me" ? "me" : kind === "plan" ? "ella plan" : "ella");
+          const m = document.createElement("div"); m.className = "msg " + (kind === "me" ? "me" : kind === "plan" ? "ella plan" : kind === "tool" ? "tool" : "ella");
           m.innerHTML = kind === "ella" ? "<b>Ella</b>" + text : text;
           const row = document.createElement("div"); row.className = "row " + (kind === "me" ? "me" : "ella");
-          row.innerHTML = Robots.svg(kind === "me" ? "you" : "ella", { size: 40, label: false }); row.appendChild(m); pane.appendChild(row);
+          row.innerHTML = kind === "tool" ? "<span style='width:40px;flex:none'></span>" : Robots.svg(kind === "me" ? "you" : "ella", { size: 40, label: false }); row.appendChild(m); pane.appendChild(row);
           pane.scrollTo({ top: pane.scrollHeight, behavior: "smooth" });
           await sleep(kind === "plan" ? 4200 : 1700 + text.length * 12);
         }
