@@ -10,8 +10,9 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 .wb-hero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); margin: 0 0 .3em; }
 .wb-hero p { font-size: 1.1rem; color: var(--muted); max-width: 36em; }
 .marker {  }
-.step { display: grid; grid-template-columns: 120px 1fr; gap: 28px; padding: 46px 0; border-top: 1px solid var(--line); }
-@media (max-width: 640px) { .step { grid-template-columns: 1fr; gap: 10px; } }
+.step { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 28px; padding: 46px 0; border-top: 1px solid var(--line); }
+@media (max-width: 640px) { .step { grid-template-columns: minmax(0, 1fr); gap: 10px; } .board { padding: 20px; margin: 24px auto 56px; } }
+.step > * { min-width: 0; }
 .step .num { font: 500 1rem "Geist Mono", monospace; color: var(--muted); position: relative; }
 .step .num::before { content: "0"; }
 .step .num svg { display: none; position: absolute; left: -14px; top: -10px; width: 110px; height: 110px; overflow: visible; }
@@ -27,7 +28,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 .doodle b { font-weight: 600; margin-bottom: 4px; display: block; }
 .doodle small { color: #555; }
 .doodle a { color: var(--warm); font-weight: 500; }
-.code { position: relative; background: #111113; color: #e9e9ec; border-radius: 6px; padding: 16px 18px; font: 14px/1.7 "Geist Mono", monospace; overflow-x: auto; margin: 14px 0; white-space: pre; }
+.code { position: relative; background: #111113; color: #e9e9ec; border-radius: 6px; padding: 40px 18px 16px; font: 14px/1.7 "Geist Mono", monospace; overflow-x: auto; margin: 14px 0; white-space: pre; }
 .code .c { color: #8a8399; }
 .copy { position: absolute; top: 10px; right: 10px; font: 500 12px "Geist Mono", monospace; background: #ffffff1a; color: #fff; border: 0; border-radius: 4px; padding: 6px 10px; cursor: pointer; }
 .note { font-size: .9rem; color: var(--muted); display: inline-block; margin-top: 2px; }
