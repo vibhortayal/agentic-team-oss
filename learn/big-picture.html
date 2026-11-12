@@ -1,5 +1,6 @@
 ---
 layout: portal
+theme: plain
 title: The whole picture
 summary: Ella, the team, your GitHub record and the automatic checks, all in one frame.
 next: {url: /learn/team.html, title: "Meet the team"}
@@ -9,23 +10,22 @@ next: {url: /learn/team.html, title: "Meet the team"}
 .iso-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
 .stage { display: grid; grid-template-columns: 1.6fr 1fr; gap: 28px; align-items: center; padding-bottom: 80px; }
 @media (max-width: 900px) { .stage { grid-template-columns: 1fr; } }
-#world { width: 100%; height: auto; display: block; }
+#world { width: 100%; height: auto; display: block; background: #141318; border-radius: 6px; }
 #world .blk { cursor: pointer; transition: transform .3s, filter .3s; transform-box: fill-box; }
 #world .blk:hover, #world .blk.sel { filter: brightness(1.25) drop-shadow(0 0 12px #ffffff40); }
-#world text { font: 600 13px Inter, sans-serif; fill: #f4efe8; pointer-events: none; }
+#world text { font: 500 13px Geist, Inter, sans-serif; fill: #f4efe8; pointer-events: none; }
 #world .bob { animation: bob 3s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(-6px); } }
 .info { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; min-height: 260px; }
-.info .tag { font: 600 .75rem "JetBrains Mono", monospace; color: var(--c, var(--warm)); text-transform: uppercase; letter-spacing: .08em; }
+.info .tag { font: 500 .75rem "Geist Mono", monospace; color: var(--c, var(--warm)); text-transform: uppercase; letter-spacing: .08em; }
 .info h2 { font-size: 1.7rem; margin: .3em 0; }
 .info p { color: var(--muted); }
 .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.pills button { font: inherit; font-size: .85rem; color: var(--text); background: #ffffff0d; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.pills button { font: inherit; font-size: .85rem; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 5px 12px; cursor: pointer; }
 .pills button:hover, .pills button.sel { border-color: var(--warm); color: var(--warm); }
 </style>
 
 <header class="iso-hero"><div class="wrap">
-  <div class="kicker">Lesson 02 · 3 minutes</div>
   <h1>The whole picture</h1>
   <p class="muted" style="max-width:40em;margin:0 auto">This map shows one project. The moving dots are work passing between the parts. Click a building to see what it does.</p>
 </div></header>
@@ -95,9 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const [tx, ty] = P(x + w / 2, y + d / 2, h);
     if (p.bots) {
       p.bots.forEach((id, i) => { const n = p.bots.length, w2 = n > 1 ? 40 : 58, im = el("image", { href: Robots.dataUrl(id), width: w2, height: w2 * 148 / 120, x: tx - w2 / 2 + (i - (n - 1) / 2) * 34, y: ty - w2 * 148 / 120 + 10 }, g); });
-    } else {
-      const ic = el("text", { x: tx, y: ty - 16, "text-anchor": "middle", style: "font-size:30px", class: "bob" }, g); ic.textContent = p.icon;
-      ic.style.animationDelay = (-Math.random() * 3) + "s";
     }
     labels.push([P(x + w / 2, y + d, 0), p.name]);
     g.addEventListener("click", () => show(key)); g.addEventListener("keydown", (e) => { if (e.key === "Enter") show(key); });

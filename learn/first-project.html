@@ -1,45 +1,43 @@
 ---
 layout: portal
+theme: plain
 title: Your first project
-theme: light
 summary: A step-by-step lesson, from no accounts to your first chat with Ella.
 next: {url: /learn/demo.html, title: "Watch a demo"}
 ---
 <style>
-body { background: #eef0f2; }
-.board { background: #fff; border-radius: 6px; margin: 40px auto 80px; padding: clamp(24px, 5vw, 60px); box-shadow: 0 0 0 14px #c9ccd1, 0 0 0 16px #a9adb3, 0 40px 60px -30px #0005; position: relative; }
-.board::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -30px; height: 12px; border-radius: 4px; background: #a9adb3; }
-.wb-hero h1 { font-family: Caveat, cursive; font-size: clamp(3rem, 8vw, 5.2rem); color: #1f4fbf; margin: 0; line-height: 1; }
-.wb-hero p { font-size: 1.15rem; color: #444; max-width: 36em; }
-.marker { font-family: Caveat, cursive; }
-.step { display: grid; grid-template-columns: 120px 1fr; gap: 28px; padding: 46px 0; border-top: 2px dashed #dde0e5; }
+.board { background: #fff; border-radius: 6px; margin: 40px auto 80px; padding: clamp(24px, 5vw, 60px); border: 1px solid var(--line); position: relative; }
+.wb-hero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); margin: 0 0 .3em; }
+.wb-hero p { font-size: 1.1rem; color: var(--muted); max-width: 36em; }
+.marker {  }
+.step { display: grid; grid-template-columns: 120px 1fr; gap: 28px; padding: 46px 0; border-top: 1px solid var(--line); }
 @media (max-width: 640px) { .step { grid-template-columns: 1fr; gap: 10px; } }
-.step .num { font-family: Caveat, cursive; font-size: 5rem; line-height: .9; color: #e2442f; position: relative; }
-.step .num svg { position: absolute; left: -14px; top: -10px; width: 110px; height: 110px; overflow: visible; }
-.step h2 { font-family: Caveat, cursive; font-size: 2.6rem; color: #1d1a22; margin: 0 0 .2em; position: relative; display: inline-block; }
-.step h2::after { content: ""; position: absolute; left: 0; bottom: 2px; height: 10px; width: 0; background: #ffe36e; opacity: .7; z-index: -1; border-radius: 4px; transition: width 1s .5s ease; }
+.step .num { font: 500 1rem "Geist Mono", monospace; color: var(--muted); position: relative; }
+.step .num::before { content: "0"; }
+.step .num svg { display: none; position: absolute; left: -14px; top: -10px; width: 110px; height: 110px; overflow: visible; }
+.step h2 { font-size: 1.6rem; margin: 0 0 .2em; position: relative; display: inline-block; }
+.step h2::after { display: none; content: ""; position: absolute; left: 0; bottom: 2px; height: 10px; width: 0; background: #ffe36e; opacity: .7; z-index: -1; border-radius: 4px; transition: width 1s .5s ease; }
 .step.in h2::after { width: 100%; }
 .step p, .step li { color: #333; }
 .draw path, .draw circle, .draw rect, .draw line, .draw polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: var(--len, 600); stroke-dashoffset: var(--len, 600); transition: stroke-dashoffset 1.6s ease; }
 .step.in .draw path, .step.in .draw circle, .step.in .draw rect, .step.in .draw line, .step.in .draw polyline { stroke-dashoffset: 0; }
 .doodles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-top: 16px; }
-.doodle { border: 2.5px solid #1d1a22; border-radius: 14px 18px 12px 20px; padding: 14px 16px; background: #fffef6; transform: rotate(var(--r, -.6deg)); }
+.doodle { border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; background: var(--bg); }
 .doodle:nth-child(2) { --r: .8deg; } .doodle:nth-child(3) { --r: -1deg; } .doodle:nth-child(4) { --r: .5deg; }
-.doodle b { font-family: Caveat, cursive; font-size: 1.4rem; line-height: 1.15; margin-bottom: 4px; display: block; color: #1f4fbf; }
+.doodle b { font-weight: 600; margin-bottom: 4px; display: block; }
 .doodle small { color: #555; }
-.doodle a { color: #e2442f; font-weight: 600; }
-.code { position: relative; background: #1d1a22; color: #e9e5f0; border-radius: 12px; padding: 16px 18px; font: 14px/1.7 "JetBrains Mono", monospace; overflow-x: auto; margin: 14px 0; white-space: pre; }
+.doodle a { color: var(--warm); font-weight: 500; }
+.code { position: relative; background: #111113; color: #e9e9ec; border-radius: 6px; padding: 16px 18px; font: 14px/1.7 "Geist Mono", monospace; overflow-x: auto; margin: 14px 0; white-space: pre; }
 .code .c { color: #8a8399; }
-.copy { position: absolute; top: 10px; right: 10px; font: 600 12px Inter, sans-serif; background: #ffffff1a; color: #fff; border: 0; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
-.note { font-family: Caveat, cursive; font-size: 1.5rem; color: #e2442f; transform: rotate(-1.5deg); display: inline-block; margin-top: 6px; }
-.bubble { background: #eaf1ff; border-radius: 18px 18px 18px 4px; padding: 14px 18px; max-width: 34em; margin: 10px 0; }
-.bubble.me { background: #fff1d6; border-radius: 18px 18px 4px 18px; margin-left: auto; }
+.copy { position: absolute; top: 10px; right: 10px; font: 500 12px "Geist Mono", monospace; background: #ffffff1a; color: #fff; border: 0; border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+.note { font-size: .9rem; color: var(--muted); display: inline-block; margin-top: 2px; }
+.bubble { background: var(--bg2); border-radius: 6px; padding: 14px 18px; max-width: 34em; margin: 10px 0; }
+.bubble.me { background: #fbeee6; border-radius: 6px; margin-left: auto; }
 </style>
 
 <div class="wrap">
 <div class="board">
   <header class="wb-hero">
-    <div class="kicker">Lesson 04 · 8 minutes</div>
     <h1>Your first project</h1>
     <p>From zero to your first conversation with Ella. You'll do the setup once; after that, every project starts at step 4. If you get stuck anywhere, skip ahead to step 4 and tell Ella you're starting from scratch. She'll walk you through the rest.</p>
   </header>
