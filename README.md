@@ -166,7 +166,8 @@ The rules every agent follows are in [principles.md](principles.md), and the evi
 ### Layout
 
 ```text
-roles/        one page per agent: neutral frontmatter (tier, capabilities) and its mandate
+roles/        one page per agent: neutral frontmatter (tier, capabilities, skills) and its mandate
+skills/       how-tos a role loads for one task (open Agent Skills format), some with scripts
 playbooks/    the six ways agents work together
 templates/    what a project copies: TEAM.md, AGENTS.md, DESIGN.md, spec.md, documents.md, budget/, the foundation kit
 adapters/     install scripts (generic, Claude Code) and the GitHub label script

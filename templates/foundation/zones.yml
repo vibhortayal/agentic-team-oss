@@ -9,7 +9,7 @@ require:
   - checker
   - lint
 
-# Gate files: CI, agent rules and role files, the autonomy stage (TEAM.md), lint and type
+# Gate files: CI, agent rules, role files and skills, the autonomy stage (TEAM.md), lint and type
 # config, test-runner config, the command surface, this file. Any change needs the owner's
 # `gate-change-approved` label.
 gate:
@@ -23,6 +23,7 @@ gate:
   - GEMINI.md
   - DESIGN.md
   - .claude/**
+  - .agents/**
   - "**/eslint.config.*"
   - "**/.eslintrc*"
   - "**/tsconfig*.json"

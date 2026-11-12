@@ -2,7 +2,7 @@
 """Free checks for the team itself: no model, no network, standard library only.
 
   python3 tools/teamcheck.py                 # everything below except replay
-  python3 tools/teamcheck.py static          # role files, vendor names, links, labels, handoff table, eval cases
+  python3 tools/teamcheck.py static          # role files, skills, vendor names, links, labels, handoff table, eval cases
   python3 tools/teamcheck.py install         # every installer, into a scratch folder; links still resolve
   python3 tools/teamcheck.py gates           # the gate kit's own self-test
   python3 tools/teamcheck.py replay STATE [--origin REPO]   # check a sandbox run's handoffs
@@ -22,7 +22,8 @@ VERDICTS = {"PASS", "BLOCK", "INCONCLUSIVE"}
 COORDINATORS = {"engagement-lead", "product-manager", "architect"}
 # Tool and model names that must never appear in a role, playbook, template or the principles.
 VENDOR = re.compile(r"\b(claude|anthropic|openai|chatgpt|gpt-?\d[\w.]*|gemini|codex|cursor|copilot|opus|sonnet|haiku|llama|mistral)\b", re.I)
-NEUTRAL = ["roles", "playbooks", "templates", "principles.md"]
+NEUTRAL = ["roles", "playbooks", "templates", "skills", "principles.md"]
+SKILL_NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 EVENT = re.compile(r"<!--\s*team-event\s+(.*?)\s*-->", re.S)
 HEADER = re.compile(r"^\*\*[^*()]+\(([a-z-]+)\)\s*(?:→|->)")
 
@@ -83,6 +84,9 @@ def check_roles(root=ROOT):
             errs.append("%s: memory %r is not fish or elephant" % (where, fm["memory"]))
         if fm.get("version") and not re.fullmatch(r"\d+\.\d+\.\d+", fm["version"]):
             errs.append("%s: version %r is not x.y.z" % (where, fm["version"]))
+        for s in [x for x in re.split(r"[ ,]+", fm.get("skills", "")) if x]:
+            if not os.path.exists(os.path.join(root, "skills", s, "SKILL.md")):
+                errs.append("%s: skill %s has no skills/%s/SKILL.md" % (where, s, s))
         p = fm.get("persona")
         if p and p in personas:
             errs.append("%s: persona %s is also used by %s" % (where, p, personas[p]))
@@ -96,10 +100,83 @@ def check_vendor(root=ROOT):
         path = os.path.join(root, top)
         files = [path] if path.endswith(".md") else md_files(path)
         for f in files:
+            if upstream_skill(f, root):
+                continue  # copied unchanged from its source, which names its own vendor
             for n, line in enumerate(open(f, encoding="utf-8"), 1):
                 m = VENDOR.search(line)
                 if m:
                     errs.append("%s:%d: vendor name %r (keep vendor mapping in adapters/)" % (os.path.relpath(f, root), n, m.group(0)))
+    return errs
+
+
+def upstream_skill(path, root=ROOT):
+    """True for a file inside a skill copied from elsewhere (it has UPSTREAM.md)."""
+    parts = os.path.relpath(path, root).split(os.sep)
+    return len(parts) > 2 and parts[0] == "skills" and os.path.exists(os.path.join(root, "skills", parts[1], "UPSTREAM.md"))
+
+
+def check_skills(root=ROOT):
+    """Each skill follows the open Agent Skills format, keeps its links inside its folder, and some role uses it."""
+    errs, base = [], os.path.join(root, "skills")
+    if not os.path.isdir(base):
+        return errs
+    used = set()
+    for name in roles(root):
+        fm = frontmatter(os.path.join(root, "roles", name + ".md")) or {}
+        used |= {x for x in re.split(r"[ ,]+", fm.get("skills", "")) if x}
+    for name in sorted(os.listdir(base)):
+        d = os.path.join(base, name)
+        if not os.path.isdir(d):
+            continue
+        where = "skills/%s" % name
+        path = os.path.join(d, "SKILL.md")
+        if not os.path.exists(path):
+            errs.append("%s: no SKILL.md" % where)
+            continue
+        fm = frontmatter(path)
+        if fm is None:
+            errs.append("%s/SKILL.md: no frontmatter" % where)
+            continue
+        if fm.get("name") != name:
+            errs.append("%s/SKILL.md: name is %r but the folder is %s" % (where, fm.get("name"), name))
+        if not SKILL_NAME.fullmatch(name) or len(name) > 64:
+            errs.append("%s: name must be lowercase letters, digits and single hyphens, at most 64" % where)
+        desc = fm.get("description", "")
+        if not desc or desc in (">", "|") or len(desc) > 1024:
+            errs.append("%s/SKILL.md: description must be one line of 1 to 1024 characters" % where)
+        if os.path.exists(os.path.join(d, "UPSTREAM.md")):
+            if not [f for f in os.listdir(d) if f.upper().startswith("LICENSE")]:
+                errs.append("%s: copied skill without its LICENSE file" % where)
+        elif not fm.get("license"):
+            errs.append("%s/SKILL.md: no license field" % where)
+        if name not in used:
+            errs.append("%s: no role lists it under skills:" % where)
+        errs += [where + "/" + e for e in check_links(d, boundary=d)]
+    return errs
+
+
+def check_team_comment(root=ROOT):
+    """The team-comment script writes comments the replayer accepts, and refuses one it rejects."""
+    script = os.path.join(root, "skills", "team-comment", "scripts", "team_comment.py")
+    if not os.path.exists(script):
+        return []
+    errs, rdir = [], os.path.join(root, "roles")
+    with tempfile.TemporaryDirectory() as tmp:
+        body = os.path.join(tmp, "body.md")
+        open(body, "w").write("Rows: AC1 · Revision: abc1234 · Files: n/a · Command: n/a · Expected / actual: n/a · Repro: n/a\n")
+        good = subprocess.run([sys.executable, script, "--roles", rdir, "--from", "verifier", "--to", "implementer", "--kind", "verdict",
+                               "--verdict", "BLOCK", "--rev", "abc1234", "--round", "1", "--issue", "7", "--body", body],
+                              capture_output=True, text=True)
+        if good.returncode:
+            return ["skills/team-comment: script failed: " + good.stderr.strip()[-300:]]
+        state = {"items": {"7": {"number": 7, "kind": "issue", "state": "CLOSED", "labels": [], "comments": [
+            {"id": 1, "author": "verifier", "body": good.stdout}]}}, "label_events": [], "calls": []}
+        found, _ = replay(state, names=roles(root))
+        errs += ["skills/team-comment: replayer rejects the script's comment: " + e for e in found]
+        bad = subprocess.run([sys.executable, script, "--roles", rdir, "--from", "implementer", "--to", "verifier", "--kind", "verdict",
+                              "--verdict", "PASS", "--rev", "abc1234", "--issue", "7"], capture_output=True, text=True)
+        if bad.returncode == 0:
+            errs.append("skills/team-comment: script wrote a verdict from the implementer")
     return errs
 
 
@@ -262,7 +339,7 @@ def section(text, name):
 
 def static(root=ROOT):
     out = []
-    for fn in (check_roles, check_vendor, check_labels, check_handoff_table, check_cases):
+    for fn in (check_roles, check_skills, check_team_comment, check_vendor, check_labels, check_handoff_table, check_cases):
         out += fn(root)
     out += check_links(root, md_files(root, skip={os.path.join(root, "evals", "runs")}))
     return out
@@ -286,6 +363,13 @@ def install(root=ROOT):
                 if not os.path.exists(os.path.join(team, "roles", name + ".md")):
                     errs.append("adapters/%s/install.sh: role %s not installed" % (adapter, name))
             errs += ["adapters/%s install: %s" % (adapter, e) for e in check_links(team, boundary=team)]
+            for folder in (".agents/skills", ".claude/skills"):
+                linked = os.path.join(proj, folder)
+                if folder == ".claude/skills" and adapter != "claude-code":
+                    continue
+                for name in sorted(os.listdir(os.path.join(team, "skills"))):
+                    if not os.path.exists(os.path.join(linked, name, "SKILL.md")):
+                        errs.append("adapters/%s/install.sh: skill %s not reachable from %s" % (adapter, name, folder))
             if not os.path.exists(os.path.join(proj, "AGENTS.md")):
                 errs.append("adapters/%s/install.sh: no AGENTS.md written" % adapter)
             # A second run must succeed and leave one copy.

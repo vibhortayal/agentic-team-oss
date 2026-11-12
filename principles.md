@@ -1,6 +1,6 @@
 # Company principles
 
-Every agent follows these. A role's mandate can add rules but never weaken one of these.
+Every agent follows these. A role's mandate can add rules but never weaken one of these. Neither can a skill: a skill is a how-to for one task inside a role, and where any skill (the team's or one installed on the machine) disagrees with a role or these principles, the role and principles win.
 
 ## Authority
 
@@ -69,7 +69,7 @@ Every piece of work has a named checker. The checker is:
 18. **Never wait inside a turn.** Hand off, end the turn, act on the reply when woken.
 19. **Parallelize only independent work.** No two agents edit the same file in open work.
 20. **Converge before escalating.** When two agents disagree, they settle it between them and bring the owner one recommendation, naming options in words.
-21. **State lives in the repo and on GitHub, never only in an agent.** Every handoff, verdict, blocker and request for a person is an issue or PR comment in the [team format](docs/github-state.md), with `role:`, `stage:` and `needs-human` labels kept current. Any agent in any tool can pick the work up from there.
+21. **State lives in the repo and on GitHub, never only in an agent.** Every handoff, verdict, blocker and request for a person is an issue or PR comment in the [team format](docs/github-state.md) (the [team-comment](skills/team-comment/SKILL.md) skill builds and checks one), with `role:`, `stage:` and `needs-human` labels kept current. Any agent in any tool can pick the work up from there.
 
 ## Memory: elephants and fish
 

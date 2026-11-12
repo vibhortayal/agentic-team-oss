@@ -50,7 +50,7 @@ CLASS_PATHS = {
 
 DOC_FOLDERS = ["docs/changes/", "docs/change-requests/", "docs/decisions/", "docs/specs/",
                "reports/", "research/", "work/", "verification/", "evals/", "budget/", ".github/",
-               ".team/", ".claude/"]
+               ".team/", ".claude/", ".agents/"]
 STANDING_DOCS = ["README.md", "AGENTS.md", "TEAM.md", "DESIGN.md", "docs/*.md"]
 ROOT_DOCS = ["CLAUDE.md", "GEMINI.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "LICENSE.md"]
 

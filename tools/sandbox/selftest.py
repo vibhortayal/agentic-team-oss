@@ -56,13 +56,23 @@ def static_tests():
         edit("docs/github-state.md", "| Research question | `research` | researcher |", "| Research question | `research` | designer |")
         edit("evals/vera-passes-good-work/case.md", "kind: positive", "kind: maybe")
         edit("evals/vera-passes-good-work/case.md", "- no-event", "- teleport")
+        edit("roles/budget-analyst.md", "skills: team-comment", "skills: team-comment, no-such-skill")
+        edit("skills/explain-a-step/SKILL.md", "name: explain-a-step", "name: explain-step")
+        edit("skills/debug-a-failure/SKILL.md", "## Steps", "## Steps\n\nSee [rules](../../principles.md).")
+        edit("skills/testable-criteria/SKILL.md", "license: Apache-2.0\n", "")
+        os.remove(os.path.join(tmp, "skills", "webapp-testing", "LICENSE.txt"))
+        os.makedirs(os.path.join(tmp, "skills", "orphan"))
+        open(os.path.join(tmp, "skills", "orphan", "SKILL.md"), "w").write("---\nname: orphan\ndescription: Nobody uses it.\nlicense: Apache-2.0\n---\n")
         open(os.path.join(tmp, "roles", "_template.md"), "a").close()
         errs = teamcheck.static(tmp)
         for name, text in [("bad tier", "tier 'huge'"), ("name differs from file", "name is 'opz'"),
                            ("vendor model name in a role", "vendor name 'opus'"), ("broken anchor", "no heading for #no-such-heading"),
                            ("broken link", "broken link missing.md"), ("role without a label", "no label role:critic"),
                            ("label nobody creates", "`human:dance`"), ("unknown role in the handoff table", "'designer'"),
-                           ("bad case kind", "kind must be positive or negative"), ("unknown check", "unknown check 'teleport'")]:
+                           ("bad case kind", "kind must be positive or negative"), ("unknown check", "unknown check 'teleport'"),
+                           ("a role naming a missing skill", "skill no-such-skill has no"), ("skill name differs from folder", "the folder is explain-a-step"),
+                           ("a skill linking outside itself", "leaves debug-a-failure"), ("a skill with no licence", "testable-criteria/SKILL.md: no license"),
+                           ("a copied skill without its licence", "copied skill without its LICENSE"), ("a skill no role uses", "skills/orphan: no role lists it")]:
             expect("catches " + name, caught(errs, text), "\n".join(errs))
 
 
