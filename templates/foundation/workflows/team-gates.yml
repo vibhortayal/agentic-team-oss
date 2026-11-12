@@ -68,6 +68,8 @@ jobs:
         run: python3 .github/team/team_gates.py docs --base "$BASE" --head "$HEAD"
       - name: Verifier PASS for this head (tickets)
         run: python3 .github/team/team_gates.py verdict --base "$BASE" --head "$HEAD" --branch "$BRANCH"
+      - name: Limits (budget cap, three BLOCKs)
+        run: python3 .github/team/team_gates.py limits --base "$BASE" --head "$HEAD" --branch "$BRANCH"
 
   team-checks:
     if: github.event_name == 'pull_request'
