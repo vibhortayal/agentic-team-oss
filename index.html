@@ -55,30 +55,8 @@ theme: plain
 .compare .us { background: #d4561a0d; color: var(--text); border-left: 2px solid var(--warm); }
 .note { color: var(--muted); margin: 20px 0 0; }
 
-.fit { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; }
-@media (max-width: 860px) { .fit { grid-template-columns: 1fr; gap: 32px; } }
-.fit h3 { font-size: 1.15rem; padding-top: 12px; border-top: 2px solid var(--text); }
-.fit .bad h3 { border-color: var(--warm); }
-.fit ul { margin: 0; padding-left: 1.1em; color: var(--muted); }
-.fit li { margin-bottom: .7em; }
-.fit li b { color: var(--text); font-weight: 600; }
 
-.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; counter-reset: s; }
-@media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
-.steps li { border-top: 1px solid var(--line); padding-top: 14px; counter-increment: s; }
-.steps li::before { content: "0" counter(s); font: .78rem "Geist Mono", monospace; color: var(--muted); }
-.steps h3 { font-size: 1.05rem; margin: 6px 0 4px; }
-.steps p { color: var(--muted); font-size: .9rem; margin: 0; }
-.steps .you { display: block; margin-top: 8px; font: .74rem "Geist Mono", monospace; color: var(--warm); text-transform: uppercase; letter-spacing: .03em; }
 
-.crew { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
-@media (max-width: 860px) { .crew { grid-template-columns: 1fr 1fr; } }
-.crew a { background: var(--card); padding: 16px 16px 18px; text-decoration: none; display: grid; grid-template-columns: 44px 1fr; gap: 2px 12px; align-items: center; }
-.crew a:hover { background: #fdfdfc; }
-.crew [data-bot] { grid-row: span 2; }
-.crew b { font-weight: 600; }
-.crew small { color: var(--muted); font-size: .82rem; line-height: 1.35; }
 
 .lessons { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
 .lessons a { display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; padding: 16px 4px; border-bottom: 1px solid var(--line); text-decoration: none; align-items: baseline; }
@@ -92,10 +70,30 @@ theme: plain
 .start p { color: var(--muted); max-width: 640px; margin: 0 auto 18px; }
 .start .prompt { max-width: 720px; margin: 0 auto 26px; text-align: left; background: #0d0d0f; color: #e9e9ec; border-radius: 6px; padding: 16px 18px; font: .85rem/1.6 "Geist Mono", monospace; overflow-x: auto; }
 .start .prompt .p { color: #6fd39b; user-select: none; }
-.start .need { list-style: none; padding: 0; margin: 0 auto 30px; max-width: 640px; text-align: left; color: var(--muted); font-size: .95rem; }
-.start .need li { padding: 8px 0; border-bottom: 1px solid var(--line); }
-.start .need b { color: var(--text); font-weight: 600; }
 .start .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.compare thead small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+.cmp-cards { display: none; }
+@media (max-width: 760px) {
+  .compare { display: none; }
+  .cmp-cards { display: grid; gap: 14px; }
+  .cmp-card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 18px; }
+  .cmp-card.us { box-shadow: inset 0 3px 0 var(--warm); }
+  .cmp-card summary { list-style: none; cursor: pointer; position: relative; padding-right: 24px; }
+  .cmp-card summary::-webkit-details-marker { display: none; }
+  .cmp-card summary::after { content: "+"; position: absolute; right: 0; top: 0; font: 1.2rem "Geist Mono", monospace; color: var(--muted); }
+  .cmp-card[open] summary::after { content: "–"; }
+  .cmp-card[open] summary { margin-bottom: 10px; }
+  .cmp-card h3 { font-size: 1.1rem; margin: 0; }
+  .cmp-card h3 small { display: block; font-size: .82rem; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+  .cmp-card dl { margin: 0; display: grid; gap: 8px; }
+  .cmp-card dt { font-size: .8rem; color: var(--muted); }
+  .cmp-card dd { margin: 0; font-size: .95rem; }
+}
+.caveats { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+@media (max-width: 560px) { .theme-plain section { padding: 56px 0; } .tile .pic { aspect-ratio: auto; } .intro { padding: 64px 0 40px; } }
+@media (max-width: 760px) { .caveats { grid-template-columns: 1fr; } }
+.caveats li { padding: 12px 0; border-top: 1px solid var(--line); color: var(--muted); }
+.caveats b { color: var(--text); font-weight: 600; }
 </style>
 
 <header class="intro"><div class="wrap">
@@ -133,9 +131,9 @@ theme: plain
     <p class="lead">Agentic Team is a free set of instructions. It turns the AI coding tool you already use into a small company: ten agents with one job each, a fixed way of working, and checks they can't skip. You only talk to one of them, Ella. She plans the work, runs the others, and comes back when something needs your decision.</p>
   </div>
   <dl class="facts">
-    <div><dt>Who it's for</dt><dd>People with an app idea who don't write code, and developers who want AI work checked instead of taken on trust.</dd></div>
-    <div><dt>Why it exists</dt><dd>AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.</dd></div>
-    <div><dt>What you need</dt><dd>A coding assistant, such as Claude Code, Codex or Cursor. It won't run in an ordinary chat window like ChatGPT, the Claude app or Gemini, because those can't open the files on your computer or run commands there. <a href="{{ '/learn/words.html' | relative_url }}">What's the difference?</a></dd></div>
+    <div><dt>Who it's for</dt><dd>People with an app idea who don't code, and developers who want AI work checked.</dd></div>
+    <div><dt>Why it exists</dt><dd>AI tools write code fast, but they check their own work, forget past decisions and rarely give a price up front.</dd></div>
+    <div><dt>What you need</dt><dd>A coding assistant like Claude Code, Codex or Cursor. Chat apps like ChatGPT can't run it. <a href="{{ '/learn/words.html' | relative_url }}">What's the difference?</a></dd></div>
   </dl>
 </div></section>
 
@@ -186,86 +184,36 @@ theme: plain
 <section id="compare"><div class="wrap">
   <div class="head">
     <h2>Why not just use a chatbot or a coding assistant?</h2>
-    <p>You can, and this doesn't replace them. The team runs inside the coding assistant you already have. What it adds is everything around the code: someone to plan, someone else to check, a written record, and a price before anything starts.</p>
+    <p>You can, and this doesn't replace them. The team runs inside the coding assistant you already have. What it adds is everything around the code.</p>
   </div>
-  <div class="compare"><table>
-    <thead><tr><th></th><th>A chatbot</th><th>An app builder</th><th>A coding assistant on its own</th><th class="us">Your coding assistant + Agentic Team</th></tr></thead>
+  <div class="compare" id="compare-table"><table>
+    <thead><tr><th></th><th>A chatbot<small>ChatGPT, Claude, Gemini</small></th><th>An app builder<small>Lovable, Bolt, Replit</small></th><th>A coding assistant on its own<small>Claude Code, Codex, Cursor, Copilot</small></th><th class="us">Your coding assistant + Agentic Team</th></tr></thead>
     <tbody>
-      <tr><th>For example</th><td>ChatGPT, Claude, Gemini</td><td>Lovable, Bolt, Replit</td><td>Claude Code, OpenAI Codex, Cursor, GitHub Copilot</td><td class="us">Any of those coding assistants, running this team</td></tr>
       <tr><th>Who decides what gets built</th><td>You, one prompt at a time</td><td>You, by describing changes in a chat</td><td>You, one prompt at a time</td><td class="us">Ella interviews you and writes a one-page plan for you to approve</td></tr>
-      <tr><th>Who checks the work</th><td>You</td><td>You, by clicking around the preview</td><td>The same AI that wrote it</td><td class="us">A different agent, using tests written from your plan before any code existed, plus automatic checks</td></tr>
-      <tr><th>What it remembers next week</th><td>The chat</td><td>The project, on their platform</td><td>Whatever notes you kept</td><td class="us">Everything is on GitHub: plans, decisions and test results</td></tr>
+      <tr><th>Who checks the work</th><td>You</td><td>You, by clicking around the preview</td><td>The same AI that wrote it</td><td class="us">A different agent, with tests written from your plan before any code existed</td></tr>
+      <tr><th>What it remembers next week</th><td>The chat</td><td>The project, on their platform</td><td>Whatever notes you kept</td><td class="us">Everything, on your GitHub: plans, decisions and test results</td></tr>
       <tr><th>Cost</th><td>Your subscription. The rest you work out.</td><td>A monthly plan, and usage can add up</td><td>You find out later</td><td class="us">Priced before work starts, with a short weekly spend note</td></tr>
-      <tr><th>Where your code lives</th><td>Wherever you paste it</td><td>Their platform (some sync to GitHub)</td><td>Your computer</td><td class="us">Your own GitHub account</td></tr>
-      <tr><th>When it stops to ask you</th><td>It only answers</td><td>Rarely</td><td>When it gets stuck</td><td class="us">Before spending money, launching, or anything that can't be undone</td></tr>
       <tr><th>Can it run the team?</th><td>No. It can't open your files or run commands.</td><td>No. You work inside their platform.</td><td>Yes. That's where the team runs.</td><td class="us">Yes</td></tr>
     </tbody>
   </table></div>
-  <p class="note">For a quick script or a one-off fix, a coding assistant on its own is enough. Agentic Team is for building something you'll keep.</p>
+  <div class="cmp-cards" id="compare-cards" aria-hidden="true"></div>
+  <p class="note">For a quick script or a one-off fix, a coding assistant on its own is enough.</p>
 </div></section>
 
 <section class="alt" id="fit"><div class="wrap">
   <div class="head">
-    <h2>Where it helps, and where it doesn't</h2>
-    <p>An honest list, based on how the team works today.</p>
+    <h2>Honest caveats</h2>
+    <p>Best for an app you'll keep and change for months. Before you start, know this:</p>
   </div>
-  <div class="fit">
-    <div class="good">
-      <h3>Good fit</h3>
-      <ul>
-        <li>An app you'll keep and change for months, not a one-off. The team covers launch, fixes and support as well as the first build.</li>
-        <li>You can't judge code yourself, so you need someone other than the builder to check it.</li>
-        <li>You want the code and its whole history in your own GitHub account, and the freedom to switch AI tools later.</li>
-        <li>You want a price before work starts, and a say before anything is spent.</li>
-      </ul>
-    </div>
-    <div class="bad">
-      <h3>Not a good fit, or not yet</h3>
-      <ul>
-        <li><b>It's early.</b> The team is written and tested on its own, but it hasn't yet carried a real project all the way from idea to launch. That's the next step on the roadmap.</li>
-        <li><b>Setup still needs a terminal.</b> You install Git and a coding assistant and paste a few commands. The friendly portal that hides this isn't built yet. If that sounds daunting, ask a technical friend to do the first 15 minutes.</li>
-        <li><b>It's slower and uses more AI than one assistant.</b> Planning and checking are separate runs, so a small change costs more than just asking. For a quick script or a fix, skip the team.</li>
-        <li><b>App builders are faster to a first version.</b> If you want something good-looking to show by tonight, Lovable or Replit will get you there sooner.</li>
-        <li><b>Checks lower the risk. They don't remove it.</b> The work is only as good as the AI model in your tool, and tests can miss things.</li>
-        <li><b>It works best in Claude Code today.</b> That's the only tool with its own installer, where each agent runs as a separate session. Codex and Cursor read the same instructions. Gemini CLI should work but hasn't been tested.</li>
-        <li><b>Hosting and databases aren't included.</b> You pay those providers directly. Bea prices them in the plan, and free tiers come first.</li>
-      </ul>
-    </div>
-  </div>
-</div></section>
-
-<section id="how"><div class="wrap">
-  <div class="head">
-    <h2>How a project goes</h2>
-    <p>Six steps. You're needed at three of them. <a href="{{ '/learn/journey.html' | relative_url }}">The full walkthrough</a></p>
-  </div>
-  <ol class="steps">
-    <li><h3>Idea</h3><p>You describe it to Ella in plain words.</p></li>
-    <li><h3>Plan</h3><p>One page: what gets built, who builds it, what it costs.</p><span class="you">You approve</span></li>
-    <li><h3>Build</h3><p>Agents write the code.</p></li>
-    <li><h3>Check</h3><p>A separate agent tests it.</p><span class="you">You try the preview</span></li>
-    <li><h3>Launch</h3><p>The app goes live.</p><span class="you">You say go</span></li>
-    <li><h3>Keep it running</h3><p>Fixes, updates and support.</p></li>
-  </ol>
-</div></section>
-
-<section class="alt" id="team"><div class="wrap">
-  <div class="head">
-    <h2>Ten agents, one job each</h2>
-    <p>You only talk to Ella. She brings in the others when the project needs them. <a href="{{ '/learn/team.html' | relative_url }}">Meet them properly</a></p>
-  </div>
-  <div class="crew">
-    <a href="{{ '/roles/engagement-lead.html' | relative_url }}"><span data-bot="ella" data-size="44" data-label="no"></span><b>Ella</b><small>Your contact. Plans and runs the team.</small></a>
-    <a href="{{ '/roles/product-manager.html' | relative_url }}"><span data-bot="priya" data-size="44" data-label="no"></span><b>Priya</b><small>Writes down what "done" means.</small></a>
-    <a href="{{ '/roles/researcher.html' | relative_url }}"><span data-bot="rohan" data-size="44" data-label="no"></span><b>Rohan</b><small>Looks things up before a big choice.</small></a>
-    <a href="{{ '/roles/critic.html' | relative_url }}"><span data-bot="quinn" data-size="44" data-label="no"></span><b>Quinn</b><small>Finds how a plan could fail.</small></a>
-    <a href="{{ '/roles/architect.html' | relative_url }}"><span data-bot="arjun" data-size="44" data-label="no"></span><b>Arjun</b><small>Splits big builds into pieces.</small></a>
-    <a href="{{ '/roles/implementer.html' | relative_url }}"><span data-bot="ian" data-size="44" data-label="no"></span><b>Ian</b><small>Writes the code, with his own tests.</small></a>
-    <a href="{{ '/roles/verifier.html' | relative_url }}"><span data-bot="vera" data-size="44" data-label="no"></span><b>Vera</b><small>Tests Ian's work and can send it back.</small></a>
-    <a href="{{ '/roles/evaluator.html' | relative_url }}"><span data-bot="max" data-size="44" data-label="no"></span><b>Max</b><small>Scores AI features the same way each time.</small></a>
-    <a href="{{ '/roles/budget-analyst.html' | relative_url }}"><span data-bot="bea" data-size="44" data-label="no"></span><b>Bea</b><small>Prices the work and tracks spend.</small></a>
-    <a href="{{ '/roles/ops.html' | relative_url }}"><span data-bot="otto" data-size="44" data-label="no"></span><b>Otto</b><small>Launches when you say go.</small></a>
-  </div>
+  <ul class="caveats">
+    <li><b>It's early.</b> It hasn't yet carried a real project from idea to launch.</li>
+    <li><b>Setup needs a terminal</b> for about 15 minutes.</li>
+    <li><b>It's slower and uses more AI</b> than one assistant on its own.</li>
+    <li><b>App builders like Lovable</b> get you to a first version faster.</li>
+    <li><b>Checks lower the risk.</b> They don't remove it.</li>
+    <li><b>It's best tested in Claude Code.</b> Codex and Cursor read the same files, and Gemini CLI is untested.</li>
+    <li><b>Hosting and databases</b> you pay to those providers directly.</li>
+  </ul>
 </div></section>
 
 <section id="learn"><div class="wrap">
@@ -289,14 +237,23 @@ theme: plain
   <h2>Start a project</h2>
   <p>Install the team into your project folder and open your coding assistant inside it. With Claude Code, that means typing <code>claude</code> in the terminal there. Then paste this line with your idea at the end:</p>
   <div class="prompt"><span class="p">›</span> You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. &lt;your idea, in your own words&gt;</div>
-  <ul class="need">
-    <li><b>A GitHub account.</b> Free. Your project and its history live there. <a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one</a></li>
-    <li><b>A coding assistant.</b> Claude Code, Codex, Cursor or similar. Most need a paid plan from the AI company.</li>
-    <li><b>Git and a terminal.</b> Used once per project, to copy the team in. <a href="https://git-scm.com/downloads">Install Git</a></li>
-    <li><b>A password manager.</b> Bitwarden is free. Your project's keys go there, never into a chat.</li>
-  </ul>
   <div class="ctas">
     <a class="b dark" href="{{ '/learn/first-project.html' | relative_url }}">Step-by-step setup</a>
     <a class="b line" href="{{ site.github.repository_url }}">View on GitHub</a>
   </div>
 </div></section>
+<script>
+// On narrow screens, show the comparison as one card per option, Agentic Team first.
+(() => {
+  const t = document.querySelector("#compare-table table"), out = document.getElementById("compare-cards");
+  const heads = [...t.tHead.rows[0].cells].slice(1), rows = [...t.tBodies[0].rows];
+  const order = [heads.length - 1, ...heads.keys()].filter((v, i, a) => a.indexOf(v) === i);
+  for (const c of order) {
+    const us = c === heads.length - 1, card = document.createElement("details");
+    card.className = "cmp-card" + (us ? " us" : ""); card.open = us;
+    card.innerHTML = "<summary><h3>" + heads[c].innerHTML + "</h3></summary><dl>" + rows.map((r) => "<dt>" + r.cells[0].textContent + "</dt><dd>" + r.cells[c + 1].textContent + "</dd>").join("") + "</dl>";
+    out.appendChild(card);
+  }
+  out.removeAttribute("aria-hidden");
+})();
+</script>
