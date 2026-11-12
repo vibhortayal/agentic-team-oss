@@ -1,0 +1,123 @@
+---
+layout: portal
+title: Your first project
+theme: light
+summary: A step-by-step lesson, from no accounts to your first chat with Ella.
+next: {url: /learn/demo.html, title: "Watch a demo"}
+---
+<style>
+body { background: #eef0f2; }
+.board { background: #fff; border-radius: 6px; margin: 40px auto 80px; padding: clamp(24px, 5vw, 60px); box-shadow: 0 0 0 14px #c9ccd1, 0 0 0 16px #a9adb3, 0 40px 60px -30px #0005; position: relative; }
+.board::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -30px; height: 12px; border-radius: 4px; background: #a9adb3; }
+.wb-hero h1 { font-family: Caveat, cursive; font-size: clamp(3rem, 8vw, 5.2rem); color: #1f4fbf; margin: 0; line-height: 1; }
+.wb-hero p { font-size: 1.15rem; color: #444; max-width: 36em; }
+.marker { font-family: Caveat, cursive; }
+.step { display: grid; grid-template-columns: 120px 1fr; gap: 28px; padding: 46px 0; border-top: 2px dashed #dde0e5; }
+@media (max-width: 640px) { .step { grid-template-columns: 1fr; gap: 10px; } }
+.step .num { font-family: Caveat, cursive; font-size: 5rem; line-height: .9; color: #e2442f; position: relative; }
+.step .num svg { position: absolute; left: -14px; top: -10px; width: 110px; height: 110px; overflow: visible; }
+.step h2 { font-family: Caveat, cursive; font-size: 2.6rem; color: #1d1a22; margin: 0 0 .2em; position: relative; display: inline-block; }
+.step h2::after { content: ""; position: absolute; left: 0; bottom: 2px; height: 10px; width: 0; background: #ffe36e; opacity: .7; z-index: -1; border-radius: 4px; transition: width 1s .5s ease; }
+.step.in h2::after { width: 100%; }
+.step p, .step li { color: #333; }
+.draw path, .draw circle, .draw rect, .draw line, .draw polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: var(--len, 600); stroke-dashoffset: var(--len, 600); transition: stroke-dashoffset 1.6s ease; }
+.step.in .draw path, .step.in .draw circle, .step.in .draw rect, .step.in .draw line, .step.in .draw polyline { stroke-dashoffset: 0; }
+.doodles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-top: 16px; }
+.doodle { border: 2.5px solid #1d1a22; border-radius: 14px 18px 12px 20px; padding: 14px 16px; background: #fffef6; transform: rotate(var(--r, -.6deg)); }
+.doodle:nth-child(2) { --r: .8deg; } .doodle:nth-child(3) { --r: -1deg; } .doodle:nth-child(4) { --r: .5deg; }
+.doodle b { font-family: Caveat, cursive; font-size: 1.4rem; line-height: 1.15; margin-bottom: 4px; display: block; color: #1f4fbf; }
+.doodle small { color: #555; }
+.doodle a { color: #e2442f; font-weight: 600; }
+.code { position: relative; background: #1d1a22; color: #e9e5f0; border-radius: 12px; padding: 16px 18px; font: 14px/1.7 "JetBrains Mono", monospace; overflow-x: auto; margin: 14px 0; white-space: pre; }
+.code .c { color: #8a8399; }
+.copy { position: absolute; top: 10px; right: 10px; font: 600 12px Inter, sans-serif; background: #ffffff1a; color: #fff; border: 0; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.note { font-family: Caveat, cursive; font-size: 1.5rem; color: #e2442f; transform: rotate(-1.5deg); display: inline-block; margin-top: 6px; }
+.bubble { background: #eaf1ff; border-radius: 18px 18px 18px 4px; padding: 14px 18px; max-width: 34em; margin: 10px 0; }
+.bubble.me { background: #fff1d6; border-radius: 18px 18px 4px 18px; margin-left: auto; }
+</style>
+
+<div class="wrap">
+<div class="board">
+  <header class="wb-hero">
+    <div class="kicker">Lesson 04 · 8 minutes</div>
+    <h1>Your first project</h1>
+    <p>From zero to your first conversation with Ella. You'll do the setup once; after that, every project starts at step 4. If you get stuck anywhere, skip ahead to step 4 and tell Ella you're starting from scratch. She'll walk you through the rest.</p>
+  </header>
+
+  <div class="step reveal">
+    <div class="num">1<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Get four things ready</h2>
+      <p>Each is free to start. You only do this once.</p>
+      <div class="doodles">
+        <div class="doodle"><b>🐙 GitHub account</b><small>Where your project and its whole history live, in your name.</small><br><a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one →</a></div>
+        <div class="doodle"><b>🤖 An AI coding tool</b><small>Claude Code, Codex, Cursor, Gemini CLI or similar. The agents run inside it.</small><br><a href="{{ '/adapters/#tools' | relative_url }}">Which ones work →</a></div>
+        <div class="doodle"><b>⌨️ Git and a terminal</b><small>The terminal is the text window where you paste commands.</small><br><a href="https://git-scm.com/downloads">Install Git →</a></div>
+        <div class="doodle"><b>🔐 Password manager</b><small>Bitwarden is free. Your project's keys go there, never in a chat.</small><br><a href="https://bitwarden.com/">Get Bitwarden →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">2<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Download the team</h2>
+      <p>Open your terminal and paste this. It copies the team to your computer, once.</p>
+      <div class="code"><button class="copy">Copy</button>git clone {{ site.github.repository_url }} ~/agentic-team</div>
+      <span class="note">↑ one time only, for all your projects</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Put the team in your project</h2>
+      <p>Pick a folder for your project and run the installer for your tool. It copies the team in and leaves a note telling your AI tool how to find them.</p>
+      <div class="code"><button class="copy">Copy</button><span class="c"># any tool</span>
+~/agentic-team/adapters/generic/install.sh ~/code/my-project
+
+<span class="c"># or, if you use Claude Code</span>
+~/agentic-team/adapters/claude-code/install.sh ~/code/my-project</div>
+      <p>Then save (commit) the new files in your project. The <a href="{{ '/start/#1-put-the-team-in-your-project-once-per-project' | relative_url }}">full guide</a> has the optional extras.</p>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Say hello to Ella</h2>
+      <p>Open your AI tool in the project folder and paste this one line, with your idea at the end. It's the only prompt you'll ever need.</p>
+      <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list.</div>
+      <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
+      <span class="note">swap in your own idea, in your own words</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">5<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Answer her questions</h2>
+      <p>Ella interviews you, a few questions at a time. Something like:</p>
+      <div class="bubble"><b>Ella:</b> Lovely idea. Who will use it: just your family, or anyone? And should it work on phones?</div>
+      <div class="bubble me"><b>You:</b> Just the four of us, on our phones.</div>
+      <div class="bubble"><b>Ella:</b> Got it. Then I'd keep it simple: one shared list, sign-in with Google, free hosting. I'll put the plan and the costs on one page for you.</div>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">6<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Read the plan and say yes</h2>
+      <p>You'll get one page: what we'll build, what you'll need and what it costs each month, the few steps that are yours, who's on the team, and when she'll need you. Ask "tell me more" about anything. When you approve, the team gets to work, and Ella comes back when you're needed: to try a preview, to okay any spending, and to say go for the launch.</p>
+      <span class="note">that's it, you've started 🎉</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+document.querySelectorAll(".copy").forEach((b) => b.addEventListener("click", () => {
+  const text = [...b.parentElement.childNodes].filter((n) => n !== b).map((n) => n.textContent).join("").trim();
+  navigator.clipboard?.writeText(text).then(() => { b.textContent = "Copied ✓"; setTimeout(() => (b.textContent = "Copy"), 1500); });
+}));
+</script>

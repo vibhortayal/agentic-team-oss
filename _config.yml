@@ -1,6 +1,40 @@
 # GitHub Pages settings for the public docs site. Pages renders README.md as
 # the home page and every other Markdown file as a page, with links fixed up.
+# The docs menu is set here, so no Markdown file needs site-only front matter.
+# index.html and learn/ are the learning portal, with their own layout.
 title: Agentic Team
 description: A team of AI agents that plans, builds, checks and runs your software project.
-theme: jekyll-theme-minimal
+remote_theme: just-the-docs/just-the-docs@v0.10.1
+plugins: [jekyll-remote-theme]
+color_scheme: light
+mermaid:
+  version: "11.4.1"
+search_enabled: true
+heading_anchors: true
+aux_links:
+  "Learning portal": "/agentic-team-oss/"
+include: [README.md]  # the docs start page; the portal is the home page
 exclude: [AGENTS.md, CLAUDE.md, evals, tools]
+defaults:
+  - {scope: {path: "learn"}, values: {nav_exclude: true, search_exclude: true}}
+  - {scope: {path: "index.html"}, values: {nav_exclude: true, search_exclude: true}}
+  - {scope: {path: "templates"}, values: {nav_exclude: true}}
+  - {scope: {path: "docs/research"}, values: {nav_exclude: true}}
+  - {scope: {path: "docs/github-state.md"}, values: {nav_exclude: true}}
+  - {scope: {path: "README.md"}, values: {title: Get started, nav_order: 1, permalink: /start/}}
+  - {scope: {path: "docs/how-we-work.md"}, values: {nav_order: 2}}
+  - {scope: {path: "roles"}, values: {parent: Meet the team}}
+  - {scope: {path: "playbooks"}, values: {parent: Playbooks}}
+  - {scope: {path: "principles.md"}, values: {nav_order: 5}}
+  - {scope: {path: "ROADMAP.md"}, values: {nav_order: 6}}
+  - {scope: {path: "adapters/README.md"}, values: {title: Install in a project, nav_order: 7}}
+  - {scope: {path: "roles/architect.md"}, values: {title: "Arjun, Architect"}}
+  - {scope: {path: "roles/budget-analyst.md"}, values: {title: "Bea, Budget Analyst"}}
+  - {scope: {path: "roles/critic.md"}, values: {title: "Quinn, Critic"}}
+  - {scope: {path: "roles/engagement-lead.md"}, values: {title: "Ella, Engagement Lead", nav_order: 1}}
+  - {scope: {path: "roles/evaluator.md"}, values: {title: "Max, Evaluator"}}
+  - {scope: {path: "roles/implementer.md"}, values: {title: "Ian, Implementer"}}
+  - {scope: {path: "roles/ops.md"}, values: {title: "Otto, Ops"}}
+  - {scope: {path: "roles/product-manager.md"}, values: {title: "Priya, Product Manager"}}
+  - {scope: {path: "roles/researcher.md"}, values: {title: "Rohan, Researcher"}}
+  - {scope: {path: "roles/verifier.md"}, values: {title: "Vera, Verifier"}}

@@ -143,5 +143,6 @@ playbooks/    the six ways agents work together
 templates/    what a project copies: TEAM.md, AGENTS.md, DESIGN.md, spec.md, documents.md, budget/, the foundation kit
 adapters/     install scripts (generic, Claude Code) and the GitHub label script
 docs/         how we work, the GitHub state contract, the research behind the design
-evals/        frozen cases for tuning roles (see improve)
+evals/        test cases for the roles and two end-to-end sample projects (see improve)
+tools/        the free checks and the sandbox that runs the cases
 ```
