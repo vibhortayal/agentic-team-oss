@@ -2,7 +2,7 @@
 
 How the team learns from its projects: which handoffs fail, which roles earn their cost, and when to tune, merge, retire or add a role. It runs in this repo, fed by evidence from projects. Tune roles here, never in a project's installed copy.
 
-**Who:** a fresh Critic (retros), Max (quarterly review and comparisons), Rohan and Quinn (weekly watch), owner (approves every change to a role or rule).
+**Who:** a fresh Critic (retros), Max (quarterly review and comparisons), Rohan and Quinn (weekly watch and role refresh), owner (approves every change to a role or rule).
 
 ```text
 project evidence ─▶ retro by a fresh agent ─────┐
@@ -58,6 +58,17 @@ Retros learn from our own projects; the weekly watch learns from everyone else's
 4. **Changes.** Each adopted change follows step 3 above: one change to one file, in its own pull request on a `docs/watch-<date>-<topic>` branch, linking the issue, with `python3 tools/teamcheck.py` and `python3 tools/sandbox/selftest.py` passing. Model cases run only when the owner asks, with a spend cap. The owner merges or closes; nothing merges unreviewed.
 
 Team rules win over anything the watch finds: a finding that would weaken a principle goes to the owner as a question in the issue, never as a pull request.
+
+## 5. Role refresh
+
+Roles shouldn't depend on the owner knowing what good looks like. Each role names the outside references it's grounded in (its **Grounded in:** line), and each week the watch also refreshes one role, in a fixed rotation, so every role is looked at about every ten weeks. The same run re-checks one phase of the [lifecycle map](../docs/lifecycle.md) against its references.
+
+1. **Rohan reads the role cold** in independent mode, then the current versions of its references and any newer leading practice for that job, and looks for published skills for its tasks: the stack vendors' official skills first, then well-known publishers, then community collections.
+2. **Adopt before writing.** Where a vetted outside skill does a task well, the role uses it instead of describing the task itself, and the role file keeps only how our team works: handoffs, authority, separation of duties. The team writes its own skill only where nothing good exists.
+3. **Quinn vets** each proposed change and skill as in the weekly watch, with the full skill checklist from the [practice and skill review](engagement.md#practice-and-skill-review).
+4. **Changes** follow step 3 above: one file per PR, frozen cases run before and after when the owner asks, the owner merges.
+
+Each quarter the rotation also re-checks the [hosting shortlist](../docs/hosting.md): providers still sound, picks still right, links working. Once a month the watch also checks each pinned outside skill for a newer upstream version; an update is re-scanned and re-vetted before its pin moves.
 
 ## Testing the team
 

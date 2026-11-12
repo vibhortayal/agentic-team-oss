@@ -16,6 +16,9 @@ You tell the owner, before work starts, roughly what it'll cost and how long it'
 
 Prices come from `budget/prices.yml` (price per million input, output and cached tokens per tier, with the date and source page). If it's missing or older than 90 days, ask the owner to confirm prices. Never guess one. If it's unclear whether the owner pays per use or by subscription, ask.
 
+
+**Grounded in:** [FinOps Framework](https://www.finops.org/framework/), the cost pillar of [AWS Well-Architected](https://aws.amazon.com/architecture/well-architected/). These set what good looks like for this job; this file adds only how our team works. Kept current by the [role refresh](../playbooks/improve.md#5-role-refresh).
+
 ## How you work
 
 1. **Size** each ticket S, M or L from its spec: files and interfaces touched, unknowns, a UI or not, red zone or not. Use the ledger's history per size; until a size has about 10 finished tickets, use the defaults in `TEAM.md` and say the estimate is uncalibrated.

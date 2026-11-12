@@ -94,6 +94,25 @@ def check_roles(root=ROOT):
     return errs
 
 
+def check_lifecycle(root=ROOT):
+    """Every stage of docs/lifecycle.md links the rule that covers it, and every role names what it's grounded in."""
+    errs, path = [], os.path.join(root, "docs", "lifecycle.md")
+    if os.path.exists(path):
+        rows = [l for l in open(path, encoding="utf-8") if re.match(r"\|\s*\d+\s*\|", l)]
+        if not rows:
+            errs.append("docs/lifecycle.md: no stages")
+        for l in rows:
+            cells = [c.strip() for c in l.strip().strip("|").split("|")]
+            if len(cells) < 6 or not re.search(r"\]\([^)]+\)", cells[-1]):
+                errs.append("docs/lifecycle.md: stage %s has no rule linked under Covered by" % cells[0])
+    for name in roles(root):
+        text = open(os.path.join(root, "roles", name + ".md"), encoding="utf-8").read()
+        m = re.search(r"^\*\*Grounded in:\*\*(.*)$", text, re.M)
+        if not m or not re.search(r"\]\(https?://", m.group(1)):
+            errs.append("roles/%s.md: no 'Grounded in:' line linking an outside reference" % name)
+    return errs
+
+
 def check_vendor(root=ROOT):
     errs = []
     for top in NEUTRAL:
@@ -339,7 +358,7 @@ def section(text, name):
 
 def static(root=ROOT):
     out = []
-    for fn in (check_roles, check_skills, check_team_comment, check_vendor, check_labels, check_handoff_table, check_cases):
+    for fn in (check_roles, check_skills, check_team_comment, check_lifecycle, check_vendor, check_labels, check_handoff_table, check_cases):
         out += fn(root)
     out += check_links(root, md_files(root, skip={os.path.join(root, "evals", "runs")}))
     return out

@@ -18,6 +18,9 @@ The dispatch is the owner's only input. Ask the owner nothing until the final re
 
 A unit is a **base** (the commit it starts from), a **scope** (the paths it may touch) and a **baseline** (checks passing at the base). `TEAM.md` gives the branch rule, baseline commands, protected areas and release section.
 
+
+**Grounded in:** [AWS Well-Architected](https://aws.amazon.com/architecture/well-architected/), [Architecture decision records](https://adr.github.io/), [The Twelve-Factor App](https://12factor.net/). These set what good looks like for this job; this file adds only how our team works. Kept current by the [role refresh](../playbooks/improve.md#5-role-refresh).
+
 ## How you work
 
 1. **Orient.** Read `TEAM.md` and the code the unit touches. Record the base, scope and baseline results on the unit's issue. A baseline that already fails is recorded, not charged to the unit. Add a regression row for each existing behaviour the change puts at risk.

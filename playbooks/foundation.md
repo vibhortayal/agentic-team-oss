@@ -90,6 +90,15 @@ Agents left alone produce the generic AI look. Pin them to a design system and m
 6. The Critic in design mode reviews screenshots against `DESIGN.md` before the owner sees them.
 7. Before launch, a few target users try it while someone watches. Findings become tickets.
 
+## Hosting
+
+Where the app runs is chosen at intake and set up here, the same way whichever host it is.
+
+1. **Choose by skill level,** starting from the [hosting shortlist](../docs/hosting.md). Rohan checks current prices and limits on the providers' own pages, and researches any host off the list; Ella recommends the easiest managed platform that fits (one that deploys from GitHub with previews built in) and shows the others with their monthly cost. A large cloud (one where you assemble servers, networks and permissions yourself) needs a reason, such as credits, a rule, or a service only it offers, because setup and upkeep cost more time and risk. The owner's preference wins after that advice; the choice and why go in a decision record, with how we'd move off it.
+2. **Stay portable.** The app follows [Twelve-Factor](https://12factor.net/): config in environment variables, a standard build (a container image where the host supports it), data in a managed database you can export. Moving host should be a ticket, not a rewrite.
+3. **The owner creates the account; the team does the rest.** Ella walks the owner through sign-up, billing limits and inviting the team's access with [explain-a-step](../skills/explain-a-step/SKILL.md), one step at a time. Otto then sets up preview, staging and production, using the host's own official skill if the practice and skill review adopted one, otherwise its official docs and command-line tool, and writes the deploy, rollback and restore commands into `TEAM.md`. Infrastructure on a large cloud is written as code in `infra/` (red zone), never clicked together by hand.
+4. **Billing guard first.** Before anything deploys, the owner sets a spend alert and, where the host allows, a hard cap. Bea records the plan in `budget/prices.yml`.
+
 ## Agent identity
 
 Agents never act through the owner's GitHub account. If they did, no gate could tell an agent's approval from the owner's.
@@ -103,16 +112,17 @@ Agents never act through the owner's GitHub account. If they did, no gate could 
 
 - [ ] Repo private unless the owner says otherwise; no licence file unless the owner picks one
 - [ ] The GitHub plan enforces rulesets and required reviews on this repo (a private repo on a free personal plan may not); if it needs a paid plan, the monthly figure goes to the owner first
+- [ ] Hosting account (owner), spend alert, and the hosting decision record ([hosting](#hosting))
 - [ ] Machine account and token, and the checker App; the owner's own token never goes to an agent
 - [ ] Foundation kit installed: workflow, scripts, owner-approved `zones.yml`, PR and issue templates, the `TEAM_OWNER`, `TEAM_CHECKER`, `LINT_CMD` and `SETUP_CMD` variables, labels
-- [ ] Ruleset on `main`: PRs only; `team-gates`, `team-checks` and the project's tests required; review from code owners required, with `CODEOWNERS` naming the owner for every path; no force-push or deletion; owner-only bypass
+- [ ] Ruleset on `main`: PRs only; squash merge only; branches must be up to date; `team-gates`, `team-checks` and the project's tests required; review from code owners required, with `CODEOWNERS` naming the owner for every path; no force-push or deletion; owner-only bypass
 - [ ] CI also runs tests, type check and secret scan
 - [ ] `CODEOWNERS` gives the owner the gate files and red-zone paths
 - [ ] Dependabot and secret scanning on; seven-day release age and install scripts off
 - [ ] New-dependency check in CI
 - [ ] **Gate rehearsal:** the kit's self-test, then the six planted PRs in the [kit's install steps](../templates/foundation/README.md#install-in-a-project) each fail at the step meant to catch it, and the agents' account can't merge a green PR; run link, failing step and message for each in `verification/foundation/rehearsal.md` on a `gate/rehearsal` branch
 - [ ] `zones.yml` edited to the project's real folders: the red zone, the tests zone, and any script the test command calls (added to the gate zone). The shipped patterns are only a start
-- [ ] A preview per PR (or one staging slot) and a production environment with an approval rule; for mobile, a test build track per store and a managed signing setup ([mobile apps](production.md#mobile-apps))
+- [ ] A preview per PR (or one staging slot), a staging environment that deploys every merge to `main` (internal and production), and a production environment with an approval rule; for mobile, a test build track per store and a managed signing setup ([mobile apps](production.md#mobile-apps))
 - [ ] Rollback and backup restore rehearsed once, commands written down
 - [ ] Apps: layering rule and single entry points in CI, recorded as DR-1
 - [ ] Screens: `DESIGN.md`, token lint, screenshots, visual baselines, accessibility check

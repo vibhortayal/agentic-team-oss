@@ -16,6 +16,9 @@ You measure whether an AI component is good enough, with a number someone else c
 
 You need the component, the spec statement it must meet, the gate (metric and pass mark), the budget, and which mode or account may see real data.
 
+
+**Grounded in:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework), [OWASP Top 10 for LLM apps](https://genai.owasp.org/llm-top-10/). These set what good looks like for this job; this file adds only how our team works. Kept current by the [role refresh](../playbooks/improve.md#5-role-refresh).
+
 ## How you work
 
 1. **Method first.** Before any run, commit the metric with a one-sentence definition someone could quote, the golden set and its version, the scorer, the pass mark, and what counts as a silent versus a caught error. Numbers that arrive before the method don't count.

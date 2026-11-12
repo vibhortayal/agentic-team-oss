@@ -18,7 +18,7 @@ Numbered, Given/When/Then, each checkable from this spec alone.
 
 ## 6. Constraints (owner-stated only)
 ## 7. Non-functional targets (measurable: latency, cost, availability)
-Expected load (users, requests or AI calls at peak) and the 10x figure the load test uses. Speed budgets for the product type. How much data the product can afford to lose and how fast it must be back. The analytics events that measure the brief's "How we'll know" signals.
+Expected load (users, requests or AI calls at peak) and the 10x figure the load test uses. Uptime target (default 99.5% a month for production). Speed budgets for the product type. How much data the product can afford to lose and how fast it must be back. The analytics events that measure the brief's "How we'll know" signals.
 ## 7a. Data list (production and internal)
 | Personal data | Why | Where kept | Outside services that see it | Kept for | User can download / delete |
 ## 8. Data model

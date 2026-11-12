@@ -7,17 +7,31 @@ How merged work reaches users and stays healthy. Releases are for hobby, interna
 ## Release
 
 ```text
-PR ─▶ preview of the PR head ─▶ Vera checks it ─▶ PASS + green CI ─▶ owner merges
-  ─▶ Otto prepares the release ─▶ owner approves ─▶ deploy ─▶ smoke ─▶ watch ─▶ released or rolled back
+PR ─▶ preview of the PR head ─▶ Vera checks it ─▶ owner tries it ─▶ PASS + green CI ─▶ owner merges
+  ─▶ staging (all of main) ─▶ smoke + owner run-through ─▶ owner approves ─▶ same build to production
+  ─▶ smoke ─▶ watch ─▶ released or rolled back
 ```
 
+The app runs in up to three places. The owner never has to read a pull request; they judge the work by trying it, like a user acceptance tester.
+
+| Place | Shows | Profiles |
+|---|---|---|
+| **Preview** | One PR's exact head, at its own link | All with screens |
+| **Staging** | `main` as it stands, redeployed after every merge | Internal, production |
+| **Production** | What real users use | Hobby, internal, production |
+
+Previews and staging use made-up or scrubbed data, never real users' personal data. Staging matches production's setup (same services and config shape, smaller plans) so what passes there behaves the same live.
+
 1. **Preview before merge.** Every PR that changes behaviour gets a preview of its exact head: per PR where the host offers it, otherwise one staging slot, one ticket at a time. Ian deploys it with the command in `TEAM.md`; Vera checks it as part of the verdict.
-2. **A release is a list of merged PRs.** Otto cuts it from `main` with a semver version, plain release notes, its migrations and the exact rollback command, on a release issue labelled `needs-human` + `human:approve-release`.
-3. **The owner approves every production deploy** through the environment's approval rule, until the autonomy stage covers releases. Migrations, sign-in, payments and data deletion always need the owner.
-4. **Deploy, smoke, watch.** Otto deploys the approved version, runs the smoke checks from `TEAM.md` and watches errors and latency for the window (default 30 minutes). The tag comes after the window.
-5. **Roll back first.** A failed smoke check or an error alert in the window means roll back, then open an incident. Rollback and restore are rehearsed at foundation and after any change to how the app deploys.
-6. **Migrations are their own step.** A release says whether its migration is backward compatible. One that isn't gets its own release, after a verified backup.
-7. **Agents never hold production credentials.** Deploys run from CI with the environment's secrets. An agent triggers the workflow and never sees the keys.
+2. **The owner tries it.** With the PASS, Ella sends the preview link and three to five "try this" steps in plain words, which Vera writes from the acceptance criteria. The owner answers "looks right" or "not right, because…", then approves with the one link Ella gives. A "not right" goes back like a BLOCK and counts as a send-back. A change with nothing to see (a fix inside the code) skips this step and says so.
+3. **A release is a list of merged PRs, tried together on staging.** Otto cuts it from `main` with a semver version, plain release notes, its migrations and the exact rollback command, on a release issue labelled `needs-human` + `human:approve-release`. Vera runs the smoke checks on staging; Ella sends the owner the staging link and a ten-minute checklist covering what's new and the main journeys.
+4. **Build once, promote the same build.** The artifact the owner tried on staging is the one deployed to production; it is never rebuilt in between.
+5. **The owner approves every production deploy** through the environment's approval rule, until the autonomy stage covers releases. Migrations, sign-in, payments and data deletion always need the owner.
+6. **Deploy, smoke, watch.** Otto deploys the approved version, runs the smoke checks from `TEAM.md` and watches errors and latency for the window (default 30 minutes). The tag comes after the window.
+7. **Roll back first.** A failed smoke check or an error alert in the window means roll back, then open an incident. Rollback and restore are rehearsed at foundation and after any change to how the app deploys.
+8. **Database changes never break the running app.** They go in two steps: add the new shape and write to both, then, in a later release once nothing reads the old shape, remove it. A release says which step its migration is. One that can't be split gets its own release, after a verified backup.
+9. **Unfinished or risky features hide behind a switch** (a feature flag in config or a managed flag service), so `main` stays releasable and a bad feature is turned off without a deploy. Large changes roll out to a share of users first where the host allows. Flags are removed once the feature is settled; a flag older than 90 days is a cleanup ticket.
+10. **Agents never hold production credentials.** Deploys run from CI with the environment's secrets. An agent triggers the workflow and never sees the keys.
 
 ## Launch readiness
 
@@ -67,6 +81,17 @@ Max's evals measure whether AI output is good. These rules cover whether it can 
 
 Set up at the first release with managed services, on free tiers where they fit. Otto proposes each with its monthly cost; the owner approves any spend. Cover: an uptime check on the main page and a health endpoint, error tracking tagged with the release, searchable logs with an approved retention, automatic backups in an account no agent can delete (restored in a drill every quarter, not just once), product analytics for the spec's events from a privacy-friendly service, and spend alerts on every paid service and model provider. Every alert opens or updates a GitHub issue labelled `incident`, so the board is the one place to look.
 
+Production projects name an **uptime target** in the spec (default 99.5% a month) and the error budget it leaves. When the budget is spent, Otto files reliability work before new features and Ella tells the owner. A **SEV1 also reaches a person**: through a free push or paging service to the owner's phone, in plain words: what's wrong, whether it was already rolled back or switched off, and what they need to do (usually nothing). Otto proposes the service; the owner approves it.
+
+## Security upkeep
+
+For internal and production projects, on top of the CI checks:
+
+- **Patch deadlines** from the day an advisory is known: critical within 7 days, high within 30, the rest at the next cleanup cycle. A deadline that slips goes to the owner.
+- **Keys and tokens rotate** at least yearly, at once when someone with access leaves, and whenever one may have leaked. The owner rotates (agents never see values); Otto puts the dates on the coming-due list.
+- **Access review** each quarter: who and what (people, agent accounts, apps, services) can reach the repo, hosting, data and stores. Anything not needed is removed, by the owner.
+- **A bill of materials** (an SBOM made by a free tool in CI) is attached to each release, so a new advisory can be checked against what's live.
+
 ## After launch
 
 Thirty days after the first production release, then each quarter, Priya and Bea write a short review on `team/records`: each "How we'll know" signal from the brief against its target, cost per active user, the top support issues and incidents. Ella brings the owner one recommendation: keep going, change course (a change request) or stop.
@@ -92,6 +117,14 @@ The quality gate stops new mess. This part measures what's left and pays it down
 **Monthly report.** Otto writes `reports/health-<YYYY-MM>.md` ([template](../templates/documents.md#health-report)) from numbers it can recompute, and commits the script. A fresh Vera re-runs it before the owner sees the report. It covers change failure rate (merged PRs followed within 14 days by a revert, hotfix or bug ticket naming them), rework (lines changed again within 30 days), warnings, complexity and duplication against the baseline and last month, copying versus refactoring, BLOCK rounds per ticket, typed blockers by type, owner send-backs with reasons, and the least healthy modules. Never report "% of code written by AI"; nobody measures it with a disclosed method. It also shows headroom (load and spend against their limits) and a coming-due list for the next 90 days: renewals, store and platform deadlines, model retirements, runtime end-of-life, free-tier limits, the next restore drill. Each item past due or within 30 days becomes a ticket. It ends with at most three recommendations, each with one line of evidence.
 
 **Cleanup.** Every cycle (default two weeks), Otto files one cleanup ticket from the latest report, a normal change spec with owned paths and a proof command and a fixed budget (default one Ian and one Vera session). What doesn't fit waits for the next cycle. Ian refactors in small steps with existing tests green; Vera checks behaviour didn't change and the numbers moved the right way. A module flagged unhealthy is cleaned before a new feature lands in it, and Priya adds that cleanup to the feature's plan. When a count drops, the same PR lowers `quality/baseline.json`.
+
+## Handover test
+
+Once a year, and before a profile change, a fresh agent that has never seen the project tries to set it up and run it from the README and runbooks alone, with test credentials. Everything it trips on becomes a ticket for Priya. This is what makes "you own it" true: someone else could take the product over.
+
+## Retirement
+
+When the owner decides to switch a product off, Priya writes a change request and Otto runs it: tell users with a date (default 30 days' notice) and how to download their data; turn off sign-ups; on the date, take a final backup kept only as long as the law requires, delete user data and say so, shut down services and cancel paid plans (Bea confirms the bills stop), remove store listings, and archive the repo. The owner approves each step that deletes or publishes.
 
 ## Housekeeping
 

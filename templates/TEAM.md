@@ -83,6 +83,7 @@ See `.team/playbooks/production.md`, Release.
 - Version scheme: `<semver; version file or latest tag>`. Ops tags each production release after the watch window.
 - Preview deploy command (per PR, or the single staging slot): `<command>`
 - Preview address pattern: `<url>`
+- Staging address and deploy-on-merge workflow (internal and production): `<url, workflow>`
 - Deployed-version check: `<how to read the deployed revision>`
 - Smoke checks: `<commands>`
 - Production deploy: `<CI workflow name>`, behind the `production` environment's owner approval
