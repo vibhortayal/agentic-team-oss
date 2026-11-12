@@ -40,7 +40,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 <div class="board">
   <header class="wb-hero">
     <h1>Your first project</h1>
-    <p>From zero to your first conversation with Ella. You'll do the setup once; after that, every project starts at step 4. If you get stuck anywhere, skip ahead to step 4 and tell Ella you're starting from scratch. She'll walk you through the rest.</p>
+    <p>From zero to your first conversation with Ella. You get things ready once. After that, each new app starts at step 2. If you get stuck, tell your coding assistant what you see. It will walk you through it.</p>
   </header>
 
   <div class="step reveal">
@@ -60,35 +60,29 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
   <div class="step reveal">
     <div class="num">2<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Download the team</h2>
-      <p>Open your terminal and paste this. It copies the team to your computer, once.</p>
-      <div class="code"><button class="copy">Copy</button>git clone {{ site.github.repository_url }} ~/agentic-team</div>
-      <span class="note">↑ one time only, for all your projects</span>
+      <h2>Open your coding assistant in a new folder</h2>
+      <p>Make a folder for your app, such as <code>my-grocery-list</code>. Then open your coding assistant there. With Claude Code, open the terminal, go to the folder, type <code>claude</code> and press Enter. A chat starts right there, in the same window. With Codex, do the same but type <code>codex</code>. With Cursor, open the Cursor app and pick the folder.</p>
     </div>
   </div>
 
   <div class="step reveal">
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Put the team in your project</h2>
-      <p>Pick a folder for your project and run the installer for your tool. It copies the team in and leaves a note telling your coding assistant tool how to find them.</p>
-      <div class="code"><button class="copy">Copy</button><span class="c"># any tool</span>
-~/agentic-team/adapters/generic/install.sh ~/code/my-project
-
-<span class="c"># or, if you use Claude Code</span>
-~/agentic-team/adapters/claude-code/install.sh ~/code/my-project</div>
-      <p>Then save the new files to GitHub. This is called a commit, and Ella can show you how. Ella sets up the rest with you. The <a href="{{ '/adapters/' | relative_url }}">install guide</a> has the details for each tool.</p>
+      <h2>Paste one line</h2>
+      <p>Paste this into the chat, with your own idea at the end. Your coding assistant copies the team to your computer, adds it to your folder and saves a first snapshot. If something is missing, like Git, it tells you what to do.</p>
+      <div class="code"><button class="copy">Copy</button>Set up Agentic Team here by following https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/main/START.md. My idea: I want an app where my family can share a grocery list.</div>
+      <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
+      <span class="note">swap in your own idea, in your own words</span>
+      <p>Using Claude Code? You can use our plugin instead. Type <code>/plugin install agentic-team --marketplace {{ site.github.repository_nwo }}</code>, then <code>/agentic-team:start</code> and your idea.</p>
     </div>
   </div>
 
   <div class="step reveal">
     <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Say hello to Ella</h2>
-      <p>Now open your coding assistant in your project folder. With Claude Code, go to the terminal, type <code>claude</code> and press Enter. A chat starts right there, in the same window. With Codex, do the same but type <code>codex</code>. With Cursor, open the Cursor app, pick your project folder, and type in the chat box on the side. Then paste this one line, with your idea at the end. It's the only prompt you need to remember.</p>
-      <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list.</div>
-      <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
-      <span class="note">swap in your own idea, in your own words</span>
+      <h2>Meet Ella</h2>
+      <p>When setup is done, Ella says hello and asks about your idea. Next time, open your coding assistant in the same folder and paste this one line. It's the only prompt you need to remember.</p>
+      <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I'd like to add a shopping budget.</div>
     </div>
   </div>
 

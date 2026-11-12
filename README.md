@@ -25,7 +25,7 @@ ChatGPT can write code. But you'd have to copy it, set it up and fix it yourself
 
 - **A coding assistant.** This is an AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Codex and Cursor work too. Most need a paid plan from the AI company, so check the price first.
 - **A free GitHub account.** GitHub is a website that keeps a safe copy of your app's files, a bit like Google Drive for code.
-- **About 15 minutes for setup.** You'll type a few lines into the terminal, a plain window where you type to your computer. If that's new, a friend who knows computers can help the first time.
+- **About 10 minutes for setup.** You paste one line into your coding assistant, and it does the rest. Some assistants run in the terminal, a plain window where you type to your computer. If that's new, a friend who knows computers can help the first time.
 
 ## Where your money goes
 
@@ -74,29 +74,25 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 - Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
 - A password manager, such as [Bitwarden](https://bitwarden.com/) (free). Your project's passwords and keys go there, never in a chat.
 
-**2. Copy the team to your computer.** You only do this once. Find this page's web address under the green Code button on GitHub. Then type this in your terminal, with that address in place of `<that address>`:
+**2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal, go to the folder and type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
 
-```bash
-git clone <that address> ~/agentic-team
+**3. Paste this one line,** with your idea at the end:
+
+```text
+Set up Agentic Team here by following https://raw.githubusercontent.com/vibhortayal/agentic-team-oss/main/START.md. My idea: <what you want, in your own words>
 ```
 
-**3. Add the team to your project folder.** Type one of these. Then save the new files to GitHub. Saving to GitHub is called a commit, and Ella can show you how.
+Your coding assistant copies the team to your computer and adds it to your folder. It saves a first snapshot, then Ella says hello. If something is missing, like Git, it tells you what to do.
 
-```bash
-# most tools
-~/agentic-team/adapters/generic/install.sh ~/code/my-project
+In Claude Code you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
 
-# or, if you use Claude Code
-~/agentic-team/adapters/claude-code/install.sh ~/code/my-project
-```
-
-**4. Say hello to Ella.** Open your coding assistant in your project folder. With Claude Code, type `claude` in the terminal and press Enter, and a chat starts in the same window. With Cursor, open the app, pick your folder and use the chat box on the side. Then paste this line and add your idea at the end:
+**4. Next time, just say hello to Ella.** Open your coding assistant in the same folder and paste this:
 
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
 ```
 
-That's the only line you need to remember. New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
+New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 
 ## Learn more
 

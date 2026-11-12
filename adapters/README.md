@@ -2,6 +2,8 @@
 
 Role files are tool-neutral. These scripts copy the team into a project and map it to one tool.
 
+Most people never run them by hand. They paste one line into their coding assistant, which follows [START.md](../START.md): get or update the team in `~/agentic-team`, run the right installer, make the first commit, then hand over to Ella. In Claude Code, the plugin does the same: `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start`. The plugin lives in [claude-code/plugin/](claude-code/plugin/) and is listed by the repo's `.claude-plugin/marketplace.json`; check both with `claude plugin validate .` after a change.
+
 ```bash
 adapters/generic/install.sh ~/code/my-project       # any tool that reads AGENTS.md
 adapters/claude-code/install.sh ~/code/my-project   # Claude Code (runs the generic install first)

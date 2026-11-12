@@ -1,0 +1,16 @@
+{
+  "name": "agentic-team",
+  "owner": {
+    "name": "Agentic Team"
+  },
+  "metadata": {
+    "description": "Agentic Team: a free, open-source team of AI agents that plans, builds and checks your app with you."
+  },
+  "plugins": [
+    {
+      "name": "agentic-team",
+      "source": "./adapters/claude-code/plugin",
+      "description": "Start a project with Ella and her team of AI agents: one command sets the team up in your folder and hands you to Ella."
+    }
+  ]
+}
