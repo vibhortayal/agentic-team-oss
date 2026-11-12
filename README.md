@@ -23,7 +23,7 @@ ChatGPT can write code. But you'd have to copy it, set it up and fix it yourself
 
 - **A coding assistant.** This is an AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Codex and Cursor work too. Most need a paid plan from the AI company, so check the price first.
 - **A free GitHub account.** GitHub is a website that keeps a safe copy of your app's files, a bit like Google Drive for code.
-- **About 10 minutes for setup.** You paste one line into your coding assistant, and it does the rest. Some assistants run in the terminal, a plain window where you type to your computer. If that's new, a friend who knows computers can help the first time.
+- **About 10 minutes for setup.** You paste one line into your coding assistant, and it does the rest. In the Claude app's Code tab you never need the terminal, the plain window where people type commands.
 
 ## Where your money goes
 
@@ -68,11 +68,11 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 **1. Get four things ready.**
 
 - A GitHub account. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
-- A coding assistant. [See which ones work](adapters/README.md#tools).
+- A coding assistant. The [Claude app](https://claude.ai/download) is the easiest: its Code tab needs no terminal. [See which others work](adapters/README.md#tools).
 - Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
 - A password manager, such as [Bitwarden](https://bitwarden.com/) (free). Your project's passwords and keys go there, never in a chat.
 
-**2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal, go to the folder and type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
+**2. Make a folder for your app.** Open your coding assistant in it. In the Claude app, click **Code**, pick **Local**, then **Open folder…** and choose the folder. With Codex or Cursor, open the app and pick the folder. If you like the terminal, go to the folder and type `claude` or `codex`.
 
 **3. Paste this one line,** with your idea at the end:
 
@@ -82,7 +82,7 @@ Set up Agentic Team here by following https://raw.githubusercontent.com/vibhorta
 
 Your coding assistant copies the team to your computer and adds it to your folder. It saves a first snapshot, then Ella says hello. If something is missing, like Git, it tells you what to do.
 
-In Claude Code you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
+In Claude Code in the terminal you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
 
 **4. Next time, just say hello to Ella.** Open your coding assistant in the same folder and paste this:
 

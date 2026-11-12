@@ -33,6 +33,9 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 .copy { position: absolute; top: 10px; right: 10px; font: 500 12px "Geist Mono", monospace; background: #ffffff1a; color: #fff; border: 0; border-radius: 4px; padding: 6px 10px; cursor: pointer; }
 .note { font-size: .9rem; color: var(--muted); display: inline-block; margin-top: 2px; }
 .bubble { background: var(--bg2); border-radius: 6px; padding: 14px 18px; max-width: 34em; margin: 10px 0; }
+.other { border-top: 1px solid var(--line); padding: 32px 0 0; }
+.other h2 { font-size: 1.25rem; margin: 0 0 .3em; }
+.other p, .other li { color: #333; }
 .bubble.me { background: #fbeee6; border-radius: 6px; margin-left: auto; }
 </style>
 
@@ -40,18 +43,18 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 <div class="board">
   <header class="wb-hero">
     <h1>Your first project</h1>
-    <p>From zero to your first conversation with Ella. You get things ready once. After that, each new app starts at step 2. If you get stuck, tell your coding assistant what you see. It will walk you through it.</p>
+    <p>From zero to your first conversation with Ella. You get things ready once. After that, each new app starts at step 2. No terminal needed. If you get stuck, tell Claude what you see. It will walk you through it.</p>
   </header>
 
   <div class="step reveal">
     <div class="num">1<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Get four things ready</h2>
-      <p>Each is free to start. You only do this once.</p>
+      <p>You only do this once. You won't need the terminal, the plain window where people type commands.</p>
       <div class="doodles">
+        <div class="doodle"><b>The Claude app</b><small>The Claude app for Mac or Windows. It's like ChatGPT, but its Code tab can also work with the files on your computer. That needs a paid plan: Pro is about $20 a month. <a href="{{ '/learn/words.html' | relative_url }}">Why not ChatGPT?</a></small><br><a href="https://claude.ai/download">Download it →</a></div>
         <div class="doodle"><b>GitHub account</b><small>A free website that keeps a safe copy of your app's files, a bit like Google Drive for code.</small><br><a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one →</a></div>
-        <div class="doodle"><b>A coding assistant</b><small>An AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Most need a paid plan, so check the price first. <a href="{{ '/learn/words.html' | relative_url }}">Why not ChatGPT?</a></small><br><a href="{{ '/adapters/#tools' | relative_url }}">Which ones work →</a></div>
-        <div class="doodle"><b>Git and a terminal</b><small>Git is a free program that copies files between GitHub and your computer. The terminal is a plain window where you type to your computer. On a Mac, press Command and Space, type Terminal and press Enter.</small><br><a href="https://git-scm.com/downloads">Install Git →</a></div>
+        <div class="doodle"><b>Git</b><small>A free program that keeps a history of your app's files. Install it like any other app. Most Macs already have it. If yours doesn't, Claude tells you during setup.</small><br><a href="https://git-scm.com/downloads">Install Git →</a></div>
         <div class="doodle"><b>Password manager</b><small>An app that keeps your passwords safe. Bitwarden is free. Your project's passwords and keys go there, never in a chat.</small><br><a href="https://bitwarden.com/">Get Bitwarden →</a></div>
       </div>
     </div>
@@ -60,8 +63,15 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
   <div class="step reveal">
     <div class="num">2<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Open your coding assistant in a new folder</h2>
-      <p>Make a folder for your app, such as <code>my-grocery-list</code>. Then open your coding assistant there. With Claude Code, open the terminal, go to the folder, type <code>claude</code> and press Enter. A chat starts right there, in the same window. With Codex, do the same but type <code>codex</code>. With Cursor, open the Cursor app and pick the folder.</p>
+      <h2>Open a new folder in the Code tab</h2>
+      <p>Open the Claude app and sign in. Then:</p>
+      <ol>
+        <li>Click <b>Code</b> at the top of the side bar.</li>
+        <li>Under the chat box, click the first button and pick <b>Local</b>. That means "work on this computer".</li>
+        <li>Click the folder button next to it, then <b>Open folder…</b>. Make a new folder for your app, such as <code>my-grocery-list</code>, and pick it.</li>
+        <li>Leave the mode on <b>Manual</b>. Then Claude asks you before it changes a file or runs anything.</li>
+      </ol>
+      <span class="note">it looks like a normal chat, just with your folder attached</span>
     </div>
   </div>
 
@@ -69,11 +79,10 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Paste one line</h2>
-      <p>Paste this into the chat, with your own idea at the end. Your coding assistant copies the team to your computer, adds it to your folder and saves a first snapshot. If something is missing, like Git, it tells you what to do.</p>
+      <p>Paste this into the chat, with your own idea at the end, and press Enter. Claude copies the team to your computer, adds it to your folder and saves a first snapshot. If something is missing, like Git, it tells you what to do. Each time it asks to do something, it says what and why. Click <b>Allow</b> if that sounds right.</p>
       <div class="code"><button class="copy">Copy</button>Set up Agentic Team here by following https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/main/START.md. My idea: I want an app where my family can share a grocery list.</div>
       <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
       <span class="note">swap in your own idea, in your own words</span>
-      <p>Using Claude Code? You can use our plugin instead. Type <code>/plugin install agentic-team --marketplace {{ site.github.repository_nwo }}</code>, then <code>/agentic-team:start</code> and your idea.</p>
     </div>
   </div>
 
@@ -81,7 +90,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Meet Ella</h2>
-      <p>When setup is done, Ella says hello and asks about your idea. Next time, open your coding assistant in the same folder and paste this one line. It's the only prompt you need to remember.</p>
+      <p>When setup is done, Ella says hello and asks about your idea. Next time, open the same folder in the Code tab and paste this one line. It's the only prompt you need to remember.</p>
       <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I'd like to add a shopping budget.</div>
     </div>
   </div>
@@ -103,6 +112,16 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
       <h2>Read the plan and say yes</h2>
       <p>You'll get one page. It says what we'll build and what it costs each month. It lists the few steps that are yours, who's on the team, and when Ella will need you. Ask "tell me more" about anything. When you say yes, the team gets to work. Ella comes back when you're needed: to try a preview, to OK any spending, and to say go for the launch.</p>
       <span class="note">that's it, you've started</span>
+    </div>
+  </div>
+  <div class="other">
+    <div>
+      <h2>Other ways in</h2>
+      <p>The Claude app is the easiest start, and Claude is the assistant we've tested most. The team works with other coding assistants too. <a href="{{ '/adapters/#tools' | relative_url }}">See which ones →</a></p>
+      <ul>
+        <li><b>Codex or Cursor:</b> open their app, pick your folder and paste the same line from step 3.</li>
+        <li><b>The terminal:</b> if you like typing commands, go to your folder, type <code>claude</code> or <code>codex</code> and paste the same line. With Claude Code there you can use our plugin instead: <code>/plugin install agentic-team --marketplace {{ site.github.repository_nwo }}</code>, then <code>/agentic-team:start</code> and your idea.</li>
+      </ul>
     </div>
   </div>
 </div>
