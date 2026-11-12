@@ -2,9 +2,9 @@
 
 **An AI software team you can hand an idea to.**
 
-Agentic Team is a free, open-source set of instructions. It turns the AI coding tool you already use (Claude Code, Codex, Cursor and others) into a small company: ten agents with one job each, a fixed way of working, and checks they can't skip. You only talk to one of them, Ella. She interviews you, shows you a one-page plan with the cost, runs the rest of the team, and comes back when something needs your decision.
+Agentic Team is a free, open-source set of instructions. It turns the AI coding tool you already use (Claude Code, Codex, Cursor and others) into a small company: ten agents with one job each, a fixed way of working, and automatic checks on every change. You only talk to one of them, Ella. She interviews you, shows you a one-page plan with the cost, runs the rest of the team, and comes back when something needs your decision.
 
-**Who it's for.** People with an app idea who don't write code, and developers who want AI work checked instead of taken on trust. Today you start it from a coding tool in a terminal, so a beginner may want a technical friend for the first setup. A web front door is planned ([ROADMAP.md](ROADMAP.md)).
+**Who it's for.** People with an app idea who don't write code, and developers who want AI work checked. Today you start it from a coding tool in a terminal, so a beginner may want a technical friend for the first setup. A web front door is planned ([ROADMAP.md](ROADMAP.md)).
 
 **Why it exists.** AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.
 
@@ -27,12 +27,12 @@ For a quick script or a one-off fix, a coding assistant on its own is enough. Ag
 
 **Honest caveats.**
 
-- **It's early.** The team is written and tested on its own, but it hasn't yet carried a real project all the way from idea to launch. That's the next step on the [roadmap](ROADMAP.md).
-- **It's slower and uses more AI than one assistant.** Planning and checking are separate runs, so a small change costs more than just asking.
-- **App builders are faster to a first version.** If you want something to show by tonight, use one.
-- **Checks lower the risk. They don't remove it.** The work is only as good as the AI model in your tool, and tests can miss things.
-- **It works best in Claude Code today.** That's the only tool with its own installer, where each agent runs as a separate session. Codex and Cursor read the same instructions. Gemini CLI should work but hasn't been tested.
-- **Hosting and databases aren't included.** You pay those providers directly. Bea, the budget agent, prices them in the plan, and free tiers come first.
+- It's early. The team is written and tested on its own, but it hasn't yet carried a real project all the way from idea to launch. That's the next step on the [roadmap](ROADMAP.md).
+- It's slower and uses more AI than one assistant. Planning and checking are separate runs, so a small change costs more than just asking.
+- App builders are faster to a first version. If you want something to show by tonight, use one.
+- Tests can still miss things, and the work is only as good as the AI model in your tool.
+- It works best in Claude Code today. That's the only tool with its own installer, where each agent runs as a separate session. Codex and Cursor read the same instructions. Gemini CLI should work but hasn't been tested.
+- Hosting and databases aren't included. You pay those providers directly. Bea, the budget agent, prices them in the plan, and free tiers come first.
 
 ## How a project goes
 
@@ -110,7 +110,7 @@ The team's own maintenance (the quarterly role review, tuning a role) runs in th
 
 ## What's underneath
 
-The team itself is plain text: job descriptions (roles), a process (playbooks), checks the agents can't switch off (the gate kit) and one shared record (GitHub). It works with any agent tool, and each tool gets a thin adapter. A project hires the agents it needs from here instead of writing its own prompts; roles are tuned here once, and every project picks up the improvement by updating its copy. The mandates say how an agent works, never what to build; everything about a project lives in that project's own spec and its `TEAM.md`.
+The team itself is plain text: job descriptions (roles), a process (playbooks), automatic checks that run on GitHub, outside the agents' control (the gate kit) and one shared record (GitHub). It works with any agent tool, and each tool gets a thin adapter. A project hires the agents it needs from here instead of writing its own prompts; roles are tuned here once, and every project picks up the improvement by updating its copy. The mandates say how an agent works, never what to build; everything about a project lives in that project's own spec and its `TEAM.md`.
 
 ### The roster
 
@@ -122,7 +122,7 @@ The team itself is plain text: job descriptions (roles), a process (playbooks), 
 | **Quinn** | Critic | Research | deep | Attacks a plan, idea or spec before money or code is spent on it, and adjudicates outside critique | [roles/critic.md](roles/critic.md) |
 | **Arjun** | Architect | Engineering | deep | For multi-unit full specs only: acceptance map, unit order, release notes; writes no code | [roles/architect.md](roles/architect.md) |
 | **Ian** | Implementer | Engineering | standard | Builds one bounded unit, writes its own tests, self-checks every acceptance row | [roles/implementer.md](roles/implementer.md) |
-| **Vera** | Verifier | Engineering | deep | Writes checks from the spec before reading code, gives one verdict per revision, can block | [roles/verifier.md](roles/verifier.md) |
+| **Vera** | Verifier | Engineering | deep | Writes tests from the spec before reading code, gives one verdict per revision, can block | [roles/verifier.md](roles/verifier.md) |
 | **Max** | Evaluator | Engineering | deep | Measures prompt and model quality against a golden set, one variable at a time, and reports the whole score path | [roles/evaluator.md](roles/evaluator.md) |
 | **Bea** | Budget Analyst | Finance | standard | Estimates cost and time as ranges, prices every new requirement, sets per-ticket caps, keeps the ledger of actual spend | [roles/budget-analyst.md](roles/budget-analyst.md) |
 | **Otto** | Ops | Operations | standard | Sets up the gates, keeps repositories tidy, runs production releases with the owner's approval, monitoring and incidents | [roles/ops.md](roles/ops.md) |
