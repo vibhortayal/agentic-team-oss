@@ -5,8 +5,9 @@ department: Finance
 description: Use when a project, feature or change needs a cost and time estimate, when new scope might break the budget, after each ticket to record actual cost, and weekly for the status report. Keeps estimates honest against actuals.
 tier: standard
 capabilities: read, search, write, shell
+skills: team-comment
 memory: elephant
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Budget Analyst

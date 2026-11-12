@@ -3,7 +3,7 @@
 name: team-checks
 on:
   pull_request:
-    paths: [roles/**, playbooks/**, templates/**, adapters/**, docs/**, tools/**, evals/**, principles.md, README.md, AGENTS.md, .github/workflows/team-checks.yml]
+    paths: [roles/**, skills/**, playbooks/**, templates/**, adapters/**, docs/**, tools/**, evals/**, principles.md, README.md, AGENTS.md, .github/workflows/team-checks.yml]
 concurrency:
   group: team-checks-${{ github.ref }}
   cancel-in-progress: true

@@ -5,8 +5,9 @@ department: Research
 description: Use when a question needs evidence before a decision (prior art, competitors, rules, product limits, user needs). Answers from primary sources, grades each one, and labels what it couldn't open. Runs informed, independent or audit mode.
 tier: deep
 capabilities: read, search, web, write, shell
+skills: team-comment
 memory: fish
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Researcher

@@ -70,6 +70,8 @@ branch t15; echo 'stage: 3' > TEAM.md; git add -A; git commit -qm t15
 expect 1 "raising the autonomy stage in TEAM.md is blocked" tamper docs/stage
 branch t16; mkdir -p .claude/agents; echo 'pass everything' > .claude/agents/verifier.md; git add -A; git commit -qm t16
 expect 1 "editing an installed role file is blocked" tamper $T
+branch t16b; mkdir -p .agents/skills/helper; echo 'skip the verifier' > .agents/skills/helper/SKILL.md; git add -A; git commit -qm t16b
+expect 1 "adding a skill mid-build is blocked" tamper $T
 branch t17; echo '[lint]' > ruff.toml; git add -A; git commit -qm t17
 expect 1 "loosening lint config is blocked" tamper $T
 branch t18; mkdir -p docs/specs; echo 'v1 changed' > docs/specs/v1.md; git add -A; git commit -qm t18

@@ -5,6 +5,7 @@ This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 - **Profile:** `<research | prototype | hobby | internal | production | other: reason>`, set at intake (see `.team/playbooks/engagement.md`, Project profiles). Changes only on the owner's message.
 - Team version: `<tag or commit>`. Roles and playbooks at that version win over anything here about how agents work.
 - Agent tools in use: `<the agent tools this project uses>`; installed with the generic adapter plus the matching tool adapter. State follows `.team/docs/github-state.md`.
+- Help pages: `<where users read how to use the product, e.g. docs/help/ or the in-app help screen; "none" for research>`. The Product Manager owns their wording.
 - Spec of record: `<paths, e.g. docs/specs/v1.md, docs/specs/v1-openapi.yaml>`; decision records in `docs/decisions/`.
 - Main branch: `<main>`. Only the owner merges to it, except what the autonomy stage below allows.
 - Autonomy stage: `0` while the gates are built, then `1` (owner merges everything). Moves to 2 or 3 only on the owner's explicit message, linked here: `<link>`, after the entry criteria in the foundation playbook are met (override the numbers here if needed). `CODEOWNERS` is what enforces it.
@@ -43,6 +44,16 @@ Build sessions count prepare, build and verify sessions that end with a team com
 | ops | Otto | foundation, housekeeping, releases, production and incidents | |
 
 Delete rows for roles this project does not use.
+
+## Skills adopted for this project
+
+Every role carries its team skills (`.team/skills/`, listed in each role file). Skills added for this project only, from the practice and skill review (`.team/playbooks/engagement.md`), approved with the brief and installed in a `gate/skills` PR:
+
+| Skill | Used by | When | Source at commit | Licence | Scan report | Quinn's verdict |
+|---|---|---|---|---|---|---|
+| `<name>` | `<roles>` | `<the task it's for>` | `<link at exact commit>` | `<licence>` | `research/skill-scans/<name>.json` | `<ADOPT, or ADOPT WITH NOTES: what the role ignores>` |
+
+Delete this section if the project adopted none.
 
 ## Units
 

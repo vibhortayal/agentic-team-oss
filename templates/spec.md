@@ -26,6 +26,7 @@ Numbered, Given/When/Then, each checkable from this spec alone.
 ## 13. Risks (from the critique, each with its proof or gate)
 ## 14. Open questions
 ## 15. Release (preview target, criteria checked on the preview, smoke steps, rollback, monitoring)
+## 16. Help pages (where users read how to use it, and each page's wording for this version; one acceptance row per page)
 
 ---
 

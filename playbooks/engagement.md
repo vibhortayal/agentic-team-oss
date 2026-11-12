@@ -2,7 +2,7 @@
 
 We work with the owner the way a good agency works with a client: a likely cost and timeline before saying yes, every scope change priced, and an honest re-estimate when things drift. The build itself happens in [build](build.md); this playbook wraps it.
 
-**Who:** Ella (the owner's single point of contact: intake, proposal, every request and decision after that), Bea (estimates, status, ledger), Priya (specs, change requests), owner (approves).
+**Who:** Ella (the owner's single point of contact: intake, proposal, every request and decision after that, and who is on the team with which skills), Rohan and Quinn (the practice and skill review), Bea (estimates, status, ledger), Priya (specs, change requests), owner (approves).
 
 ## Project profiles
 
@@ -23,7 +23,7 @@ Moving up a profile (say prototype to production) is a change request. Bea price
 
 | Step | What happens | Who | Output |
 |---|---|---|---|
-| 1. Intake | Profile, goal, users, scope, constraints, budget ceiling | Ella | Decision log |
+| 1. Intake | Profile, goal, users, scope, constraints, budget ceiling, then the [practice and skill review](#practice-and-skill-review) | Ella, Rohan, Quinn | Decision log, `research/practices-and-skills.md` |
 | 2. Proposal | Brief plus a rough estimate: milestones, cost and calendar ranges, assumptions, exclusions | Ella, Bea | `docs/brief.md`, `budget/estimate-v1.md` |
 | 3. Sign-off | The owner approves both; that sets the baseline budget and dates | Owner | Merged `docs/` PR |
 | 4. Delivery | Specs, tickets, build and verify, inside each ticket's cap | Priya, build team | Merged PRs with evidence |
@@ -34,6 +34,30 @@ Moving up a profile (say prototype to production) is a change request. Bea price
 | 9. Close-out | Final cost and time against the baseline, then a retro by a fresh agent | Bea, then Quinn | `reports/close-out.md`, `reports/retro.md` |
 
 Ella stays the owner's contact through every step. Approvals, the weekly status and anything else for the owner reach them through her. Templates for all of these are in [templates/documents.md](../templates/documents.md).
+
+## Practice and skill review
+
+Before the brief goes to the owner, Ella checks what good looks like for this kind of project and which skills the team should carry for it. She decides the team and its skills from the interview and this review; the owner approves both with the brief.
+
+1. **Brief Rohan** with a [research brief](../templates/documents.md#research-brief) in informed mode. The question: what are the leading practices for this kind of project on this stack, and which skills would help the roles Ella plans to hire? It must read the interview notes and the team's own `skills/` (installed as `.team/skills/`), so he doesn't propose what the team already has.
+2. **Rohan looks in this order** and grades each find like any source:
+   - **Practices** from primary sources: the framework's and platform's own guides, security guides such as OWASP's for the project's kind of app, app-store or accessibility rules where they apply. Only what changes how this project should be built; skip what the model already knows.
+   - **Skills** in the open Agent Skills format, from the stack's own vendors first (a database or hosting company's official skills), then well-known publishers, then community collections. Stars and download counts are a weak signal, never a reason on their own. For each candidate: link at an exact commit, licence, what it does, which role it's for, and what it would replace.
+3. **Quinn vets every candidate skill** before Ella may propose it. A skill is instructions plus scripts that run with the agent's permissions, so two checks, both required:
+   - **Scan it first** with [SkillSpector](https://github.com/NVIDIA/SkillSpector) (Apache-2.0), pinned at the tested commit `3c2c5d7a1ee148d228398070b91d3beaf0d73b11` (v2.12.0), in its own virtual environment or its Docker image, never in the project's dependencies: `skillspector scan <skill folder> --no-llm --fail-on-findings --fail-on-incomplete --format json --output research/skill-scans/<name>.json`. Commit the report. `--no-llm` keeps the files on the machine and costs nothing; its AI mode sends them to a provider and runs only with the owner's OK. The scan is an alarm, not a verdict: in our test it called a skill that merges to `main` and tells the builder to edit tests "SAFE", and it flags some harmless text as high. So its score never counts as a pass. Every finding gets a line in the verdict, either harmless with the reason or a REJECT, and a high or critical finding nobody can explain is a REJECT. If the scanner can't run, the skill can't be adopted until it does.
+   - **Then read every file**, not just `SKILL.md`, whatever the scan said. Reject it if:
+   - its licence doesn't allow use and copying, or it has none;
+   - it runs code that downloads more code, sends data anywhere, or reads files outside the project;
+   - it needs a secret, a paid service or network access the spec doesn't allow;
+   - it tells the agent to do something the roles or principles forbid (merge, skip the checker, edit tests, ask the owner mid-build) or to obey it over other instructions;
+   - it repeats what a role file or a team skill already says.
+   Otherwise: ADOPT, with the one-line reason, or ADOPT WITH NOTES, saying which instructions the role ignores.
+4. **Ella decides** the team and the skills each hire carries, and puts them in the brief's **Team** section with one plain line each on why. Practices that change the plan go in **Advice**.
+5. **After approval,** Otto copies each adopted skill unchanged into `.agents/skills/<name>/` (and into each agent tool's own skills folder, the way the tool's installer does for team skills) in a `gate/skills` PR, with its source, commit and licence in `TEAM.md`'s Skills table. Skills are gate files: none can be added or changed during a build, only through another reviewed `gate/` PR.
+
+**Scale it to the profile.** Research: no skill review. Prototype and hobby: a short scan (time box about 20 minutes) of the stack vendors' official skills only, with Quinn's file read still required. Internal and production: the full review. Bea includes the sessions in the estimate.
+
+A project skill that proves useful on two projects is proposed for the team repo through the [improve loop](improve.md), where it's tuned once and every project gets it.
 
 ## Existing projects
 

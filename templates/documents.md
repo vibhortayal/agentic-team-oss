@@ -13,7 +13,8 @@ Read: <repos, docs, research reviewed> · Not verified: <what couldn't be checke
 
 ## Plan in short  Readable in a minute, in everyday words; the sections below are the detail.
                   What we'll build (two or three sentences) · What you'll need (the table below, one line) ·
-                  What you'll do (your steps, minutes each) · Who's on the team (one line each, why) · When I'll need you (the checkpoints)
+                  What you'll do (your steps, minutes each) · Who's on the team and what skills they bring (one line each, why) ·
+                  When I'll need you (the checkpoints)
 ## Goal            The outcome in the owner's words, then one plain sentence.
 ## Who it's for    Users and what changes for them.
 ## How we'll know  Two to four measurable signals.
@@ -25,7 +26,8 @@ Read: <repos, docs, research reviewed> · Not verified: <what couldn't be checke
 ## What exists     Code, research and decisions to reuse, with links. What was rejected before and why.
 ## Advice          Risks, the recommended approach, alternatives, anything we advise against.
 ## Open questions  | Question | Proposed default | Who answers | Blocking? |
-## Team            | Agent | Hired? | Why |  First playbook and why. Autonomy stage.
+## Team            | Agent | Hired? | Why | Skills (team's own, plus any adopted for this project) |
+                  First playbook and why. Autonomy stage. Each adopted skill: source at its commit, licence, Quinn's verdict.
 ```
 
 ## Research brief
@@ -58,6 +60,8 @@ Ticket: <issue link> · Approved: <owner's message> · Date: <YYYY-MM-DD> · Sta
 | # | Given | When | Then |
 | AC1 | | | |
 ## Budget         Size S/M/L · Estimate $low–$high · Cap <n> sessions, <r> fix rounds (stop with a typed blocker, never exceed)
+## Help pages     Help pages users read that this changes, with the new wording. "None" only if nothing a user sees or does changes.
+                 One acceptance row checks the shipped page says it.
 ## Proof command  The one command that shows it works, which Vera re-runs.
 ## Out of scope
 ## Risks          Red-zone paths touched, or none.

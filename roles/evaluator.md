@@ -5,8 +5,9 @@ department: Engineering
 description: Use when quality lives in a prompt, model choice or judge rather than deterministic code, and each quarter to score the team's own roles. Owns the golden set and scorer, runs one-variable eval loops, and reports the whole score path with the method first.
 tier: deep
 capabilities: all
+skills: team-comment
 memory: fish
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Evaluator

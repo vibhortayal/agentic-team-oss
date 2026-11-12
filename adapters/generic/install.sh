@@ -3,8 +3,10 @@
 #
 #   adapters/generic/install.sh <project-dir>
 #
-# Copies every role, the principles, playbooks, templates, docs and the GitHub
-# label script into <project-dir>/.team/, and writes <project-dir>/AGENTS.md
+# Copies every role, the principles, playbooks, templates, docs, skills and the
+# GitHub label script into <project-dir>/.team/, links each skill into
+# <project-dir>/.agents/skills/ (where tools that support the open Agent Skills
+# format look), and writes <project-dir>/AGENTS.md
 # from the template if the project has none. Every agent tool that reads
 # AGENTS.md (or can be told to read a file) can then play any role by reading
 # .team/roles/<role>.md. All roles are always installed so every link resolves;
@@ -24,7 +26,7 @@ trap 'rm -rf "$tmp"' EXIT
 
 mkdir -p "$tmp/roles" "$tmp/adapters"
 cp "$team_root/principles.md" "$tmp/"
-cp -R "$team_root/playbooks" "$team_root/templates" "$team_root/docs" "$tmp/"
+cp -R "$team_root/playbooks" "$team_root/templates" "$team_root/docs" "$team_root/skills" "$tmp/"
 cp -R "$team_root/adapters/github" "$tmp/adapters/"
 for f in "$team_root"/roles/*.md; do
   [ "$(basename "$f")" = "_template.md" ] && continue
@@ -38,6 +40,8 @@ echo "$version" > "$tmp/VERSION"
 rm -rf "$dest"
 mv "$tmp" "$dest"
 trap - EXIT
+
+bash "$team_root/adapters/generic/link-skills.sh" "$project" .agents/skills
 
 if [ ! -f "$project/AGENTS.md" ]; then
   cp "$team_root/templates/AGENTS.md" "$project/AGENTS.md"

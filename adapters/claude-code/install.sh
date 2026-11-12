@@ -5,7 +5,9 @@
 #
 # Runs the generic installer (.team/ and AGENTS.md), then writes each role as a
 # Claude Code subagent in <project-dir>/.claude/agents/, mapping the neutral
-# frontmatter: tier -> model, capabilities -> tools. Writes a one-line
+# frontmatter: tier -> model, capabilities -> tools, skills -> a skills list
+# (Claude Code preloads them), and links every skill into .claude/skills/.
+# Writes a one-line
 # CLAUDE.md that imports AGENTS.md, or adds the import to an existing
 # CLAUDE.md that lacks it. The neutral memory: field is dropped (it is a
 # team convention, not a Claude Code setting).
@@ -32,6 +34,12 @@ for src in "$project"/.team/roles/*.md; do
       m = (t == "deep") ? "opus" : (t == "fast") ? "haiku" : "sonnet"
       print "model: " m; next
     }
+    fm == 1 && /^skills:/ {
+      line = $0; sub(/^skills:[ ]*/, "", line)
+      n = split(line, s, /[ ,]+/); print "skills:"
+      for (i = 1; i <= n; i++) if (s[i] != "") print "  - " s[i]
+      next
+    }
     fm == 1 && /^capabilities:/ {
       line = $0; sub(/^capabilities:[ ]*/, "", line)
       if (line == "all") next          # omit tools: inherit everything
@@ -52,6 +60,8 @@ for src in "$project"/.team/roles/*.md; do
     { gsub(/\]\(\.\.\//, "](../../.team/"); print }
   ' "$src" > "$project/.claude/agents/$role.md"
 done
+
+bash "$team_root/adapters/generic/link-skills.sh" "$project" .claude/skills
 
 if [ ! -f "$project/CLAUDE.md" ]; then
   echo "@AGENTS.md" > "$project/CLAUDE.md"

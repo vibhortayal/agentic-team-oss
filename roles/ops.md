@@ -5,8 +5,9 @@ department: Operations
 description: Use for the machinery around the work (foundation gates, workspaces, housekeeping), for production releases with the owner's approval, monitoring, incidents and the monthly health report, and for peer review of docs and tooling PRs. Never writes app code or specs.
 tier: standard
 capabilities: all
+skills: team-comment
 memory: elephant
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Ops

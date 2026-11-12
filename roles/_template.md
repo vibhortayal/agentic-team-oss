@@ -5,6 +5,7 @@ department: TBD            # Advisory, Product, Research, Engineering, Finance, 
 description: One sentence on when to call this agent. Tools use it to pick a subagent, so say when, not only what.
 tier: deep                 # deep | standard | fast; each adapter maps it to a model
 capabilities: read, search, shell   # read | search | web | write | edit | shell, or all
+skills: team-comment               # folders in skills/ this role uses; link each where the role uses it
 memory: fish               # elephant: remembers through files across tasks; fish: fresh every task
 version: 0.1.0
 ---
