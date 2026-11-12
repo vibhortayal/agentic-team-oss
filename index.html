@@ -108,6 +108,7 @@ title: Home
     <dl class="facts">
       <dt>Who it's for</dt><dd>People with an app idea who don't write code, and developers who want AI work checked instead of taken on trust.</dd>
       <dt>Why it exists</dt><dd>AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.</dd>
+      <dt>What you need</dt><dd>A coding assistant, such as Claude Code, Codex or Cursor. It won't run in an ordinary chat window like ChatGPT, the Claude app or Gemini, because those can't open the files on your computer or run commands there. <a href="{{ '/learn/words.html' | relative_url }}">What's the difference?</a></dd>
     </dl>
     <div class="ctas">
       <a class="btn primary" href="#compare">How it's different</a>
@@ -138,6 +139,7 @@ title: Home
       <tr><th>Cost</th><td>Your subscription. The rest you work out.</td><td>A monthly plan, and usage can add up</td><td>You find out later</td><td class="us">Priced before work starts, with a short weekly spend note</td></tr>
       <tr><th>Where your code lives</th><td>Wherever you paste it</td><td>Their platform (some sync to GitHub)</td><td>Your computer</td><td class="us">Your own GitHub account</td></tr>
       <tr><th>When it stops to ask you</th><td>It only answers</td><td>Rarely</td><td>When it gets stuck</td><td class="us">Before spending money, launching, or anything that can't be undone</td></tr>
+      <tr><th>Can it run the team?</th><td>No. It can't open your files or run commands.</td><td>No. You work inside their platform.</td><td>Yes. That's where the team runs.</td><td class="us">Yes</td></tr>
     </tbody>
   </table></div>
   <p class="muted center-note reveal">For a quick script or a one-off fix, a coding assistant on its own is enough. Agentic Team is for building something you'll keep.</p>
@@ -175,10 +177,11 @@ title: Home
 
 <section class="alt" id="learn"><div class="wrap">
   <div class="center reveal">
-    <h2>Seven short lessons</h2>
-    <p class="muted">A few minutes each, in any order. You don't need to know how to code.</p>
+    <h2>Short lessons</h2>
+    <p class="muted">A few minutes each, in any order. You don't need to know how to code. If words like "terminal" or "repository" are new, start with lesson 00.</p>
   </div>
   <div class="lessons">
+    <a class="lesson reveal" style="--c:#c8e85e" href="{{ '/learn/words.html' | relative_url }}"><span class="n">00</span><h3>Words you'll meet</h3><p>Chatbot, coding assistant, agent, Git and GitHub, in plain language.</p><span class="meta">4 min</span></a>
     <a class="lesson reveal" style="--c:#ffb45e" href="{{ '/learn/journey.html' | relative_url }}"><span class="n">01</span><h3>How a project goes</h3><p>The six steps from idea to launch, and the three where you're needed.</p><span class="meta">3 min</span></a>
     <a class="lesson reveal" style="--c:#4fd1c5" href="{{ '/learn/big-picture.html' | relative_url }}"><span class="n">02</span><h3>The whole picture</h3><p>Ella, the team, GitHub and the checks on one map.</p><span class="meta">3 min</span></a>
     <a class="lesson reveal" style="--c:#ff6fae" href="{{ '/learn/team.html' | relative_url }}"><span class="n">03</span><h3>Meet the team</h3><p>Who the ten agents are and what each one does.</p><span class="meta">4 min</span></a>
@@ -261,7 +264,7 @@ title: Home
 <section class="cta" id="start"><div class="wrap">
   <div class="parade reveal" style="margin-bottom:24px" aria-hidden="true"><span data-bot="you" data-size="90"></span><span data-bot="ella" data-size="90"></span><span data-bot="ian" data-size="74"></span><span data-bot="vera" data-size="74"></span><span data-bot="otto" data-size="74"></span></div>
   <h2 class="reveal">Start a project</h2>
-  <p class="muted reveal">Install the team into your project folder, open your coding assistant there and paste this line with your idea at the end:</p>
+  <p class="muted reveal">Install the team into your project folder and open your coding assistant inside it. With Claude Code, that means typing <code>claude</code> in the terminal there. Then paste this line with your idea at the end:</p>
   <div class="prompt reveal"><span class="p">›</span> You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <em>&lt;your idea, in your own words&gt;</em></div>
   <div class="ctas reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
     <a class="btn primary" href="{{ '/learn/first-project.html' | relative_url }}">Step-by-step setup</a>

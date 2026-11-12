@@ -1,0 +1,123 @@
+---
+layout: portal
+title: Words you'll meet
+theme: light
+summary: Chatbot, coding assistant, agent, Git, GitHub and the other words this site uses, in plain language.
+next: {url: /learn/journey.html, title: "How a project goes"}
+---
+<style>
+body { background: #f6f3ec; }
+.wd-hero { padding: 70px 0 30px; max-width: 760px; }
+.wd-hero h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); margin: 0 0 .3em; }
+.wd-hero p { color: #4b4553; font-size: 1.1rem; margin: 0; }
+.reach { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 30px 0 10px; }
+@media (max-width: 820px) { .reach { grid-template-columns: 1fr; } }
+.kind { background: #fffdf8; border: 1px solid #e3dccd; border-radius: 18px; padding: 22px; position: relative; }
+.kind.us { border: 2px solid #ff6fae; }
+.kind h3 { font-family: Fraunces, serif; font-size: 1.3rem; margin: 0 0 2px; }
+.kind .eg { font-size: .85rem; color: #6b6474; margin: 0 0 14px; }
+.kind .verdict { margin: 14px 0 0; font-weight: 600; font-size: .92rem; }
+.kind .verdict.no { color: #b8322b; } .kind .verdict.yes { color: #1f8a4c; }
+.can { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.can li { display: flex; align-items: center; gap: 10px; font-size: .93rem; padding: 8px 12px; border-radius: 10px; background: #f1ece2; color: #9a93a3; transition: background .5s, color .5s; }
+.can li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #d5cec0; flex: none; transition: background .5s; }
+.reach.in .can li.on { background: #e7f6ec; color: #1d1a22; }
+.reach.in .can li.on::before { background: #22a55a; }
+.reach.in .kind:nth-child(2) li.on { transition-delay: .4s; } .reach.in .kind:nth-child(2) li.on::before { transition-delay: .4s; }
+.reach.in .kind:nth-child(3) li.on { transition-delay: .8s; } .reach.in .kind:nth-child(3) li.on::before { transition-delay: .8s; }
+.kind .who { position: absolute; top: 14px; right: 14px; }
+.terms { margin: 50px 0 80px; }
+.terms h2 { font-family: Fraunces, serif; font-size: 1.6rem; margin: 40px 0 6px; }
+.term { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 18px 0; border-top: 1px solid #e3dccd; }
+@media (max-width: 700px) { .term { grid-template-columns: 1fr; gap: 4px; } }
+.term dt { font-weight: 700; font-size: 1.05rem; }
+.term dt small { display: block; font-weight: 400; color: #6b6474; font-size: .85rem; }
+.term dd { margin: 0; color: #3d3746; }
+.term dd p { margin: 0 0 .5em; }
+.term dd .use { font-size: .92rem; color: #6b6474; }
+.term code { font: .9em "JetBrains Mono", monospace; background: #ece6da; padding: 1px 5px; border-radius: 4px; }
+</style>
+
+<div class="wrap">
+  <header class="wd-hero">
+    <div class="kicker">Lesson 00 · 4 minutes · start here</div>
+    <h1>Words you'll meet</h1>
+    <p>"AI" covers very different tools. The team needs one that can work on your computer, which most chat apps can't. Here's the difference, and the other words this site uses.</p>
+  </header>
+
+  <div class="reach" id="reach">
+    <div class="kind">
+      <h3>A chatbot</h3>
+      <p class="eg">ChatGPT, the Claude app, Gemini</p>
+      <ul class="can">
+        <li class="on">Talks with you and writes answers, even code</li>
+        <li>Opens and changes files on your computer</li>
+        <li>Runs commands, like installing or testing</li>
+        <li>Plans, checks and records the work as a team</li>
+      </ul>
+      <p class="verdict no">Can't run the team</p>
+    </div>
+    <div class="kind">
+      <h3>A coding assistant</h3>
+      <p class="eg">Claude Code, OpenAI Codex, Cursor, GitHub Copilot</p>
+      <ul class="can">
+        <li class="on">Talks with you and writes answers, even code</li>
+        <li class="on">Opens and changes files on your computer</li>
+        <li class="on">Runs commands, like installing or testing</li>
+        <li>Plans, checks and records the work as a team</li>
+      </ul>
+      <p class="verdict yes">Can run the team</p>
+    </div>
+    <div class="kind us">
+      <span class="who" data-bot="ella" data-size="46" data-label="no"></span>
+      <h3>Coding assistant + team</h3>
+      <p class="eg">Any of those, with Agentic Team installed</p>
+      <ul class="can">
+        <li class="on">Talks with you and writes answers, even code</li>
+        <li class="on">Opens and changes files on your computer</li>
+        <li class="on">Runs commands, like installing or testing</li>
+        <li class="on">Plans, checks and records the work as a team</li>
+      </ul>
+      <p class="verdict yes">This is what the site teaches</p>
+    </div>
+  </div>
+
+  <div class="terms">
+    <h2>The AI words</h2>
+    <dl>
+      <div class="term"><dt>Chatbot</dt><dd><p>An AI you talk to in a chat window or app, such as ChatGPT, the Claude app or Gemini. It can write a lot, code included, but it can't open the files on your computer or run anything there. You'd be copying and pasting by hand.</p><p class="use">Fine for questions. The team can't run here.</p></dd></div>
+      <div class="term"><dt>Coding assistant<small>also: coding agent</small></dt><dd><p>An AI that works inside a folder on your computer. It reads and changes files and runs commands, and usually asks before anything risky. Claude Code and Codex run in the terminal. Cursor is an app with a chat panel. Most need a paid plan from the AI company, so check the price first.</p><p class="use">This is where the team runs. Claude Code is the best tested today.</p></dd></div>
+      <div class="term"><dt>Agent</dt><dd><p>An AI given a job and the tools for it, which works through the steps by itself instead of answering one message at a time. A coding assistant is an agent. Agentic Team gives it ten job descriptions, so it can play ten agents: Ella, Priya, Ian, Vera and the rest.</p><p class="use">When this site says "the team", it means those ten agents.</p></dd></div>
+      <div class="term"><dt>Prompt</dt><dd><p>What you type to the AI. You only need one to start: the line that tells it to be Ella, followed by your idea.</p></dd></div>
+    </dl>
+
+    <h2>The computer words</h2>
+    <dl>
+      <div class="term"><dt>Terminal</dt><dd><p>A window where you type commands instead of clicking. On a Mac it's the Terminal app, and on Linux any terminal works. Windows hasn't been tested yet. Git Bash, which comes with Git for Windows, is the likeliest to work.</p><p class="use">You'll paste a few commands into it, once per project.</p></dd></div>
+      <div class="term"><dt>Project folder</dt><dd><p>The folder on your computer that holds your app's files, for example <code>~/code/family-groceries</code>.</p><p class="use">You open your coding assistant inside it, so the AI works on the right files.</p></dd></div>
+      <div class="term"><dt>Git</dt><dd><p>A free program that saves snapshots of your project's files, called commits, so every change is recorded and can be undone.</p><p class="use">You install it once. The agents use it for you after that.</p></dd></div>
+    </dl>
+
+    <h2>The GitHub words</h2>
+    <dl>
+      <div class="term"><dt>GitHub</dt><dd><p>A website that keeps your project online, with its whole history, under your own account. A basic account is free.</p><p class="use">The team writes its plans, tasks and test results there, so nothing lives only in an AI's memory.</p></dd></div>
+      <div class="term"><dt>Repository<small>also: repo</small></dt><dd><p>One project's files plus their whole history. Your repository lives on your computer and on GitHub, kept in step.</p></dd></div>
+      <div class="term"><dt>Issue</dt><dd><p>A to-do note on GitHub, like a ticket. Each piece of work the team does has one, with its handoffs and results written underneath.</p></dd></div>
+      <div class="term"><dt>Pull request<small>also: PR</small></dt><dd><p>A proposed change to the project, shown before it's added. Vera checks it, the automatic checks run on it, and only then is it added.</p></dd></div>
+    </dl>
+
+    <h2>The launch words</h2>
+    <dl>
+      <div class="term"><dt>Preview</dt><dd><p>A working copy of your app at a private link, so you can try it before anyone else sees it.</p><p class="use">You'll be asked to try one before each launch.</p></dd></div>
+      <div class="term"><dt>Launch<small>also: deploy</small></dt><dd><p>Putting your app online for real people to use. It never happens without your yes.</p></dd></div>
+      <div class="term"><dt>Hosting and database</dt><dd><p>Hosting is the service your app runs on. A database is where its data is kept. You sign up for them yourself, and many have free tiers.</p><p class="use">Bea lists the options and monthly costs in your plan.</p></dd></div>
+    </dl>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const r = document.getElementById("reach");
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { r.classList.add("in"); o.disconnect(); } }, { threshold: .3 }).observe(r);
+});
+</script>

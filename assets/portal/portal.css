@@ -104,3 +104,5 @@ section.next a { font-family: Fraunces, serif; font-size: 1.5rem; text-decoratio
 .bubble-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; font-size: .9rem; box-shadow: 0 16px 30px -14px #000a; animation: float 6s ease-in-out infinite; }
 .sign { font: 800 1rem Inter, sans-serif; letter-spacing: .06em; padding: 10px 16px; border-radius: 12px; color: #fff; box-shadow: 0 0 30px var(--g); background: var(--g); animation: float 5s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(-8px); } }
+/* inline code in prose */
+p code, dd code, li code, small code { font: .9em "JetBrains Mono", monospace; background: #8882; padding: 1px 5px; border-radius: 4px; }

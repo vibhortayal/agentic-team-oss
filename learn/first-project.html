@@ -51,7 +51,7 @@ body { background: #eef0f2; }
       <p>Each is free to start. You only do this once.</p>
       <div class="doodles">
         <div class="doodle"><b>GitHub account</b><small>Where your project and its whole history live, in your name.</small><br><a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one →</a></div>
-        <div class="doodle"><b>An AI coding tool</b><small>Claude Code, Codex, Cursor, Gemini CLI or similar. The agents run inside it.</small><br><a href="{{ '/adapters/#tools' | relative_url }}">Which ones work →</a></div>
+        <div class="doodle"><b>A coding assistant</b><small>Claude Code, Codex, Cursor or similar. The agents run inside it. A chatbot like ChatGPT won't work, because it can't reach your files. <a href="{{ '/learn/words.html' | relative_url }}">Why?</a></small><br><a href="{{ '/adapters/#tools' | relative_url }}">Which ones work →</a></div>
         <div class="doodle"><b>Git and a terminal</b><small>The terminal is the text window where you paste commands.</small><br><a href="https://git-scm.com/downloads">Install Git →</a></div>
         <div class="doodle"><b>Password manager</b><small>Bitwarden is free. Your project's keys go there, never in a chat.</small><br><a href="https://bitwarden.com/">Get Bitwarden →</a></div>
       </div>
@@ -72,7 +72,7 @@ body { background: #eef0f2; }
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Put the team in your project</h2>
-      <p>Pick a folder for your project and run the installer for your tool. It copies the team in and leaves a note telling your AI tool how to find them.</p>
+      <p>Pick a folder for your project and run the installer for your tool. It copies the team in and leaves a note telling your coding assistant tool how to find them.</p>
       <div class="code"><button class="copy">Copy</button><span class="c"># any tool</span>
 ~/agentic-team/adapters/generic/install.sh ~/code/my-project
 
@@ -86,7 +86,7 @@ body { background: #eef0f2; }
     <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Say hello to Ella</h2>
-      <p>Open your AI tool in the project folder and paste this one line, with your idea at the end. It's the only prompt you need to remember.</p>
+      <p>Open your coding assistant inside the project folder. With Claude Code, type <code>claude</code> in the terminal there. With Codex, type <code>codex</code>. With Cursor, open the folder and use its chat panel. Then paste this one line, with your idea at the end. It's the only prompt you need to remember.</p>
       <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list.</div>
       <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
       <span class="note">swap in your own idea, in your own words</span>
