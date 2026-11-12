@@ -1,0 +1,6 @@
+# GitHub Pages settings for the public docs site. Pages renders README.md as
+# the home page and every other Markdown file as a page, with links fixed up.
+title: Agentic Team
+description: A team of AI agents that plans, builds, checks and runs your software project.
+theme: jekyll-theme-minimal
+exclude: [AGENTS.md, CLAUDE.md, evals, tools]
