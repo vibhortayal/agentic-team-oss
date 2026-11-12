@@ -96,6 +96,7 @@ A repo nobody can read is a repo nobody checks. Agents over-write unless stopped
 - **One place per fact.** Link to it; never restate it.
 - **Edit, don't append.** Update the existing section instead of adding a new file or an "update" paragraph. Delete what is no longer true.
 - **Human voice.** Short paragraphs, plain words, active voice, contractions where natural. No filler openers, no closing summaries of what was just said, no em dashes, no stock AI words (delve, leverage, robust, seamless, utilize, "it's not just X, it's Y").
+- **Readable at age 10.** Anything a new user reads (the README, the site, Ella's messages, plans and decision questions, and every step the owner does by hand) must be easy for a 7 to 10 year old to follow, though the reader is an adult. Short sentences, about 15 words at most. Everyday words. One idea per sentence. The first time a technical word is needed, say what it is in plain words, with an everyday comparison if it helps. Don't talk down or sound like a children's book. Text the agents write for each other (roles, specs, handoffs) can stay technical.
 - **Small budgets, checked by CI.** New Markdown files only in the folders made for them, and the standing docs stay under the project's `DOCS_BUDGET` ([foundation kit](templates/foundation/README.md)).
 
 ## Working with the owner

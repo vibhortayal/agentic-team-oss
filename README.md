@@ -4,7 +4,7 @@
 
 You have an idea for an app. You tell it to Ella, an AI agent. An agent is an AI that does one job by itself. Ella asks you some questions, writes a short plan and tells you what it will cost. When you say yes, she gets a team of agents to build it. Each agent has one job. One agent builds, and a different one checks the work. Ella comes back to you only when you need to decide something.
 
-It's free. It's a set of written instructions that you add to an AI coding tool, such as Claude Code, Codex or Cursor.
+It's free. It's a set of written instructions that you add to an AI coding assistant, such as Claude Code, Codex or Cursor. A coding assistant is an AI that can open and change the files on your computer.
 
 ## Who it's for
 
@@ -18,26 +18,26 @@ AI tools write code fast. But they check their own work, forget what you agreed 
 
 ## What you need
 
-An AI coding tool, such as Claude Code, Codex or Cursor. A chat app like ChatGPT, the Claude app or Gemini won't work. Chat apps can talk and write, but they can't open the files on your computer or run anything there.
+A coding assistant, such as Claude Code, Codex or Cursor. A chatbot like ChatGPT, the Claude app or Gemini won't work. Chatbots can talk and write, but they can't open the files on your computer or run anything there.
 
 ## How it's different
 
-| | A chat app | An app builder | A coding tool on its own | A coding tool + Agentic Team |
+| | A chatbot | An app builder | A coding assistant on its own | A coding assistant + Agentic Team |
 |---|---|---|---|---|
-| For example | ChatGPT, Claude, Gemini | Lovable, Bolt, Replit | Claude Code, OpenAI Codex, Cursor, GitHub Copilot | Any of those coding tools, with this team added |
+| For example | ChatGPT, Claude, Gemini | Lovable, Bolt, Replit | Claude Code, OpenAI Codex, Cursor, GitHub Copilot | Any of those coding assistants, with this team added |
 | Who decides what to build | You, one message at a time | You, by chatting | You, one message at a time | Ella asks you questions, then writes a one-page plan for you to OK |
 | Who checks the work | You | You, by trying the app | The same AI that built it | A different agent. It writes its tests from your plan before the code exists |
 | What it remembers next week | The chat | Your app, on their website | Notes you kept yourself | Everything: plans, choices and test results, kept in your own GitHub account |
 | Cost | Your subscription. You work out the rest. | A monthly plan, plus extra if you use a lot | You find out later | You see the price before work starts, and get a short spending note each week |
 
-For a quick one-time fix, a coding tool on its own is enough. This team is for an app you want to keep.
+For a quick one-time fix, a coding assistant on its own is enough. This team is for an app you want to keep.
 
 ## Before you start, know this
 
 - It's new. It hasn't built a real app all the way from idea to launch yet. That's the next step.
-- It's slower than one tool on its own, and it uses more AI, so it costs more. Planning and checking are extra steps.
+- It's slower than one coding assistant on its own, and it uses more AI, so it costs more. Planning and checking are extra steps.
 - App builders get you a first version faster. If you need something to show tonight, use one.
-- Tests can still miss mistakes. The work is only as good as the AI in your tool.
+- Tests can still miss mistakes. The work is only as good as the AI in your coding assistant.
 - It works best in Claude Code today. Codex and Cursor read the same instructions. Nobody has tried Gemini CLI yet.
 - Putting your app online and storing its data cost extra. You pay those companies yourself. Bea, the agent who handles money, puts those costs in the plan and picks free options first.
 
@@ -64,7 +64,7 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 **1. Get four things ready.**
 
 - A GitHub account. GitHub is a website that keeps your app's code, and every change to it, safe in your name. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
-- An AI coding tool. [See which ones work](adapters/README.md#tools).
+- A coding assistant. [See which ones work](adapters/README.md#tools).
 - Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
 - A password manager, such as [Bitwarden](https://bitwarden.com/) (free). Your project's passwords and keys go there, never in a chat.
 
@@ -84,7 +84,7 @@ git clone <that address> ~/agentic-team
 ~/agentic-team/adapters/claude-code/install.sh ~/code/my-project
 ```
 
-**4. Say hello to Ella.** Open your coding tool in your project folder. Paste this line and add your idea at the end:
+**4. Say hello to Ella.** Open your coding assistant in your project folder. Paste this line and add your idea at the end:
 
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>

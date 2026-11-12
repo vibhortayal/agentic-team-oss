@@ -2,14 +2,14 @@
 """Free checks for the team itself: no model, no network, standard library only.
 
   python3 tools/teamcheck.py                 # everything below except replay
-  python3 tools/teamcheck.py static          # role files, skills, vendor names, links, labels, handoff table, eval cases
+  python3 tools/teamcheck.py static          # role files, skills, vendor names, links, labels, handoff table, eval cases, plain words
   python3 tools/teamcheck.py install         # every installer, into a scratch folder; links still resolve
   python3 tools/teamcheck.py gates           # the gate kit's own self-test
   python3 tools/teamcheck.py replay STATE [--origin REPO]   # check a sandbox run's handoffs
 
 Exit code 0 means every check passed. Each problem is one line: where, then what.
 """
-import json, os, re, shutil, subprocess, sys, tempfile
+import html, json, os, re, shutil, subprocess, sys, tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FAKE_GH = os.path.join(ROOT, "tools", "sandbox", "gh")
@@ -374,6 +374,53 @@ def check_cases(root=ROOT):
                 errs.append("evals/%s/case.md: unknown check %r" % (case, line[2:].split()[0]))
     return errs
 
+# Words a newcomer page may use only if the Words lesson explains them (principles, Writing: readable at age 10).
+JARGON = ["commit", "merge", "branch", "deploy", "CI", "API", "spec", "ticket", "gate", "label", "frontmatter", "stack",
+          "staging", "repo", "token", "workflow", "ratchet", "mandate", "rubric", "subagent", "SDK", "verdict", "playbook",
+          "red zone", "autonomy stage", "blocker", "handoff"]
+MAX_WORDS = 25  # the rule asks for about 15; this only catches the clearly too long
+
+
+def page_text(path):
+    """The words a reader sees on a README or portal page: no front matter, styles, scripts, code or commands."""
+    t = open(path, encoding="utf-8").read()
+    if path.endswith(".html"):
+        t = re.sub(r"\A---\n.*?\n---\n", "", t, flags=re.S)
+        t = re.sub(r"<(style|script|pre)[^>]*>.*?</\1>", "\n", t, flags=re.S | re.I)
+        t = re.sub(r'<div class="(?:code|cmd)[^"]*">.*?</div>', "\n", t, flags=re.S)
+        t = re.sub(r"\{\{.*?\}\}|\{%.*?%\}", "", t, flags=re.S)
+        t = re.sub(r"</?(?:p|li|h\d|div|dt|dd|br|section|ul|ol|td|th|tr|button|small)\b[^>]*>", "\n", t)
+        t = html.unescape(re.sub(r"<[^>]+>", "", t))
+    else:
+        t = re.sub(r"```.*?```", "\n", t, flags=re.S)
+        t = re.sub(r"`[^`]*`", "x", t)
+        t = re.sub(r"\]\([^)]*\)", "]", t).replace("|", "\n")
+    return t
+
+
+def check_plain(root=ROOT):
+    """Newcomer pages (README, portal home, lessons): no very long sentences, and no jargon the Words lesson doesn't explain."""
+    errs, learn = [], os.path.join(root, "learn")
+    words = os.path.join(learn, "words.html")
+    if not os.path.exists(words):
+        return errs
+    glossary = page_text(words).lower()
+    pages = [os.path.join(root, "README.md"), os.path.join(root, "index.html")]
+    pages += [os.path.join(learn, f) for f in sorted(os.listdir(learn)) if f.endswith(".html")]
+    for path in (p for p in pages if os.path.exists(p)):
+        text, where = page_text(path), rel(path) if root == ROOT else os.path.relpath(path, root)
+        for line in text.split("\n"):
+            for sent in re.split(r"(?<=[.!?:;])\s+", line):
+                if len(sent.split()) > MAX_WORDS:
+                    errs.append("%s: sentence of %d words, split it: %s..." % (where, len(sent.split()), sent.strip()[:60]))
+        if path == words:
+            continue
+        for term in JARGON:
+            pat = r"\b%s(?:s|es|ed|ing)?\b" % re.escape(term)
+            if re.search(pat, text, 0 if term.isupper() else re.I) and not re.search(pat, glossary, 0 if term.isupper() else re.I):
+                errs.append("%s: %r isn't explained in learn/words.html; explain it there or use an everyday word" % (where, term))
+    return errs
+
 
 def section(text, name):
     m = re.search(r"^# %s\n(.*?)(?=^# |\Z)" % re.escape(name), text, re.S | re.M)
@@ -382,7 +429,7 @@ def section(text, name):
 
 def static(root=ROOT):
     out = []
-    for fn in (check_roles, check_skills, check_team_comment, check_lifecycle, check_vendor, check_labels, check_handoff_table, check_cases):
+    for fn in (check_roles, check_skills, check_team_comment, check_lifecycle, check_vendor, check_labels, check_handoff_table, check_cases, check_plain):
         out += fn(root)
     out += check_links(root, own_md(root, skip={os.path.join(root, "evals", "runs")}))
     return out

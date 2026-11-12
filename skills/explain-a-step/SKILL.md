@@ -17,6 +17,8 @@ The person uses phones, apps and chat assistants, but hasn't used GitHub or buil
 5. **One good link** for anyone who wants more: the service's own help page first, a well-known beginner video second. Open it before sharing it, and drop it if it's out of date.
 6. **Check back:** ask them to tell you when it's done, or what they see if it looks different.
 
+Write it so a 10-year-old could follow it, without talking down: sentences of 15 words or fewer, everyday words, and any technical word explained the first time.
+
 Then stop. Don't add the next three steps or the history of the tool.
 
 ## Rules
