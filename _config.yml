@@ -19,6 +19,7 @@ defaults:
   - {scope: {path: "learn"}, values: {nav_exclude: true, search_exclude: true}}
   - {scope: {path: "index.html"}, values: {nav_exclude: true, search_exclude: true}}
   - {scope: {path: "about.html"}, values: {nav_exclude: true, search_exclude: true}}
+  - {scope: {path: "options.html"}, values: {nav_exclude: true, search_exclude: true}}
   - {scope: {path: "templates"}, values: {nav_exclude: true}}
   - {scope: {path: "docs/research"}, values: {nav_exclude: true}}
   - {scope: {path: "docs/github-state.md"}, values: {nav_exclude: true}}

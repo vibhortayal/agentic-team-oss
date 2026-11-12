@@ -27,6 +27,6 @@ has_toc: true
 | **Bea** | Budget Analyst | Finance | standard | Estimates cost and time as ranges, prices every new requirement, sets per-ticket caps, keeps the ledger of actual spend | [roles/budget-analyst.md](../roles/budget-analyst.md) |
 | **Otto** | Ops | Operations | standard | Sets up the gates, keeps repositories tidy, runs production releases with the owner's approval, monitoring and incidents | [roles/ops.md](../roles/ops.md) |
 
-Names are for easy reference: "ask Quinn to critique this", "send it to Vera". Each starts with a different letter, and most match the role's first letter. The role (the file name) stays the stable id that tools and commits use; a name can change without breaking anything.
+Names are for easy reference: "ask Quinn to critique this", "send it to Vera". Each starts with a different letter, and most match the role's first letter. You can rename any agent, Ella included: tell Ella, or change the Persona column in your project's `TEAM.md`. The role (the file name) stays the stable id that tools and commits use, so a new name breaks nothing.
 
 Each role is one agent definition that can run as many copies as the work needs. Elephants (Ella, Priya, Arjun, Bea, Otto) remember a project through files in the repo; fish (Ian, Vera, Rohan, Quinn, Max) start every task fresh, which keeps them independent. See [principles.md](../principles.md#memory-elephants-and-fish). The split follows Google's [Elephant-Goldfish Model](https://opensource.googleblog.com/2026/10/introducing-elephant-goldfish-model-plugin.html).

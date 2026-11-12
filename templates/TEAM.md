@@ -44,7 +44,7 @@ Build sessions count prepare, build and verify sessions that end with a team com
 | budget-analyst | Bea | estimates, per-ticket caps, spend ledger | |
 | ops | Otto | foundation, housekeeping, releases, production and incidents | |
 
-Delete rows for roles this project does not use.
+Delete rows for roles this project does not use. The owner may rename any agent, Ella included: change the Persona cell. That name wins over the default names in the team's files; the Role column stays the id that tools, labels and commits use.
 
 ## Skills adopted for this project
 

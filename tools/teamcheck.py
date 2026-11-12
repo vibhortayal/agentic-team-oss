@@ -405,7 +405,7 @@ def check_plain(root=ROOT):
     if not os.path.exists(words):
         return errs
     glossary = page_text(words).lower()
-    pages = [os.path.join(root, f) for f in ("README.md", "index.html", "about.html")]
+    pages = [os.path.join(root, f) for f in ("README.md", "index.html", "about.html", "options.html")]
     pages += [os.path.join(learn, f) for f in sorted(os.listdir(learn)) if f.endswith(".html")]
     for path in (p for p in pages if os.path.exists(p)):
         text, where = page_text(path), rel(path) if root == ROOT else os.path.relpath(path, root)
