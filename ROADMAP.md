@@ -43,6 +43,6 @@ What the evidence says about beginners building with AI: practitioner accounts d
 | **1. Plumbing** | The team itself: roles, principles, playbooks and templates; any-tool installers; state on GitHub; the foundation gate kit; project profiles; release, operate and improvement loops | In progress |
 | **2. Prove it** | Run real projects with the plumbing as it is (from an engineer's terminal). Retros, the first frozen eval cases, and the first quarterly role review tune the team from evidence | Next |
 | **3. Front door** | The portal, built by the team as its own project in a separate private repo, installed like any user's project: a home page of projects and their progress, Ella's intake chat, team picker with agent introductions, per-project adjustments, the next-step card that leads the person through the lifecycle, the readable plan with a skill level per step, inviting a helper for chosen steps, the guide, and a "you're needed" list | After phase 2 starts producing evidence |
-| **4. Package** | One-step setup for non-technical users (accounts, keys and hosting handled or guided), the guide's step-by-step help for every human task, and the public open-source release | Later |
+| **4. Package** | One-step setup for non-technical users (accounts, keys and hosting handled or guided) and the guide's step-by-step help for every human task | Later |
 
 Each phase is entered on the owner's word, and the plumbing keeps improving through the [improvement loop](playbooks/improve.md) in every phase.

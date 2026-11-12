@@ -22,7 +22,7 @@ A skill is a folder in `skills/` with a `SKILL.md`: a how-to a role loads for on
 
 The generic install copies them to `.team/skills/` and links each into `.agents/skills/`, where Codex and other tools that support the format look. The Claude Code install also links them into `.claude/skills/`. Links are relative, so they survive a clone; on Windows, turn on Git's symlink support. A project's own skill with the same name as a team skill is left alone. Skills a project adopts at intake are real folders in `.agents/skills/`; for Claude Code, Otto also links each one into `.claude/skills/` in the same gate PR.
 
-Two skills are copied unchanged from other projects (`webapp-testing` and `frontend-design`, Apache-2.0); each has an `UPSTREAM.md` saying where from and at which commit. Everything else is the team's own. Skills installed on the machine outside the team can still load in a session; the principles say the role wins whenever one disagrees.
+Some skills are copied unchanged from other projects; each of those has an `UPSTREAM.md` saying where from, at which commit and under which licence. Everything else is the team's own. Skills installed on the machine outside the team can still load in a session; the principles say the role wins whenever one disagrees.
 
 ## Tools
 

@@ -47,6 +47,21 @@ Around it sits the [engagement](../playbooks/engagement.md) layer: an estimate b
 
 Nothing wakes an agent by itself. Each handoff ends with the next prompt to paste, and the cadences start when the owner pastes a prompt from the README or a scheduler in the tool runs it.
 
+## Words you'll see
+
+| Word | Meaning |
+|---|---|
+| Spec, change spec | A short written description of a change with checkable acceptance criteria, approved before any code |
+| Ticket | One unit of work: a GitHub issue, a branch and a pull request |
+| PASS, BLOCK | Vera's verdict on an exact version of the work. BLOCK lists what's wrong |
+| Typed blocker | An agent's honest "I can't do this": unclear request, missing access, too big, or impossible |
+| Gate | A CI check the agents can't change, such as "existing tests weren't edited" |
+| Red zone | Risky paths (sign-in, payments, migrations, infrastructure) that always need your approval |
+| Autonomy stage | How much merges without you, widened one area at a time on evidence |
+| Elephant, fish | Elephants remember a project through files; fish start fresh each time so they stay independent |
+| Dark run | A build that runs without questions to you, except the decisions only you can make |
+| Profile | The kind of project (prototype, production and so on), which sets how much process applies |
+
 ## Not settled
 
 As of November 2026 no controlled study compares delivery methods for agent teams, and no study shows spec-driven tools improve agent output. This is our best fit with current guidance and the evidence on batch size, stability and team shape. The health report and retros tell us whether it works, and roles get tuned when it doesn't.

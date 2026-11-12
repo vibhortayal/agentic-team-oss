@@ -22,7 +22,10 @@ defaults:
   - {scope: {path: "docs/research"}, values: {nav_exclude: true}}
   - {scope: {path: "docs/github-state.md"}, values: {nav_exclude: true}}
   - {scope: {path: "README.md"}, values: {title: Get started, nav_order: 1, permalink: /start/}}
-  - {scope: {path: "docs/how-we-work.md"}, values: {nav_order: 2}}
+  - {scope: {path: "docs/how-we-work.md"}, values: {nav_order: 2, has_children: true}}
+  - {scope: {path: "docs/lifecycle.md"}, values: {parent: How we work, nav_order: 1}}
+  - {scope: {path: "docs/hosting.md"}, values: {parent: How we work, nav_order: 2}}
+  - {scope: {path: "skills"}, values: {nav_exclude: true, search_exclude: true}}  # roles link to these; served, kept out of the menu
   - {scope: {path: "roles"}, values: {parent: Meet the team}}
   - {scope: {path: "playbooks"}, values: {parent: Playbooks}}
   - {scope: {path: "principles.md"}, values: {nav_order: 5}}
