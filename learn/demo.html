@@ -41,6 +41,20 @@ youtube: ""
 .caption { text-align: center; margin: 22px auto 0; max-width: 40em; min-height: 3.2em; color: var(--muted); font-size: 1.05rem; }
 .caption b { color: var(--text); }
 .yt { max-width: 980px; margin: 70px auto 0; }
+#who .head { max-width: 720px; margin-bottom: 28px; }
+#who .head p { color: var(--muted); margin: 0; }
+.ideas { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+.ideas button { font: 500 1rem Geist, Inter, sans-serif; padding: .7em 1.1em; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
+.ideas button:hover { border-color: var(--muted); }
+.ideas button[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+.crew { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.crew li { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 12px 8px; animation: join .45s cubic-bezier(.2,.9,.3,1.3) both; animation-delay: calc(var(--i) * 110ms); }
+.crew li:first-child { border-color: #d4561a55; }
+.crew b { font-size: 1.05rem; }
+.crew p { margin: 2px 0 0; color: var(--muted); font-size: .95rem; line-height: 1.45; }
+.crew-note { color: var(--muted); margin: 20px 0 0; }
+@keyframes join { from { opacity: 0; transform: translateY(14px) scale(.96); } }
+@media (prefers-reduced-motion: reduce) { .crew li { animation: none; } }
 </style>
 
 <header class="demo-hero"><div class="wrap">
@@ -57,6 +71,61 @@ youtube: ""
   <p class="caption" id="caption"></p>
   {% if page.youtube != "" %}<div class="yt"><h2 style="font-size:1.4rem">Prefer a video?</h2><div class="video"><iframe src="https://www.youtube-nocookie.com/embed/{{ page.youtube }}" title="Agentic Team demo" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>{% endif %}
 </div>
+
+<section id="who" class="alt"><div class="wrap">
+  <div class="head"><h2>Try it: who helps with your idea?</h2><p>Pick an idea. Ella brings in only the helpers it needs. You only ever talk to her.</p></div>
+  <div class="ideas" role="group" aria-label="Pick an idea">
+    <button type="button" data-idea="list" aria-pressed="true">A family grocery list</button>
+    <button type="button" data-idea="booking">Bookings for a hair salon</button>
+    <button type="button" data-idea="club">A website for my book club</button>
+    <button type="button" data-idea="game">A simple word game</button>
+  </div>
+  <ul class="crew" aria-live="polite"></ul>
+  <p class="crew-note"></p>
+</div></section>
+<script>
+(function () {
+  const IDEAS = {
+    list: { note: "Five helpers. A small app with phones and sharing needs a builder, a checker and someone to put it online.", crew: [
+      ["ella", "I talk with you and keep the plan on track."],
+      ["priya", "I write down what the list must do, like ticking off milk."],
+      ["ian", "I build the list so it changes on every phone at once."],
+      ["vera", "I try it on two phones and check both lists match."],
+      ["otto", "I put it online so your family can open it."]] },
+    booking: { note: "Seven helpers. Money and other people's time are involved, so there's more to plan and check.", crew: [
+      ["ella", "I talk with you and keep the plan on track."],
+      ["rohan", "I look at how other booking apps stop double bookings."],
+      ["priya", "I write down the rules, like how late someone can cancel."],
+      ["arjun", "I plan where bookings are saved, so a time can't be taken twice."],
+      ["ian", "I build the booking page and the salon's calendar."],
+      ["vera", "I try to book the same time twice and make sure it says no."],
+      ["bea", "I tell you what it costs to run each month, before we start."]] },
+    club: { note: "Four helpers. A simple website needs a small team, and a small team uses less AI.", crew: [
+      ["ella", "I talk with you and keep the plan on track."],
+      ["ian", "I build the pages: next meeting, book list, how to join."],
+      ["vera", "I open every page on a phone and check each link works."],
+      ["otto", "I put it online and help you choose a free place to host it."]] },
+    game: { note: "Five helpers. Games need someone to ask what makes them fun before anything is built.", crew: [
+      ["ella", "I talk with you and keep the plan on track."],
+      ["quinn", "I ask the hard question first: what makes it fun to play again?"],
+      ["priya", "I write the rules of the game down, so everyone builds the same thing."],
+      ["ian", "I build the game."],
+      ["vera", "I play it and check the score adds up."]] },
+  };
+  const box = document.currentScript.previousElementSibling;
+  const list = box.querySelector(".crew"), note = box.querySelector(".crew-note");
+  function show(id) {
+    box.querySelectorAll(".ideas button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.idea === id));
+    list.innerHTML = IDEAS[id].crew.map(([bot, line], i) =>
+      `<li style="--i:${i}"><span data-bot="${bot}" data-size="76"></span><div><b>${Robots.list[bot].name}</b><p>${line}</p></div></li>`).join("");
+    note.textContent = IDEAS[id].note;
+    Robots.fill(list);
+  }
+  box.querySelectorAll(".ideas button").forEach((b) => b.addEventListener("click", () => show(b.dataset.idea)));
+  const start = () => show("list");
+  if (window.Robots) start(); else window.addEventListener("load", start);
+})();
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -85,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { tab: "chat", caption: "<b>The plan:</b> one page, with the cost, before anything starts.", steps: [
       ["plan", "<b>Ella · your one-page plan</b>Here's what I recommend:<ul><li><b style='display:inline;color:inherit'>Build:</b> one shared list that updates live on every phone</li><li><b style='display:inline;color:inherit'>You'll need:</b> free hosting and a free database. $0 a month at your size</li><li><b style='display:inline;color:inherit'>You'll do:</b> create one account (5 min), try the preview, say go</li><li><b style='display:inline;color:inherit'>Team:</b> Priya, Ian, Vera, Otto. Bea estimates 2 to 3 days of agent work</li></ul>Shall I start?"],
       ["me", "Yes, go ahead."],
-      ["ella", "On it. I'll come back when the preview is ready for you to try."] ] },
+      ["ella", "On it. Priya writes down what the list must do. Ian builds it, and Vera checks it on two phones. I'll come back when it's ready for you to try."] ] },
   ];
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   let run = 0, paused = false;
