@@ -3,7 +3,7 @@
 # The docs menu is set here, so no Markdown file needs site-only front matter.
 # index.html and learn/ are the learning portal, with their own layout.
 title: Agentic Team
-description: A team of AI agents that plans, builds, checks and runs your software project.
+description: An AI team that helps you build your app. Free and open source.
 remote_theme: just-the-docs/just-the-docs@v0.10.1
 plugins: [jekyll-remote-theme]
 color_scheme: light
