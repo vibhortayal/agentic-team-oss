@@ -17,6 +17,12 @@ body { background: #f4ede1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .page.flip .inner { transform: rotateY(180deg); }
 .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; background: #fffdf8; padding: 22px; box-shadow: 0 1px 0 #e7dccb, 0 3px 0 #fff, 0 5px 0 #e7dccb, 0 18px 30px -16px #5a3e1b55; overflow: hidden; }
 .face.back { transform: rotateY(180deg); background: var(--c); color: #1d1a22; }
+/* Safari can ignore backface-visibility for animated children (the robots), so the
+   front face would stay on top after a flip. Swap the faces' visibility halfway through the turn. */
+.face { -webkit-backface-visibility: hidden; transition: visibility 0s .35s; }
+.face.back { visibility: hidden; }
+.page.flip .face { visibility: hidden; }
+.page.flip .face.back { visibility: visible; }
 .face::before { content: ""; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; border-radius: 50%; background: var(--c); opacity: .25; }
 .mini { display: block; margin: -8px 0 2px -10px; }
 .bot { position: relative; width: 84px; height: 84px; margin-bottom: 12px; }

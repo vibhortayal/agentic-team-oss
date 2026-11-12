@@ -14,6 +14,8 @@ youtube: ""
 .tabs { display: flex; gap: 6px; margin-left: 14px; }
 .tabs span { font-size: .8rem; padding: 4px 12px; border-radius: 8px; color: var(--muted); }
 .tabs span.on { background: #ffffff12; color: var(--text); }
+.chathead { font: 12px "JetBrains Mono", monospace; color: var(--muted); border-bottom: 1px solid #ffffff14; padding-bottom: 8px; margin-bottom: 12px; }
+#caption code { font: .9em "JetBrains Mono", monospace; background: #ffffff14; padding: 1px 5px; border-radius: 4px; }
 .pane { height: 430px; padding: 22px 24px; overflow: hidden; font: 14.5px/1.75 "JetBrains Mono", monospace; color: #e6e1ee; position: relative; }
 .pane .ln { white-space: pre-wrap; }
 .pane .pr { color: var(--green); } .pane .dim { color: #8a8399; } .pane .ok { color: var(--green); } .pane .warm { color: var(--warm); }
@@ -48,7 +50,7 @@ youtube: ""
 
 <div class="wrap" style="padding-bottom:90px">
   <div class="screen" id="screen">
-    <div class="bar"><i></i><i></i><i></i><div class="tabs"><span id="tab-term" class="on">Terminal</span><span id="tab-chat">Your AI tool</span></div></div>
+    <div class="bar"><i></i><i></i><i></i><div class="tabs"><span id="tab-term" class="on">Terminal</span><span id="tab-chat">Claude Code (your coding assistant)</span></div></div>
     <div class="pane" id="pane"></div>
     <div class="controls"><button id="play">Pause</button><div class="chapters" id="chapters"></div><button id="again">Replay</button></div>
   </div>
@@ -64,13 +66,19 @@ document.addEventListener("DOMContentLoaded", () => {
     { tab: "term", caption: "<b>Once:</b> download the team to your computer.", steps: [
       ["type", "git clone {{ site.github.repository_url }} ~/agentic-team"],
       ["out", "<span class='dim'>Cloning into '/Users/you/agentic-team'...</span>"], ["out", "<span class='ok'>done.</span>"] ] },
-    { tab: "term", caption: "<b>Per project:</b> put the team into your project folder.", steps: [
+    { tab: "term", caption: "<b>Per project:</b> make a folder for the project and put the team in it.", steps: [
+      ["type", "mkdir -p ~/code/family-groceries"],
       ["type", "~/agentic-team/adapters/claude-code/install.sh ~/code/family-groceries"],
       ["out", "<span class='dim'>installed architect</span>"], ["out", "<span class='dim'>installed budget-analyst</span>"], ["out", "<span class='dim'>installed critic</span>"], ["out", "<span class='dim'>installed engagement-lead   <span class='ok'>← Ella</span></span>"], ["out", "<span class='dim'>…  10 roles in all</span>"],
-      ["out", "wrote AGENTS.md <span class='dim'>(how your AI tool finds the team)</span>"],
-      ["out", "Claude Code subagents -> ~/code/family-groceries/.claude/agents"],
-      ["out", "<span class='warm'>Done. Open your AI tool in this folder and say hello to Ella.</span>"] ] },
+      ["out", "wrote AGENTS.md <span class='dim'>(fill in the project lines)</span>"],
+      ["out", "wrote CLAUDE.md <span class='dim'>(imports AGENTS.md)</span>"],
+      ["out", "Claude Code subagents -> ~/code/family-groceries/.claude/agents"] ] },
+    { tab: "term", caption: "<b>Open your coding assistant inside the project folder.</b> With Claude Code, type <code>claude</code>. With Codex, type <code>codex</code>. With Cursor, open the folder and use its chat panel. A chatbot like ChatGPT can't do this step: it can't open the files on your computer.", steps: [
+      ["type", "cd ~/code/family-groceries"],
+      ["type", "claude"],
+      ["out", "<span class='warm'>Claude Code starts, right here in the terminal. From now on, what you type goes to the AI.</span>"] ] },
     { tab: "chat", caption: "<b>Say hello:</b> one line, with your idea in your own words.", steps: [
+      ["head", "Claude Code · ~/code/family-groceries"],
       ["me", "You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list."],
       ["ella", "Two quick questions: is it just for your family, and should it work on phones?"],
       ["me", "Just the four of us, on our phones."] ] },
@@ -102,6 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const t = ln.querySelector(".t");
           for (const ch2 of text) { await waitPlay(); if (me !== run) return; t.textContent += ch2; await sleep(28); }
           ln.querySelector(".cursor").remove(); await sleep(500);
+        } else if (kind === "head") {
+          const h = document.createElement("div"); h.className = "chathead"; h.textContent = text; pane.appendChild(h); await sleep(400);
         } else if (kind === "out") {
           const ln = document.createElement("div"); ln.className = "ln"; ln.innerHTML = text; pane.appendChild(ln); await sleep(650);
         } else {

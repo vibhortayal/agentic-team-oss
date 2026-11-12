@@ -8,6 +8,8 @@ Agentic Team is a free, open-source set of instructions. It turns the AI coding 
 
 **Why it exists.** AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.
 
+**What you need to run it.** A coding assistant, such as Claude Code, Codex or Cursor. It won't run in an ordinary chat window like ChatGPT, the Claude app or Gemini, because those can't open the files on your computer or run commands there.
+
 ## How it's different
 
 | | A chatbot | An app builder | A coding assistant on its own | Your coding assistant + Agentic Team |
@@ -19,6 +21,7 @@ Agentic Team is a free, open-source set of instructions. It turns the AI coding 
 | Cost | Your subscription. The rest you work out. | A monthly plan, and usage can add up | You find out later | Priced before work starts, with a short weekly spend note |
 | Where your code lives | Wherever you paste it | Their platform (some sync to GitHub) | Your computer | Your own GitHub account |
 | When it stops to ask you | It only answers | Rarely | When it gets stuck | Before spending money, launching, or anything that can't be undone |
+| Can it run the team? | No. It can't open your files or run commands | No. You work inside their platform | Yes. That's where the team runs | Yes |
 
 For a quick script or a one-off fix, a coding assistant on its own is enough. Agentic Team is for building something you'll keep.
 
@@ -68,7 +71,7 @@ A piece of work is done when the checker passes it, every automatic check is gre
 | Git, and a terminal you can paste commands into | To copy the team into your project | [Install Git](https://git-scm.com/downloads) |
 | A password manager, such as [Bitwarden](https://bitwarden.com/) (free) | Keys and passwords for your project go there, one folder per project, never in a chat or a file | Ella shows you when the first key comes up |
 
-If any of this is new, Ella can walk you through it: open your AI tool, paste the prompt from step 3 and say you're starting from scratch.
+If any of this is new, Ella can walk you through it: open your coding assistant in the project folder, paste the prompt from step 3 and say you're starting from scratch.
 
 ### 1. Put the team in your project (once per project)
 
