@@ -12,7 +12,7 @@ mermaid:
 search_enabled: true
 heading_anchors: true
 aux_links:
-  "Learning portal": "/agentic-team-oss/"
+  "Learning portal": "/"
 include: [README.md]  # the docs start page; the portal is the home page
 exclude: [AGENTS.md, CLAUDE.md, evals, tools]
 defaults:
