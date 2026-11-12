@@ -43,14 +43,18 @@ next: {url: /learn/first-project.html, title: "Your first project"}
 .page.lead { grid-column: span 2; }
 .page.lead .badge { position: absolute; top: 18px; right: 18px; z-index: 1; font-size: .72rem; font-weight: 700; background: #111113; color: #fff; border-radius: 3px; padding: 4px 8px; font-family: "Geist Mono", monospace; }
 @media (max-width: 560px) { .page.lead { grid-column: auto; } }
+.go { background: none; border: 0; padding: 0; cursor: pointer; border-radius: 6px; transition: transform .2s; }
+.go:hover, .go:focus-visible { transform: translateY(-6px); }
+.go:focus-visible { outline: 2px solid var(--warm); outline-offset: 4px; }
+.page.hit .face { border-color: var(--c); box-shadow: 0 0 0 3px var(--c); }
 .memo { text-align: center; color: var(--muted); max-width: 640px; margin: 0 auto; }
 .memo b { color: var(--text); }
 </style>
 
 <header class="pop-hero"><div class="wrap">
   <h1>Meet the team</h1>
-  <p class="muted" style="max-width:38em;margin:0 auto">Ten agents, one job each. You only talk to Ella; she brings in the others when your project needs them. Tap a card to see what they'd say to you.</p>
-  <div class="scene" style="margin-top:30px;min-height:0" aria-hidden="true"><div class="parade"><span data-bot="you" data-size="104"></span><span data-bot="ella" data-size="104"></span><span data-bot="priya" data-size="78"></span><span data-bot="rohan" data-size="78"></span><span data-bot="quinn" data-size="78"></span><span data-bot="arjun" data-size="78"></span><span data-bot="ian" data-size="78"></span><span data-bot="vera" data-size="78"></span><span data-bot="max" data-size="78"></span><span data-bot="bea" data-size="78"></span><span data-bot="otto" data-size="78"></span></div></div>
+  <p class="muted" style="max-width:38em;margin:0 auto">Ten agents, one job each. You only talk to Ella; she brings in the others when your project needs them. Tap a face to jump to that agent, or tap a card to see what they'd say to you.</p>
+  <div class="scene" style="margin-top:30px;min-height:0"><div class="parade"><button type="button" class="go" data-go="ella" aria-label="You talk to Ella. Show Ella's card"><span data-bot="you" data-size="104"></span></button><button type="button" class="go" data-go="ella" aria-label="Show Ella's card"><span data-bot="ella" data-size="104"></span></button><button type="button" class="go" data-go="priya" aria-label="Show Priya's card"><span data-bot="priya" data-size="78"></span></button><button type="button" class="go" data-go="rohan" aria-label="Show Rohan's card"><span data-bot="rohan" data-size="78"></span></button><button type="button" class="go" data-go="quinn" aria-label="Show Quinn's card"><span data-bot="quinn" data-size="78"></span></button><button type="button" class="go" data-go="arjun" aria-label="Show Arjun's card"><span data-bot="arjun" data-size="78"></span></button><button type="button" class="go" data-go="ian" aria-label="Show Ian's card"><span data-bot="ian" data-size="78"></span></button><button type="button" class="go" data-go="vera" aria-label="Show Vera's card"><span data-bot="vera" data-size="78"></span></button><button type="button" class="go" data-go="max" aria-label="Show Max's card"><span data-bot="max" data-size="78"></span></button><button type="button" class="go" data-go="bea" aria-label="Show Bea's card"><span data-bot="bea" data-size="78"></span></button><button type="button" class="go" data-go="otto" aria-label="Show Otto's card"><span data-bot="otto" data-size="78"></span></button></div></div>
 </div></header>
 
 <div class="wrap">
@@ -77,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   for (const [name, role, c, file, job, say, lead] of team) {
     const d = document.createElement("div");
     d.className = "page" + (lead ? " lead" : ""); d.style.setProperty("--c", c);
+    d.id = "bot-" + (file === "engagement-lead" ? "ella" : name.toLowerCase());
     d.tabIndex = 0; d.setAttribute("role", "button"); d.setAttribute("aria-label", name + ", " + role + ". Tap to flip");
     d.innerHTML = `${lead ? '<span class="badge">YOUR CONTACT</span>' : ""}<div class="inner">
       <div class="face"><span class="mini" data-bot="${file === "engagement-lead" ? "ella" : name.toLowerCase()}" data-size="84" data-label="no"></span>
@@ -88,6 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
     book.appendChild(d);
   }
   Robots.fill(book);
+  // The faces in the header jump to their card and turn it over. "You" goes to Ella, the one you talk to.
+  document.querySelectorAll(".go").forEach((b) => b.addEventListener("click", () => {
+    const card = document.getElementById("bot-" + b.dataset.go); if (!card) return;
+    card.classList.add("in");
+    card.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+    card.focus({ preventScroll: true });
+    setTimeout(() => { card.classList.add("flip", "hit"); setTimeout(() => card.classList.remove("hit"), 1600); }, 450);
+  }));
   const io = new IntersectionObserver((es) => es.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add("in"), i * 90); io.unobserve(e.target); } }), { threshold: .2 });
   book.querySelectorAll(".page").forEach((p) => io.observe(p));
   setTimeout(() => book.querySelectorAll(".page").forEach((p) => p.classList.add("in")), 2500);
