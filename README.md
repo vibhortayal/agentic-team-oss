@@ -72,7 +72,7 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 - A GitHub account. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
 - A coding assistant. [See which ones work](adapters/README.md#tools).
 - Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
-- A password manager, such as [Bitwarden](https://bitwarden.com/) (free). Your project's passwords and keys go there, never in a chat.
+- A safe place for your app's keys. A key is a long password that lets your app use another service. Use any password manager you like (your phone or computer may have one built in), or a private file kept outside your project folder. Never paste a key into a chat.
 
 **2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal, go to the folder and type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
 
