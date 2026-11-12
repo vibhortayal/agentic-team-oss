@@ -5,7 +5,7 @@ title: About
 summary: Who made Agentic Team, and why.
 ---
 <style>
-.ab { max-width: 720px; padding: 72px 0 88px; }
+.ab { max-width: 760px; padding-top: 72px; padding-bottom: 88px; }
 .ab h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); margin: 0 0 .4em; }
 .ab .lead { font-size: 1.2rem; margin: 0 0 1em; }
 .ab p { margin: 0 0 1em; }
@@ -15,7 +15,10 @@ summary: Who made Agentic Team, and why.
 .ab li b { display: block; font-size: 1.05rem; }
 .ab li span { color: var(--muted); }
 .ab .sub { color: var(--muted); font-size: .95rem; margin: 24px 0 8px; }
-.ab .links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 8px; }
+.ab .more { margin-top: 24px; }
+.ab .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.ab .links a { padding: .45em 1em; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--text); }
+.ab .links a:hover { border-color: var(--muted); }
 </style>
 
 <div class="wrap ab">
@@ -37,7 +40,7 @@ summary: Who made Agentic Team, and why.
     <li><b>Agentic Team</b><span>This project. The whole team is open for anyone to read, on <a href="{{ site.github.repository_url }}">GitHub</a>.</span></li>
   </ul>
 
-  <p>Want to compare this project with others? See <a href="{{ '/options.html' | relative_url }}">other options</a>.</p>
+  <p class="more">Want to compare this project with others? See <a href="{{ '/options.html' | relative_url }}">other options</a>.</p>
 
   <h2>Find me</h2>
   <div class="links">
