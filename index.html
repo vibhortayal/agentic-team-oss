@@ -8,6 +8,18 @@ theme: plain
 .intro h1 { font-size: clamp(2.3rem, 6vw, 4rem); line-height: 1.08; max-width: 14em; margin: 0 auto .35em; }
 .intro .sub { font-family: "Geist Mono", monospace; color: var(--muted); font-size: clamp(.92rem, 2vw, 1.05rem); margin: 0 0 32px; }
 .intro .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.paths { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 760px; margin: 0 auto; text-align: left; }
+@media (max-width: 640px) { .paths { grid-template-columns: 1fr; } }
+.path { display: flex; flex-direction: column; gap: 6px; padding: 22px 24px; border: 1.5px solid var(--text); border-radius: 16px; color: var(--text); text-decoration: none; transition: transform .15s; }
+.path:hover { transform: translateY(-2px); }
+.path small { color: var(--muted); font-size: .9rem; }
+.path b { font-size: 1.3rem; }
+.path span { color: var(--muted); }
+.path i { font-style: normal; font-weight: 600; margin-top: 6px; }
+.path.dark { background: var(--text); color: var(--bg); }
+.path.dark small, .path.dark span { color: var(--bg); opacity: .8; }
+.how-link { margin: 22px 0 0; }
+.how-link a { color: var(--muted); }
 
 .head { max-width: 720px; margin-bottom: 36px; }
 .head p { color: var(--muted); margin: 0; }
@@ -66,10 +78,11 @@ theme: plain
 <header class="intro"><div class="wrap">
   <h1>Have an idea for an app? Build it, with an AI team to help.</h1>
   <p class="sub">It's free, it runs on your own computer, and it teaches you each step. You learn how real apps are planned, built and checked as you go.</p>
-  <div class="ctas">
-    <a class="b dark" href="#how">See how it works</a>
-    <a class="b line" href="{{ '/learn/first-project.html' | relative_url }}">Start your first app →</a>
+  <div class="paths">
+    <a class="path" href="#learn"><small>New to all this?</small><b>Learn the basics first</b><span>Short lessons in plain words, a few minutes each.</span><i>See the lessons →</i></a>
+    <a class="path dark" href="{{ '/learn/first-project.html' | relative_url }}"><small>Ready to build?</small><b>Start your first app</b><span>Step by step, from zero. Ella guides you the whole way.</span><i>Start now →</i></a>
   </div>
+  <p class="how-link"><a href="#how">Or see how it works ↓</a></p>
 </div></header>
 
 <div class="wrap">
