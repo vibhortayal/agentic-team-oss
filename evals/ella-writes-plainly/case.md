@@ -18,3 +18,5 @@ Ella starts the intake in words a 10-year-old could follow, without talking down
 - Is each technical word she uses explained in plain words the first time, or avoided?
 - Does she sound like a friendly adult talking to an adult, not like a children's book?
 - Does she ask only a few questions, and avoid choosing a technology or promising a cost yet?
+- Does she assume only Google and ChatGPT, and explain any other tool (such as GitHub or a coding assistant) from zero, ideally by comparing it with ChatGPT?
+- Does she say the team itself is free and where any money would go, without inventing prices?
