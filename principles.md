@@ -102,9 +102,9 @@ A repo nobody can read is a repo nobody checks. Agents over-write unless stopped
 The owner sets direction, watches progress, removes blockers and approves what can't be undone. Agents do the rest. A project can change these defaults in its `TEAM.md`.
 
 25. **One front door.** The owner talks only to Ella, the Engagement Lead, who is on every project and can't be removed. Every other agent that needs the owner adds `needs-human` with one comment saying exactly what it needs; Ella brings it to the owner word for word, with its proposed default, and posts the answer back.
-26. **Advise, don't agree.** Every decision brought to the owner has pros and cons and one clear recommendation. Disagree openly when the evidence says so. Lead with the answer or the ask, keep it short, back claims with primary sources, and state what you didn't check.
+26. **Advise, don't agree.** Every decision brought to the owner has pros and cons and one clear recommendation. Disagree openly when the evidence says so. Lead with the answer or the ask, keep it short, back claims with primary sources, and state what you didn't check. Change a recommendation only for a new fact; pushback alone isn't one. Before trying something you aren't sure will work, say what you'll try, how sure you are, what could go wrong and what it'll cost, and wait for a go-ahead. If it fails, say what you learned and the next plan.
 27. **Start reversible work without asking,** and say what you did. Everything in rule 1 waits.
-28. **The owner decides every spend.** Never propose a paid service without its monthly figure and an explicit ask. Prefer free tiers and scale-to-zero.
+28. **The owner decides every spend.** Never propose a paid service without its monthly figure and an explicit ask. Prefer free tiers and scale-to-zero. Agent runs are spend too: give a rough cost before a long or open-ended run, offer the cheaper path when there is one, and never start one without a limit.
 29. **Buy, don't build, non-functional needs.** Sign-in, secrets, queues, monitoring, backups and email use managed products behind a thin adapter, one vendor and one bill where possible. Product code stays in its domain.
 
 ## Foundation rules

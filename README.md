@@ -1,16 +1,90 @@
 # Agentic Team
 
-A company of AI agents for building software the way a disciplined engineering team would. Each agent has a name, a role and a mandate. It works with any agent tool (Claude Code, Codex, Gemini CLI, Cursor and others): roles are plain Markdown, all state lives in the project's GitHub repo, and each tool gets a thin adapter. A project hires the agents it needs from here instead of writing its own prompts. This repository is the source of truth: roles are tuned here once, and every project picks up the improvement by moving its pin.
+Tell it your idea in plain words, and a team of AI agents plans it, builds it, checks it and helps you launch and run it. You talk to one of them, Ella. She interviews you, shows you a short plan with what it'll cost and what you'll need to do, and then runs the rest of the team in the background. She comes back only when something is truly yours to decide.
 
-**What this is.** Not a new agent, and not a multi-agent framework. The agents come from the tool you already use; this repo is the company they work in: job descriptions (roles), a process (playbooks), guardrails they can't switch off (the CI gate kit), and one shared record (GitHub). Think of it as a franchise manual plus quality control for AI agents.
+**Why not just ask a chat assistant?** A chat assistant knows a lot, and Ella uses whichever AI you already have. What the team adds is discipline. A chat improvises a new plan every time; the team follows the same proven steps on every project. A chat forgets; the team keeps every decision and every step in your project's own GitHub repository. In a chat, the AI that wrote the code also tells you it works; here a separate agent checks it against what you agreed, and automatic checks stop shortcuts. And nothing that costs money or can't be undone happens without your yes.
 
-**When is something done?** A ticket is done when Vera passes the exact version against its written criteria, every gate is green, and you merge it. A project is done when it reaches the result its [profile](playbooks/engagement.md#project-profiles) promises, and a fresh agent has written the retro.
+**Who it's for today.** Right now you start the team from an AI coding tool on your computer, so it suits someone comfortable with a terminal, or a beginner with a technical friend for the first setup. A friendly web front door, where Ella walks a complete beginner through everything, is planned ([ROADMAP.md](ROADMAP.md)).
 
-Where this is going, and what is being built now: [ROADMAP.md](ROADMAP.md).
+## How a project goes
 
-The mandates say how an agent works, never what to build. Everything about a project travels in that project's own spec and its `TEAM.md` pointer file.
+```mermaid
+flowchart LR
+  A["Idea<br/>you chat with Ella"] --> B["Plan<br/>Ella's one-page plan"]
+  B --> C["Build<br/>agents write the code"]
+  C --> D["Check<br/>a separate agent tests it"]
+  D --> E["Launch<br/>your app goes live"]
+  E --> F["Keep it running<br/>fixes, updates, support"]
+  B -. "you approve the plan and costs" .-> Y((You))
+  D -. "you try the preview" .-> Y
+  E -. "you say go" .-> Y
+```
 
-## The roster
+You're needed at a few checkpoints: approving the plan and its costs, trying each preview, any new spending, and the launch. Everything between runs on its own. Before you start, Ella's plan tells you:
+
+- **What we'll build**, in two or three sentences.
+- **What you'll need**: outside services such as where the app lives online and where its data is kept, each with an easy option, other options and the monthly cost.
+- **What you'll do**: the few steps that are yours, such as creating an account, and how long each takes.
+- **Who's on the team**, one line each, and why.
+- **When she'll need you.**
+
+Ask her "tell me more" about anything; otherwise she keeps it short. She'll recommend the safe path, explain why, and tell you before she tries anything she isn't sure of.
+
+A piece of work is done when the checker passes it, every automatic check is green, and you approve it. A project is done when it reaches what its [profile](playbooks/engagement.md#project-profiles) promises.
+
+## Your first project, step by step
+
+### Before you start
+
+| You need | Why | New to it? |
+|---|---|---|
+| A GitHub account | Your project's code and its whole history live there, in your name | [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) · [Hello World tutorial](https://docs.github.com/en/get-started/start-your-journey/hello-world) |
+| An AI coding tool (Claude Code, Codex, Cursor, Gemini CLI or another) | The agents run inside it; this repo tells them how to work | [Which tools work](adapters/README.md#tools) |
+| Git, and a terminal you can paste commands into | To copy the team into your project | [Install Git](https://git-scm.com/downloads) |
+| A password manager, such as [Bitwarden](https://bitwarden.com/) (free) | Keys and passwords for your project go there, one folder per project, never in a chat or a file | Ella shows you when the first key comes up |
+
+If any of this is new, Ella can walk you through it: open your AI tool, paste the prompt from step 3 and say you're starting from scratch.
+
+### 1. Put the team in your project (once per project)
+
+```bash
+git clone <this repo's URL> ~/agentic-team
+
+# any tool: copies the team into .team/ and writes AGENTS.md
+~/agentic-team/adapters/generic/install.sh ~/code/my-project
+
+# Claude Code: run this instead (does the above, plus subagents and CLAUDE.md)
+~/agentic-team/adapters/claude-code/install.sh ~/code/my-project
+
+# GitHub labels the agents use to show who holds what (needs the gh CLI, signed in)
+~/agentic-team/adapters/github/labels.sh <owner>/<repo>
+```
+
+Then copy [templates/TEAM.md](templates/TEAM.md) into the project (Ella fills in the details with you at intake) and commit `.team/`, `AGENTS.md` and `TEAM.md`. For a brand-new repo, the [foundation](playbooks/foundation.md) playbook runs before any feature work; Ella starts it.
+
+### 2. Your tool
+
+Codex and Cursor read `AGENTS.md` as is. Claude Code uses its own installer above. Other tools need a pointer to `AGENTS.md`; [adapters/README.md](adapters/README.md) has the details and how to pick a model for each role's `tier`.
+
+### 3. Talk to Ella
+
+Open a session in the project and paste:
+
+```text
+You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
+```
+
+That's the only prompt you need. Start a new idea, ask for a change, ask how things are going, approve something: it all goes to Ella, and she starts the other agents. In a tool that can't start sessions on its own, she gives you the one line to paste into a new session.
+
+Agents hand off on GitHub issues and keep the `role:`, `stage:` and `needs-human` labels current ([docs/github-state.md](docs/github-state.md)); Ella answers from there, and the dashboard will read the same data.
+
+The team's own maintenance (the quarterly role review, tuning a role) runs in this repo: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.` To pick up a tuned role in a project, re-run the installer and commit the diff. Never edit `.team/` inside a project by hand.
+
+## What's underneath
+
+The team itself is plain text: job descriptions (roles), a process (playbooks), checks the agents can't switch off (the gate kit) and one shared record (GitHub). It works with any agent tool, and each tool gets a thin adapter. A project hires the agents it needs from here instead of writing its own prompts; roles are tuned here once, and every project picks up the improvement by updating its copy. The mandates say how an agent works, never what to build; everything about a project lives in that project's own spec and its `TEAM.md`.
+
+### The roster
 
 | Name | Role | Department | Tier | Job in one line | Mandate |
 |---|---|---|---|---|---|
@@ -31,7 +105,7 @@ Each role is one agent definition that can run as many copies as the work needs.
 
 **You only talk to Ella.** She's on every project and can't be removed; every other agent is optional. She interviews you, writes the proposal with Bea's estimate, and after you sign off she runs the rest: Priya specs and runs each ticket with Ian and Vera (or Arjun for a large multi-unit build), Otto releases, Bea reports. Ella comes back to you only for decisions, each with one recommendation, and she'll tell you when a shortcut puts the project at risk. You can always overrule her.
 
-## Playbooks
+### Playbooks
 
 | Playbook | Use it when |
 |---|---|
@@ -44,7 +118,7 @@ Each role is one agent definition that can run as many copies as the work needs.
 
 **How we work.** The team follows *spec-driven flow*: small written specs, tickets that flow through build, independent verification and gates, and no sprints. [docs/how-we-work.md](docs/how-we-work.md) compares it with waterfall, Scrum, SAFe and Kanban, with the evidence.
 
-## Words you'll see
+### Words you'll see
 
 | Word | Meaning |
 |---|---|
@@ -61,46 +135,7 @@ Each role is one agent definition that can run as many copies as the work needs.
 
 The rules every agent follows are in [principles.md](principles.md), and the evidence behind the design is in [the research report](docs/research/agentic-software-company-practices.md).
 
-## Getting started
-
-The team works the same way in every agent tool. Only three things differ by tool: the install command, which file the tool reads first, and how you open a fresh session. Roles, rules, playbooks and prompts are identical everywhere.
-
-### 1. Put the team in your project (once per project)
-
-```bash
-git clone <this repo's URL> ~/agentic-team
-
-# any tool: copies the team into .team/ and writes AGENTS.md
-~/agentic-team/adapters/generic/install.sh ~/code/my-project
-
-# Claude Code: run this instead (does the above, plus subagents and CLAUDE.md)
-~/agentic-team/adapters/claude-code/install.sh ~/code/my-project
-
-# GitHub labels the agents use to show who holds what (needs the gh CLI, signed in)
-~/agentic-team/adapters/github/labels.sh <owner>/<repo>
-```
-
-Then copy [templates/TEAM.md](templates/TEAM.md) into the project and fill it in, fill in the project lines at the top of `AGENTS.md`, and commit `.team/`, `AGENTS.md` and `TEAM.md`. For a brand-new repo, run the [foundation](playbooks/foundation.md) playbook before any feature work.
-
-### 2. Your tool
-
-Codex and Cursor read `AGENTS.md` as is. Claude Code uses its own installer above. Other tools need a pointer to `AGENTS.md`; [adapters/README.md](adapters/README.md) has the details and how to pick a model for each role's `tier`.
-
-### 3. Talk to Ella
-
-Open a session in the project and paste:
-
-```text
-You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
-```
-
-That's the only prompt you need. Start a new idea, ask for a change, ask how things are going, approve something: it all goes to Ella, and she starts the other agents. In a tool that can't start sessions on its own, she gives you the one line to paste into a new session.
-
-Agents hand off on GitHub issues and keep the `role:`, `stage:` and `needs-human` labels current ([docs/github-state.md](docs/github-state.md)); Ella answers from there, and the dashboard will read the same data.
-
-The team's own maintenance (the quarterly role review, tuning a role) runs in this repo: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.` To pick up a tuned role in a project, re-run the installer and commit the diff. Never edit `.team/` inside a project by hand.
-
-## Layout
+### Layout
 
 ```text
 roles/        one page per agent: neutral frontmatter (tier, capabilities) and its mandate
@@ -110,7 +145,3 @@ adapters/     install scripts (generic, Claude Code) and the GitHub label script
 docs/         how we work, the GitHub state contract, the research behind the design
 evals/        frozen cases for tuning roles (see improve)
 ```
-
-## License
-
-Apache-2.0. See [LICENSE](LICENSE).
