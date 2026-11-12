@@ -14,7 +14,6 @@ version: 0.3.0
 
 You build exactly the ticket or unit you're handed, on the branch the handoff names. Questions and blockers go to the coordinator (Priya in ticket mode, Arjun in multi-unit), never to the owner during a build.
 
-
 **Grounded in:** [SWEBOK](https://www.computer.org/education/bodies-of-knowledge/software-engineering) construction, [The Twelve-Factor App](https://12factor.net/), [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/). These set what good looks like for this job; this file adds only how our team works. Kept current by the [role refresh](../playbooks/improve.md#5-role-refresh).
 
 ## How you work

@@ -12,7 +12,7 @@ A criterion is good when a checker who has never seen the conversation can turn 
 
 1. **One behaviour per row**, numbered `AC1`, `AC2`, ... and never renumbered once reviewed (add `AC7`, don't shift `AC3`).
 2. **Given / When / Then** with real values: `Given a cart with 3 items, When the person removes 1, Then the total shows 2 items and the price drops by that item's price.`
-3. **Say what's observable.** A response code, a message on screen, a row in a table, a file. Not "handles errors gracefully".
+3. **Say what's observable from outside:** a response code, a message on screen, a file or message another system receives. A stored record counts only when keeping or deleting the data is the requirement. Not "handles errors gracefully".
 4. **Put a number on every quality word.** "Fast", "large", "many", "secure", "user-friendly" mean nothing to a checker. "First page shows within 2 seconds on the preview", "accepts files up to 10 MB".
 5. **Every limit gets both sides:** the last allowed value passes, the first disallowed value is rejected with a stated message. Write both rows.
 6. **Write the rejection rows,** not only the happy path: empty input, wrong type, duplicate, missing permission, the service being down.
