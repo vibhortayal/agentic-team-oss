@@ -127,6 +127,33 @@ mkdir -p "verification/7"; echo img > "verification/7/phone light.png"; git add 
 git checkout -q -B v5 "$base"; echo 'y' > src/f.py; git add -A; git commit -qm f; rev=$(git rev-parse --short HEAD); pass_at "$rev"; echo img > "verification/7/phone light.png"; git add -A; git commit -qm shot
 expect 0 "evidence file with a space in its name is fine" verdict
 
+echo "-- limits"
+ev() { python3 -c 'import json,sys; print(json.dumps(["<!-- team-event " + e + " -->" for e in sys.argv[1:]]))' "$@" > "$work/ev.json"; }
+limits() { $G limits --base $base --head HEAD --branch "$T" --events "$work/ev.json" --approved "${1:-}"; }
+CAP='{"from":"budget-analyst","kind":"report","cap_sessions":2}'
+S='{"from":"implementer","kind":"handoff"}'
+B='{"from":"verifier","kind":"verdict","verdict":"BLOCK"}'
+git checkout -q -B l1 "$base"
+ev "$CAP" "$S" "$S"
+expect 0 "sessions within the cap are fine" limits
+ev "$CAP" "$S" "$S" "$S"
+expect 1 "sessions over the cap are blocked" limits
+expect 0 "over the cap with the owner's spend-approved is fine" limits spend-approved
+ev "$CAP" '{"from":"budget-analyst","cap_sessions":99}' "$S" "$S" "$S"
+expect 1 "a later, bigger cap does not lift the first one" limits
+ev "$CAP" "$S" '{"from":"implementer", broken' "$S"
+expect 1 "a broken event line still counts as a session" limits
+ev '{"from":"budget-analyst","cap_sessions":9}' "$B" "$B"
+expect 0 "two BLOCKs are fine" limits
+ev '{"from":"budget-analyst","cap_sessions":9}' "$B" "$B" "$B"
+expect 1 "three BLOCKs stop the ticket" limits
+expect 0 "three BLOCKs with the owner's rounds-approved go on" limits rounds-approved
+ev "$S"
+expect 1 "no cap when zones.yml requires one is blocked" limits
+grep -v '^  - cap$' zones.yml > z && mv z zones.yml && git commit -qam no-cap-required
+expect 0 "no cap is only a note when zones.yml doesn't require one" $G limits --base HEAD --head HEAD --branch "$T" --events "$work/ev.json"
+expect 0 "limits not needed for a docs PR" $G limits --base $base --head HEAD --branch docs/x --events "$work/ev.json"
+
 echo "-- quality gate"
 lint="grep -rn TODO src | sed -E 's/^([^:]*):.*/\\1\tTODO/'; exit 0"
 branch q1; echo 'w = 4  # TODO new' >> src/app.py; git commit -qam q1

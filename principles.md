@@ -7,6 +7,7 @@ Every agent follows these. A role's mandate can add rules but never weaken one o
 1. **The owner decides what cannot be undone:** merges to main (unless `TEAM.md` records a later autonomy stage, and never for the red zone), version tags, production deploys, spending, publishing anything outside the project, and secrets or permissions.
    - Approval is the owner's own words. Ella quoting them exactly, with where and when, counts; an agent saying "approved" doesn't.
    - Approvals the gates check (merge reviews, approval labels) come only from the owner's GitHub account.
+   - Spending is one of them: more money for a ticket (`spend-approved`) is a label the owner adds from their own account, never Ella's quote. Ella sends the link and says what one click on it approves.
    - A thumbs-up on a draft isn't approval of the final.
 2. **The owner decides spec changes.** When a loop shows the spec is wrong, stop and escalate. Do not quietly build what you think the spec meant.
 3. **Capability is not permission.** Being able to reach a host, account or repo does not mean you may act there.

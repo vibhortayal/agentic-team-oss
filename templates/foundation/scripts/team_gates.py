@@ -8,6 +8,7 @@ from the pull request, so a pull request cannot change the guard that judges it
   team_gates.py classify --branch NAME
   team_gates.py tamper   --base SHA --head SHA --branch NAME [--approved a,b]
   team_gates.py verdict  --base SHA --head SHA --branch NAME [--checker-approved]
+  team_gates.py limits   --base SHA --head SHA --branch NAME [--events FILE --approved a,b]
   team_gates.py quality  --base SHA --head SHA            (reads LINT_CMD, SETUP_CMD)
   team_gates.py docs     --base SHA --head SHA            (reads DOCS_BUDGET, default 6000)
   team_gates.py strip-approvals                           (CI, on every new push)
@@ -28,6 +29,11 @@ quality   Block new violations only. Runs SETUP_CMD then LINT_CMD at base and at
           LINT_CMD prints "<path>\t<rule>" per violation and exits 0 or 1. Fails if a changed
           file gains violations of any rule, or if the linter crashes. LINT_CMD=none opts
           out (prototype profile only).
+limits    Ticket PRs only. Reads the team-event lines on the ticket's issue and PR. Fails when
+          the sessions so far pass the cap the Budget Analyst set (the first cap_sessions
+          event), or after three Verifier BLOCKs, unless the owner's own account added
+          spend-approved or rounds-approved to the issue. No cap recorded fails only when
+          zones.yml requires "cap"; otherwise it is reported as not checked.
 docs      Keeps documentation lean. A new Markdown file may only appear in a folder made
           for it (DOC_FOLDERS); the standing docs (README, AGENTS, TEAM, DESIGN and
           docs/*.md) may not grow past DOCS_BUDGET words in total.
@@ -37,6 +43,11 @@ import argparse, json, os, re, subprocess, sys, tempfile, urllib.request
 APPROVAL = {"gate": "gate-change-approved", "tests": "tests-approved",
             "deps": "deps-approved", "red": "red-zone-approved"}
 APPROVAL_LABELS = set(APPROVAL.values())
+# Issue labels the owner adds to let a ticket go past its limits. They stay on the issue
+# (strip-approvals only touches the PR), because they approve more budget, not one version.
+LIMIT_APPROVAL = {"spend": "spend-approved", "rounds": "rounds-approved"}
+MAX_BLOCKS = 3
+EVENT_RE = re.compile(r"<!--\s*team-event\s+(.*?)\s*-->", re.S)
 
 # Paths each non-ticket class may touch (besides what zones allow with a label).
 CLASS_PATHS = {
@@ -146,11 +157,11 @@ def paged(path):
         page += 1
 
 
-def owner_labels():
-    """Labels currently on the PR whose latest 'labeled' event was by the owner's account."""
-    pr, owner = os.environ.get("PR_NUMBER"), os.environ.get("TEAM_OWNER")
+def owner_labels(number=None):
+    """Labels currently on the PR (or the given issue) whose latest 'labeled' event was by the owner's account."""
+    pr, owner = number or os.environ.get("PR_NUMBER"), os.environ.get("TEAM_OWNER")
     if not pr or not owner:
-        sys.exit("tamper: PR_NUMBER and TEAM_OWNER must be set")
+        sys.exit("gates: PR_NUMBER and TEAM_OWNER must be set")
     last_by = {}
     for e in paged(f"issues/{pr}/events"):
         if e.get("event") == "labeled":
@@ -230,6 +241,59 @@ def validate_verdict(v):
     return errs
 
 
+def team_events(bodies):
+    """The first team-event of each comment body. A comment whose event line is broken still counts, as {}."""
+    events = []
+    for body in bodies:
+        m = EVENT_RE.search(body or "")
+        if not m:
+            continue
+        try:
+            e = json.loads(m.group(1))
+        except json.JSONDecodeError:
+            e = {}
+        events.append(e if isinstance(e, dict) else {})
+    return events
+
+
+def cmd_limits(a):
+    cls, issue = classify(a.branch)
+    if cls != "ticket":
+        print(f"limits check: not needed for a '{cls}' pull request"); return 0
+    if a.events is not None:
+        with open(a.events) as f:
+            bodies = json.load(f)
+        approved = set(filter(None, (a.approved or "").split(",")))
+    else:
+        seen, bodies = set(), []
+        for n in filter(None, (str(issue), os.environ.get("PR_NUMBER"))):
+            for c in paged(f"issues/{n}/comments"):
+                if c["id"] not in seen:
+                    seen.add(c["id"]); bodies.append(c.get("body", ""))
+        approved = owner_labels(issue)
+    events = team_events(bodies)
+    errs = []
+    caps = [e["cap_sessions"] for e in events if e.get("from") == "budget-analyst"
+            and type(e.get("cap_sessions")) is int and e["cap_sessions"] > 0]
+    sessions = sum(1 for e in events if e.get("from") != "budget-analyst")
+    if caps:
+        cap = caps[0]  # the cap set before work started; raising it takes the owner's label
+        print(f"LIMITS sessions {sessions} of cap {cap}")
+        if sessions > cap and LIMIT_APPROVAL["spend"] not in approved:
+            errs.append(f"{sessions} sessions is over the cap of {cap}; the owner adds '{LIMIT_APPROVAL['spend']}' to issue #{issue} to allow more")
+    elif "cap" in load_zones(git("show", f"{a.base}:zones.yml")).get("require", []):
+        errs.append("zones.yml requires a cap but issue has no budget-analyst event with cap_sessions")
+    else:
+        print("NOTE no cap recorded on the issue: spend not checked")
+    blocks = sum(1 for e in events if e.get("kind") == "verdict" and e.get("verdict") == "BLOCK")
+    if blocks >= MAX_BLOCKS and LIMIT_APPROVAL["rounds"] not in approved:
+        errs.append(f"{blocks} BLOCK verdicts: the ticket stops with a typed blocker; the owner adds '{LIMIT_APPROVAL['rounds']}' to issue #{issue} to allow another round")
+    for e in errs:
+        print("LIMITS", e)
+    print("limits check:", "FAIL" if errs else "ok")
+    return 1 if errs else 0
+
+
 def blob(rev, path):
     r = subprocess.run(["git", "rev-parse", "-q", "--verify", f"{rev}:{path}"], capture_output=True, text=True)
     return r.stdout.strip() if r.returncode == 0 else None
@@ -265,6 +329,10 @@ def cmd_verdict(a):
         failed = [c["id"] for c in v["checks"] if c["result"] != "pass"]
         if failed:
             errs.append("PASS with checks not passed: " + ", ".join(failed))
+        scripted = f"verification/{issue}/checks/"
+        unrun = [c["id"] for c in v["checks"] if scripted not in c["command"]]
+        if unrun:
+            print(f"NOTE not re-run by CI (no script under {scripted}), so they rest on the Verifier's word: " + ", ".join(unrun))
         if subprocess.run(["git", "merge-base", "--is-ancestor", v["rev"], a.head]).returncode != 0:
             errs.append(f"reviewed revision {v['rev']} is not in this branch")
         else:
@@ -380,21 +448,23 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("classify"); p.add_argument("--branch", required=True)
-    for name in ("tamper", "verdict", "quality", "docs"):
+    for name in ("tamper", "verdict", "limits", "quality", "docs"):
         p = sub.add_parser(name)
         p.add_argument("--base", required=True)
         p.add_argument("--head", required=True)
         if name not in ("quality", "docs"):
             p.add_argument("--branch", required=True)
-        if name == "tamper":
+        if name in ("tamper", "limits"):
             p.add_argument("--approved", help="comma-separated labels; local tests only (CI asks GitHub)")
+        if name == "limits":
+            p.add_argument("--events", help="JSON list of comment bodies; local tests only (CI asks GitHub)")
         if name == "verdict":
             p.add_argument("--checker-approved", dest="checker_approved", type=lambda s: s == "yes",
                            help="yes|no; local tests only (CI asks GitHub)")
     sub.add_parser("strip-approvals")
     a = ap.parse_args()
     return {"classify": cmd_classify, "tamper": cmd_tamper, "verdict": cmd_verdict,
-            "quality": cmd_quality, "docs": cmd_docs, "strip-approvals": cmd_strip}[a.cmd](a)
+            "limits": cmd_limits, "quality": cmd_quality, "docs": cmd_docs, "strip-approvals": cmd_strip}[a.cmd](a)
 
 
 if __name__ == "__main__":

@@ -5,9 +5,11 @@
 # What this project requires. Delete a line only for the prototype profile (a gate change).
 #   checker: the verdict check fails if TEAM_CHECKER isn't set
 #   lint:    the quality gate fails if LINT_CMD is "none"
+#   cap:     the limits check fails if the ticket's issue has no cap from the Budget Analyst
 require:
   - checker
   - lint
+  - cap
 
 # Gate files: CI, agent rules, role files and skills, the autonomy stage (TEAM.md), lint and type
 # config, test-runner config, the command surface, this file. Any change needs the owner's
