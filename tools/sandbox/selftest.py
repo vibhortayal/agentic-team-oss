@@ -64,6 +64,9 @@ def static_tests():
         os.makedirs(os.path.join(tmp, "skills", "orphan"))
         open(os.path.join(tmp, "skills", "orphan", "SKILL.md"), "w").write("---\nname: orphan\ndescription: Nobody uses it.\nlicense: Apache-2.0\n---\n")
         open(os.path.join(tmp, "roles", "_template.md"), "a").close()
+        edit("roles/architect.md", "**Grounded in:**", "**Based on:**")
+        edit("docs/lifecycle.md", "[Handover test](../playbooks/production.md#handover-test)", "nothing yet")
+        edit("skills/k6/UPSTREAM.md", "Copied unchanged", "Adapted")
         errs = teamcheck.static(tmp)
         for name, text in [("bad tier", "tier 'huge'"), ("name differs from file", "name is 'opz'"),
                            ("vendor model name in a role", "vendor name 'opus'"), ("broken anchor", "no heading for #no-such-heading"),
@@ -72,7 +75,10 @@ def static_tests():
                            ("bad case kind", "kind must be positive or negative"), ("unknown check", "unknown check 'teleport'"),
                            ("a role naming a missing skill", "skill no-such-skill has no"), ("skill name differs from folder", "the folder is explain-a-step"),
                            ("a skill linking outside itself", "leaves debug-a-failure"), ("a skill with no licence", "testable-criteria/SKILL.md: no license"),
-                           ("a copied skill without its licence", "copied skill without its LICENSE"), ("a skill no role uses", "skills/orphan: no role lists it")]:
+                           ("a copied skill without its licence", "copied skill without its LICENSE"), ("a skill no role uses", "skills/orphan: no role lists it"),
+                           ("a role not grounded in outside practice", "architect.md: no 'Grounded in:'"),
+                           ("a lifecycle stage with no rule", "has no rule linked"),
+                           ("a copied skill that was changed", "k6/UPSTREAM.md: must say")]:
             expect("catches " + name, caught(errs, text), "\n".join(errs))
 
 

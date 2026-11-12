@@ -40,7 +40,7 @@ Green tests don't make a product safe to put in front of real users. Before the 
 | Item | Type | Who | Proof |
 |---|---|---|---|
 | **Threat list** for each red-zone area (sign-in, data separation, payments, uploads, admin): how it could be attacked and the check that stops it | all | Quinn at planning; checks join the spec | `docs/specs/vN-review/threats.md` |
-| **Security scan** of the running preview with OWASP ZAP's baseline scan, and the OWASP ASVS Level 1 checklist marked pass, fail or not relevant | web, api | Vera | Scan report, checklist |
+| **Security scan** of the running preview with OWASP ZAP's baseline scan, and the OWASP ASVS 5.0 Level 1 checklist, each requirement marked pass, fail or not relevant with how it was checked (the scan alone proves none) | web, api | Vera | Scan report, checklist |
 | **Data list** in the spec: what personal data, why, where it's kept, which outside services see it, how long | all | Priya | Spec section |
 | **Privacy policy and terms** from a managed generator (buy, don't build), matching the data list; legal pages are red zone | all | Priya drafts, owner approves | Links |
 | **Users can download and delete their own data;** tracking waits for consent where the rules require it | all | Vera | Check scripts |
@@ -71,7 +71,7 @@ A store app can't be rolled back once it's on people's phones, and the store can
 
 Max's evals measure whether AI output is good. These rules cover whether it can be tricked, leak, or do harm.
 
-1. **Abuse cases.** Quinn writes them from the OWASP Top 10 for LLM applications and the spec: prompt injection (including through documents, web pages or emails the AI reads), leaking personal data or its own instructions, harmful or off-topic output, an agent acting beyond its job, and runaway cost. Max adds them to the golden set as a red-team slice with its own pass mark, run before every prompt or model change.
+1. **Abuse cases.** Quinn writes them from the spec and the OWASP Top 10 for LLM applications, plus the [one for agentic applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) when the AI calls tools: prompt injection (including through documents, web pages or emails the AI reads), leaking personal data or its own instructions, harmful or off-topic output, an agent acting beyond its job, and runaway cost. Max adds them to the golden set as a red-team slice with its own pass mark, run before every prompt or model change.
 2. **Least power.** An agent inside the product gets only the tools its job needs, and asks the user before it spends money, sends a message, deletes anything or acts outside the app. Its tool permissions are red zone.
 3. **Tell users** when they're talking to an AI, and where its answers can be wrong.
 4. **Drift.** Each month Max scores a small sample of real AI calls against the golden set's metric, only where users agreed and only through a mode that doesn't train on the data. A drop below the pass mark is a SEV3.

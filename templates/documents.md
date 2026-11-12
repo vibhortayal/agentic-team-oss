@@ -120,7 +120,7 @@ The close-out report (`reports/close-out.md`) uses the same shape for the whole 
 
 ## Decision record
 
-`docs/decisions/DR-<n>.md` · Priya owns them; the owner approves stack and red-zone decisions.
+`docs/decisions/DR-<n>.md` · Priya owns them, and Arjun writes his design choices in a multi-unit build; the owner approves stack and red-zone decisions.
 
 ```markdown
 # DR-<n>: <title>

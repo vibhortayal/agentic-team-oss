@@ -40,6 +40,13 @@ def md_files(base, skip=()):
                 yield os.path.join(d, f)
 
 
+def own_md(base, skip=()):
+    """Markdown files we wrote: copied skills (folders with UPSTREAM.md) keep their upstream links unchanged, so they aren't link-checked."""
+    sk = os.path.join(base, "skills")
+    upstream = {os.path.join(sk, n) for n in os.listdir(sk) if os.path.exists(os.path.join(sk, n, "UPSTREAM.md"))} if os.path.isdir(sk) else set()
+    return md_files(base, skip=set(skip) | upstream)
+
+
 def roles(root=ROOT):
     return sorted(f[:-3] for f in os.listdir(os.path.join(root, "roles")) if f.endswith(".md") and not f.startswith("_"))
 
@@ -49,11 +56,25 @@ def frontmatter(path):
     m = re.match(r"---\n(.*?)\n---\n", text, re.S)
     if not m:
         return None
-    out = {}
+    out, key, block = {}, None, None
     for line in m.group(1).splitlines():
+        if block is not None and (line.startswith((" ", "\t")) or not line.strip()):
+            block.append(line.strip())
+            continue
+        if block is not None:
+            out[key] = " ".join(x for x in block if x)
+            block = None
         if ":" in line and not line.startswith((" ", "#")):
-            k, v = line.split(":", 1)
-            out[k.strip()] = re.sub(r"\s+#.*$", "", v).strip()
+            key, v = line.split(":", 1)
+            key, v = key.strip(), re.sub(r"\s+#.*$", "", v).strip()
+            if v in (">", "|", ">-", "|-"):
+                block = []  # YAML block scalar: the value is the indented lines below
+                continue
+            if len(v) > 1 and v[0] == v[-1] and v[0] in "\"'":
+                v = v[1:-1]
+            out[key] = v
+    if block is not None:
+        out[key] = " ".join(x for x in block if x)
     return out
 
 
@@ -170,7 +191,10 @@ def check_skills(root=ROOT):
             errs.append("%s/SKILL.md: no license field" % where)
         if name not in used:
             errs.append("%s: no role lists it under skills:" % where)
-        errs += [where + "/" + e for e in check_links(d, boundary=d)]
+        if not os.path.exists(os.path.join(d, "UPSTREAM.md")):
+            errs += [where + "/" + e for e in check_links(d, boundary=d)]
+        elif "copied unchanged" not in open(os.path.join(d, "UPSTREAM.md"), encoding="utf-8").read().lower():
+            errs.append("%s/UPSTREAM.md: must say the folder is copied unchanged, with its source and commit" % where)
     return errs
 
 
@@ -360,7 +384,7 @@ def static(root=ROOT):
     out = []
     for fn in (check_roles, check_skills, check_team_comment, check_lifecycle, check_vendor, check_labels, check_handoff_table, check_cases):
         out += fn(root)
-    out += check_links(root, md_files(root, skip={os.path.join(root, "evals", "runs")}))
+    out += check_links(root, own_md(root, skip={os.path.join(root, "evals", "runs")}))
     return out
 
 
@@ -381,7 +405,7 @@ def install(root=ROOT):
             for name in roles(root):
                 if not os.path.exists(os.path.join(team, "roles", name + ".md")):
                     errs.append("adapters/%s/install.sh: role %s not installed" % (adapter, name))
-            errs += ["adapters/%s install: %s" % (adapter, e) for e in check_links(team, boundary=team)]
+            errs += ["adapters/%s install: %s" % (adapter, e) for e in check_links(team, own_md(team), boundary=team)]
             for folder in (".agents/skills", ".claude/skills"):
                 linked = os.path.join(proj, folder)
                 if folder == ".claude/skills" and adapter != "claude-code":

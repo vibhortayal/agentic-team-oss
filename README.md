@@ -167,7 +167,7 @@ The rules every agent follows are in [principles.md](principles.md), and the evi
 
 ```text
 roles/        one page per agent: neutral frontmatter (tier, capabilities, skills) and its mandate
-skills/       how-tos a role loads for one task (open Agent Skills format), some with scripts
+skills/       how-tos a role loads for one task (open Agent Skills format), ours and vetted outside ones
 playbooks/    the six ways agents work together
 templates/    what a project copies: TEAM.md, AGENTS.md, DESIGN.md, spec.md, documents.md, budget/, the foundation kit
 adapters/     install scripts (generic, Claude Code) and the GitHub label script
@@ -175,3 +175,7 @@ docs/         how we work, the GitHub state contract, the research behind the de
 evals/        test cases for the roles and two end-to-end sample projects (see improve)
 tools/        the free checks and the sandbox that runs the cases
 ```
+
+### Licence
+
+Apache-2.0 ([LICENSE](LICENSE)), except folders in `skills/` that have an `UPSTREAM.md`: those are copied unchanged from other projects and stay under the licence in their own LICENSE file (Apache-2.0, MIT or CC BY-SA 4.0).
