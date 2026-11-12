@@ -1,5 +1,7 @@
 # Agentic Team
 
+_An open-source multi-agent development framework. In plain words: an AI team that helps you build your app._
+
 **Have an idea for an app? Build it, with an AI team to help.**
 
 You tell your idea to Ella, an AI you chat with, a bit like ChatGPT. She asks you some questions, writes a short plan and tells you what it will cost. When you say yes, her team of AI helpers builds it. We call these helpers agents. Each agent has one job. One agent builds, and a different one checks the work, like a teacher marking homework. Ella comes back to you only when you need to decide something.
@@ -98,7 +100,7 @@ That's the only line you need to remember. New ideas, changes, questions and OKs
 
 ## Learn more
 
-- [Meet the team](learn/docs-team.md): the ten agents and their jobs.
+- [Meet the team](learn/docs-team.md): the ten agents, their jobs, and why most projects need only a few.
 - [Playbooks](learn/docs-playbooks.md): the steps they follow at each stage.
 - [How we work](docs/how-we-work.md): our way of working, and a list of words you'll see.
 - [Principles](principles.md): the rules every agent follows.
