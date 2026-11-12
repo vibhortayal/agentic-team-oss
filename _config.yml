@@ -21,6 +21,7 @@ defaults:
   - {scope: {path: "templates"}, values: {nav_exclude: true}}
   - {scope: {path: "docs/research"}, values: {nav_exclude: true}}
   - {scope: {path: "docs/github-state.md"}, values: {nav_exclude: true}}
+  - {scope: {path: "START.md"}, values: {nav_exclude: true, search_exclude: true}}  # read by coding assistants, linked from Get started
   - {scope: {path: "README.md"}, values: {title: Get started, nav_order: 1, permalink: /start/}}
   - {scope: {path: "docs/how-we-work.md"}, values: {nav_order: 2, has_children: true}}
   - {scope: {path: "docs/lifecycle.md"}, values: {parent: How we work, nav_order: 1}}

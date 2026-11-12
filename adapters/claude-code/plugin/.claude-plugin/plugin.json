@@ -1,0 +1,9 @@
+{
+  "name": "agentic-team",
+  "description": "Start a project with Ella and her team of AI agents: one command sets the team up in your folder and hands you to Ella.",
+  "version": "0.1.0",
+  "author": { "name": "Agentic Team" },
+  "homepage": "https://agents.teamnightshift.org",
+  "repository": "https://github.com/vibhortayal/agentic-team-oss",
+  "license": "Apache-2.0"
+}
