@@ -29,6 +29,16 @@ Create the labels once per repo with [adapters/github/labels.sh](../adapters/git
 
 The gate rejects a pull request from any other branch name and checks that each class only touches its own paths ([foundation kit](../templates/foundation/README.md#pull-request-classes)).
 
+### Git workflow: trunk-based, short-lived branches
+
+One main line, `main`, always releasable; no `develop` or long-lived release branches, because long branches drift apart and that drift is where merge conflicts come from.
+
+- **Small and short.** One branch per ticket, cut from the latest `main`, merged within about two working days. A ticket that would take longer is split; unfinished work hides behind a feature flag rather than waiting on a branch.
+- **No overlapping tickets.** Each ticket lists its owned paths. Priya doesn't start a ticket whose paths overlap one already in progress; it waits.
+- **Up to date before the check and before the merge.** The branch takes in the latest `main` (a merge, never a rebase or force-push, so reviewed revisions stay findable) before Vera's verdict and again before the owner merges. The ruleset requires branches to be up to date; with several auto-merges a day, use the host's merge queue where the plan offers it.
+- **Squash merge.** Each ticket lands on `main` as one commit named after its issue, so the history reads as a list of changes and any one reverts cleanly. Branches are deleted after merge.
+- **Releases are tags on `main`,** and a production fix is a normal small ticket from `main`.
+
 Rules:
 
 1. Every agent pushes its own work before a handoff; a local-only commit is not a handoff.

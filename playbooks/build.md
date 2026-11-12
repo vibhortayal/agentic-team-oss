@@ -17,7 +17,7 @@ Builds an approved spec one bounded ticket at a time, with someone other than th
 | 6. Prepare | Vera | Writes checks from the spec before any code exists | No |
 | 7. Build | Ian | Builds, self-checks, opens the PR | No |
 | 8. Verify | Vera | PASS or BLOCK on that exact revision; on BLOCK, back to step 7 (three rounds at most) | No, but on internal and production projects the owner may have to start Vera's approving session |
-| 9. Merge | Owner, through Ella | With PASS and green CI, Ella brings the PR, its evidence and the preview | **Yes** |
+| 9. Try and merge | Owner, through Ella | With PASS and green CI, Ella sends the preview link with Vera's "try this" steps; the owner tries it and approves with one link, never reading the diff ([release](production.md#release)) | **Yes** |
 
 A trivial change skips steps 3 to 5: the owner's request is the approval, and Priya's handoff comment holds the criteria, so they're pinned even if the issue body changes. Ian builds and Vera checks against that comment. A full spec goes through [research to spec](research-to-spec.md) and is approved by merging its `docs/` PR, then Priya splits it into tickets or a multi-unit dispatch.
 

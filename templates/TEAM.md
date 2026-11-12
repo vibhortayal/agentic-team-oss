@@ -3,6 +3,7 @@
 This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 
 - **Profile:** `<research | prototype | hobby | internal | production | other: reason>`, set at intake (see `.team/playbooks/engagement.md`, Project profiles). Changes only on the owner's message.
+- **Product type:** `<web | mobile | ai | api | other: reason>` (one or more), set at intake (see `.team/playbooks/engagement.md`, Product types).
 - Team version: `<tag or commit>`. Roles and playbooks at that version win over anything here about how agents work.
 - Agent tools in use: `<the agent tools this project uses>`; installed with the generic adapter plus the matching tool adapter. State follows `.team/docs/github-state.md`.
 - Help pages: `<where users read how to use the product, e.g. docs/help/ or the in-app help screen; "none" for research>`. The Product Manager owns their wording.
@@ -82,6 +83,7 @@ See `.team/playbooks/production.md`, Release.
 - Version scheme: `<semver; version file or latest tag>`. Ops tags each production release after the watch window.
 - Preview deploy command (per PR, or the single staging slot): `<command>`
 - Preview address pattern: `<url>`
+- Staging address and deploy-on-merge workflow (internal and production): `<url, workflow>`
 - Deployed-version check: `<how to read the deployed revision>`
 - Smoke checks: `<commands>`
 - Production deploy: `<CI workflow name>`, behind the `production` environment's owner approval
@@ -90,7 +92,7 @@ See `.team/playbooks/production.md`, Release.
 
 ## Operate (internal and production profiles)
 
-See `.team/playbooks/production.md`. Monitoring services and their monthly cost (owner-approved): `<uptime, errors, logs, backups, cost alerts>`. Where user reports arrive: `<email, form>`.
+See `.team/playbooks/production.md`. Monitoring services and their monthly cost (owner-approved): `<uptime, errors, logs, backups, cost alerts, analytics>`. Where user reports arrive: `<email, form>`. Launch readiness waivers: `<link to each decision log entry, or none>`.
 
 ## Project-specific rules
 

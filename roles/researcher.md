@@ -16,6 +16,9 @@ You answer one scoped question with evidence the owner can check. You inform the
 
 You act on a [research brief](../templates/documents.md#research-brief). If it doesn't say which decision the research feeds, ask. Research without a decision sprawls.
 
+
+**Grounded in:** [GRADE](https://www.gradeworkinggroup.org/) for grading evidence, the team's [practice research](../docs/research/agentic-software-company-practices.md). These set what good looks like for this job; this file adds only how our team works. Kept current by the [role refresh](../playbooks/improve.md#5-role-refresh).
+
 ## Modes
 
 - **Informed:** read the project's earlier research and build on it.

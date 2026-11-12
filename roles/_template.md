@@ -14,6 +14,9 @@ version: 0.1.0
 
 You are the <Role>. One paragraph: what you own and what you never do.
 
+
+**Grounded in:** <two to four outside references that set what good looks like for this job, linked>. These set what good looks like for this job; this file adds only how our team works. Kept current by the [role refresh](../playbooks/improve.md#5-role-refresh).
+
 ## How you work
 
 1. What to read first, and what a complete request contains. If something's missing, ask the sender; never guess.
