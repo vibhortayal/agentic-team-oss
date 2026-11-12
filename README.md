@@ -2,93 +2,107 @@
 
 **An AI software team you can hand an idea to.**
 
-Agentic Team is a free, open-source set of instructions. It turns the AI coding tool you already use (Claude Code, Codex, Cursor and others) into a small company: ten agents with one job each, a fixed way of working, and automatic checks on every change. You only talk to one of them, Ella. She interviews you, shows you a one-page plan with the cost, runs the rest of the team, and comes back when something needs your decision.
+You have an idea for an app. You tell it to Ella, an AI agent. An agent is an AI that does one job by itself. Ella asks you some questions, writes a short plan and tells you what it will cost. When you say yes, she gets a team of agents to build it. Each agent has one job. One agent builds, and a different one checks the work. Ella comes back to you only when you need to decide something.
 
-**Who it's for.** People with an app idea who don't write code, and developers who want AI work checked. Today you start it from a coding tool in a terminal, so a beginner may want a technical friend for the first setup. A web front door is planned ([ROADMAP.md](ROADMAP.md)).
+It's free. It's a set of written instructions that you add to an AI coding tool, such as Claude Code, Codex or Cursor.
 
-**Why it exists.** AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.
+## Who it's for
 
-**What you need to run it.** A coding assistant, such as Claude Code, Codex or Cursor. It won't run in an ordinary chat window like ChatGPT, the Claude app or Gemini, because those can't open the files on your computer or run commands there.
+People with an app idea who have never written code. Developers who want one AI's work checked by another can use it too.
+
+To start, you type a few commands into a terminal. A terminal is a window where you type instructions for your computer. If that's new to you, ask a friend who knows computers to help the first time. A simpler website to start from is planned ([roadmap](ROADMAP.md)).
+
+## Why it exists
+
+AI tools write code fast. But they check their own work, forget what you agreed last week and don't tell you the cost before they start.
+
+## What you need
+
+An AI coding tool, such as Claude Code, Codex or Cursor. A chat app like ChatGPT, the Claude app or Gemini won't work. Chat apps can talk and write, but they can't open the files on your computer or run anything there.
 
 ## How it's different
 
-| | A chatbot | An app builder | A coding assistant on its own | Your coding assistant + Agentic Team |
+| | A chat app | An app builder | A coding tool on its own | A coding tool + Agentic Team |
 |---|---|---|---|---|
-| For example | ChatGPT, Claude, Gemini | Lovable, Bolt, Replit | Claude Code, OpenAI Codex, Cursor, GitHub Copilot | Any of those coding assistants, running this team |
-| Who decides what gets built | You, one prompt at a time | You, by describing changes in a chat | You, one prompt at a time | Ella interviews you and writes a one-page plan for you to approve |
-| Who checks the work | You | You, by clicking around the preview | The same AI that wrote it | A different agent, with tests written from your plan before any code existed |
-| What it remembers next week | The chat | The project, on their platform | Whatever notes you kept | Everything, on your own GitHub: plans, decisions and test results |
-| Cost | Your subscription. The rest you work out. | A monthly plan, and usage can add up | You find out later | Priced before work starts, with a short weekly spend note |
+| For example | ChatGPT, Claude, Gemini | Lovable, Bolt, Replit | Claude Code, OpenAI Codex, Cursor, GitHub Copilot | Any of those coding tools, with this team added |
+| Who decides what to build | You, one message at a time | You, by chatting | You, one message at a time | Ella asks you questions, then writes a one-page plan for you to OK |
+| Who checks the work | You | You, by trying the app | The same AI that built it | A different agent. It writes its tests from your plan before the code exists |
+| What it remembers next week | The chat | Your app, on their website | Notes you kept yourself | Everything: plans, choices and test results, kept in your own GitHub account |
+| Cost | Your subscription. You work out the rest. | A monthly plan, plus extra if you use a lot | You find out later | You see the price before work starts, and get a short spending note each week |
 
-For a quick script or a one-off fix, a coding assistant on its own is enough. Agentic Team is for building something you'll keep.
+For a quick one-time fix, a coding tool on its own is enough. This team is for an app you want to keep.
 
-**Honest caveats.**
+## Before you start, know this
 
-- It's early. The team is written and tested on its own, but it hasn't yet carried a real project all the way from idea to launch. That's the next step on the [roadmap](ROADMAP.md).
-- It's slower and uses more AI than one assistant. Planning and checking are separate runs, so a small change costs more than just asking.
-- App builders are faster to a first version. If you want something to show by tonight, use one.
-- Tests can still miss things, and the work is only as good as the AI model in your tool.
-- It works best in Claude Code today. That's the only tool with its own installer, where each agent runs as a separate session. Codex and Cursor read the same instructions. Gemini CLI should work but hasn't been tested.
-- Hosting and databases aren't included. You pay those providers directly. Bea, the budget agent, prices them in the plan, and free tiers come first.
+- It's new. It hasn't built a real app all the way from idea to launch yet. That's the next step.
+- It's slower than one tool on its own, and it uses more AI, so it costs more. Planning and checking are extra steps.
+- App builders get you a first version faster. If you need something to show tonight, use one.
+- Tests can still miss mistakes. The work is only as good as the AI in your tool.
+- It works best in Claude Code today. Codex and Cursor read the same instructions. Nobody has tried Gemini CLI yet.
+- Putting your app online and storing its data cost extra. You pay those companies yourself. Bea, the agent who handles money, puts those costs in the plan and picks free options first.
 
 ## How a project goes
 
 ```mermaid
 flowchart LR
-  A["Idea<br/>you chat with Ella"] --> B["Plan<br/>Ella's one-page plan"]
+  A["Idea<br/>you chat with Ella"] --> B["Plan<br/>a one-page plan"]
   B --> C["Build<br/>agents write the code"]
-  C --> D["Check<br/>a separate agent tests it"]
-  D --> E["Launch<br/>your app goes live"]
-  E --> F["Keep it running<br/>fixes, updates, support"]
-  B -. "you approve the plan and costs" .-> Y((You))
-  D -. "you try the preview" .-> Y
+  C --> D["Check<br/>another agent tests it"]
+  D --> E["Launch<br/>your app goes online"]
+  E --> F["Keep it running<br/>fixes and updates"]
+  B -. "you OK the plan and cost" .-> Y((You))
+  D -. "you try it out" .-> Y
   E -. "you say go" .-> Y
 ```
 
-
-You're needed at a few checkpoints: approving the plan and its costs, trying each preview, any new spending, and the launch. Everything between runs on its own. Ask Ella "tell me more" about anything; otherwise she keeps it short.
+Ella needs you at a few points: to OK the plan and cost, to try each new version, before any new spending, and before launch. The team does the rest. Ask Ella "tell me more" about anything. If you don't, she keeps things short.
 
 ## Your first project
 
-This is the whole setup. If any of it is new, the learning portal's "Your first project" lesson walks through the same steps with more help.
+Here's the whole setup. The "Your first project" lesson on our website shows the same steps with more help.
 
-**1. Get four things ready.** A [GitHub account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github), an AI coding tool ([which ones work](adapters/README.md#tools)), [Git](https://git-scm.com/downloads) and a terminal, and a password manager such as [Bitwarden](https://bitwarden.com/) for your project's keys.
+**1. Get four things ready.**
 
-**2. Download the team, once.** The URL is under the green Code button on this repo's GitHub page.
+- A GitHub account. GitHub is a website that keeps your app's code, and every change to it, safe in your name. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
+- An AI coding tool. [See which ones work](adapters/README.md#tools).
+- Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
+- A password manager, such as [Bitwarden](https://bitwarden.com/) (free). Your project's passwords and keys go there, never in a chat.
+
+**2. Copy the team to your computer.** You only do this once. Find this page's web address under the green Code button on GitHub. Then type this in your terminal, with that address in place of `<that address>`:
 
 ```bash
-git clone <that URL> ~/agentic-team
+git clone <that address> ~/agentic-team
 ```
 
-**3. Put the team in your project folder.** Then commit the new files.
+**3. Add the team to your project folder.** Type one of these. Then save the new files to GitHub. Saving to GitHub is called a commit, and Ella can show you how.
 
 ```bash
-# any tool
+# most tools
 ~/agentic-team/adapters/generic/install.sh ~/code/my-project
 
 # or, if you use Claude Code
 ~/agentic-team/adapters/claude-code/install.sh ~/code/my-project
 ```
 
-**4. Say hello to Ella.** Open your coding assistant in the project folder and paste this, with your idea at the end:
+**4. Say hello to Ella.** Open your coding tool in your project folder. Paste this line and add your idea at the end:
 
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
 ```
 
-That's the only prompt you need. New ideas, changes, questions and approvals all go to Ella, and she starts the other agents. She sets up the rest with you, including the project's `TEAM.md` and its GitHub labels. Tool-by-tool details are in [install in a project](adapters/README.md).
+That's the only line you need to remember. New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 
-## What's underneath
+## Learn more
 
-The team is plain text that works with any agent tool:
-
-- [Meet the team](learn/docs-team.md): the ten agents and what each one does.
-- [Playbooks](learn/docs-playbooks.md): how they work together at each stage.
-- [How we work](docs/how-we-work.md): the method, and the words you'll see.
+- [Meet the team](learn/docs-team.md): the ten agents and their jobs.
+- [Playbooks](learn/docs-playbooks.md): the steps they follow at each stage.
+- [How we work](docs/how-we-work.md): our way of working, and a list of words you'll see.
 - [Principles](principles.md): the rules every agent follows.
-- [Roadmap](ROADMAP.md) and [the research behind the design](docs/research/agentic-software-company-practices.md).
+- [Roadmap](ROADMAP.md), and [the research behind the team](docs/research/agentic-software-company-practices.md).
 
-Roles are tuned here once, and every project picks up the change by re-running the installer. Never edit `.team/` inside a project by hand. The team's own upkeep runs in this repo: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.`
+## For people who change the team itself
+
+The team is plain text files. We improve an agent here once, and every project gets the change when it runs the install again. Don't edit the `.team/` folder inside a project. To run the team's quarterly review, paste: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.`
 
 ## Layout
 
