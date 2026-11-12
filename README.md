@@ -1,45 +1,49 @@
 # Agentic Team
 
-**An AI software team you can hand an idea to.**
+**Have an idea for an app? Build it, with an AI team to help.**
 
-You have an idea for an app. You tell it to Ella, an AI agent. An agent is an AI that does one job by itself. Ella asks you some questions, writes a short plan and tells you what it will cost. When you say yes, she gets a team of agents to build it. Each agent has one job. One agent builds, and a different one checks the work. Ella comes back to you only when you need to decide something.
+You tell your idea to Ella, an AI you chat with, a bit like ChatGPT. She asks you some questions, writes a short plan and tells you what it will cost. When you say yes, her team of AI helpers builds it. We call these helpers agents. Each agent has one job. One agent builds, and a different one checks the work, like a teacher marking homework. Ella comes back to you only when you need to decide something.
 
-It's free. It's a set of written instructions that you add to an AI coding assistant, such as Claude Code, Codex or Cursor. A coding assistant is an AI that can open and change the files on your computer.
+- **It's free.** Agentic Team is a set of written instructions anyone can read. This project makes no money, and nobody sells you anything here.
+- **It runs on your computer.** Your app's files stay on your computer and in your own accounts.
+- **It teaches as it goes.** This is a learning project. Ella explains each step, so you learn how good software is planned, built and checked. The aim is to help new builders do it safely and properly, instead of throwing away code an AI wrote in a hurry.
 
-## Who it's for
+## Can't ChatGPT do this?
 
-People with an app idea who have never written code. Developers who want one AI's work checked by another can use it too.
+ChatGPT can write code. But you'd have to copy it, set it up and fix it yourself. Ella's team does that part for you, and checks it.
 
-To start, you type a few commands into a terminal. A terminal is a window where you type instructions for your computer. If that's new to you, ask a friend who knows computers to help the first time. A simpler website to start from is planned ([roadmap](ROADMAP.md)).
+| | ChatGPT | Ella and her team |
+|---|---|---|
+| Makes the app on your computer | No. It writes code in the chat for you to copy. | Yes. The team creates and changes the files for you. |
+| Checks the work | You do. | A different AI does, using tests from your plan. |
+| Remembers next week | Only what's in the chat. | Everything: plans, choices and test results, saved in your own account. |
+| Tells you the cost first | No. | Yes, before any work starts. |
 
-## Why it exists
+## What you'll need
 
-AI tools write code fast. But they check their own work, forget what you agreed last week and don't tell you the cost before they start.
+- **A coding assistant.** This is an AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Codex and Cursor work too. Most need a paid plan from the AI company, so check the price first.
+- **A free GitHub account.** GitHub is a website that keeps a safe copy of your app's files, a bit like Google Drive for code.
+- **About 15 minutes for setup.** You'll type a few lines into the terminal, a plain window where you type to your computer. If that's new, a friend who knows computers can help the first time.
 
-## What you need
+## Where your money goes
 
-A coding assistant, such as Claude Code, Codex or Cursor. A chatbot like ChatGPT, the Claude app or Gemini won't work. Chatbots can talk and write, but they can't open the files on your computer or run anything there.
+This project makes no money. There are no ads, no sign-up and nothing to buy from us.
 
-## How it's different
+- **The AI tool.** Usually a monthly plan from the AI company. This is where most of your money goes, because it pays for the AI doing the work. Check the price on the company's own website. Ella tells you before a long job uses a lot.
+- **Putting your app online.** Often free to start. Many companies have a free plan that's enough for a small app. Ella picks free options first, and asks you before anything costs money.
+- **Your own web address.** Optional. A name like myapp.com costs a small fee each year.
+- **GitHub and this team.** Free.
 
-| | A chatbot | An app builder | A coding assistant on its own | A coding assistant + Agentic Team |
-|---|---|---|---|---|
-| For example | ChatGPT, Claude, Gemini | Lovable, Bolt, Replit | Claude Code, OpenAI Codex, Cursor, GitHub Copilot | Any of those coding assistants, with this team added |
-| Who decides what to build | You, one message at a time | You, by chatting | You, one message at a time | Ella asks you questions, then writes a one-page plan for you to OK |
-| Who checks the work | You | You, by trying the app | The same AI that built it | A different agent. It writes its tests from your plan before the code exists |
-| What it remembers next week | The chat | Your app, on their website | Notes you kept yourself | Everything: plans, choices and test results, kept in your own GitHub account |
-| Cost | Your subscription. You work out the rest. | A monthly plan, plus extra if you use a lot | You find out later | You see the price before work starts, and get a short spending note each week |
-
-For a quick one-time fix, a coding assistant on its own is enough. This team is for an app you want to keep.
+Why spend on planning and checking at all? Because an app that's planned, tested and saved properly is one you can keep improving for years. A rushed one often has to be thrown away and started again.
 
 ## Before you start, know this
 
 - It's new. It hasn't built a real app all the way from idea to launch yet. That's the next step.
-- It's slower than one coding assistant on its own, and it uses more AI, so it costs more. Planning and checking are extra steps.
-- App builders get you a first version faster. If you need something to show tonight, use one.
+- It's slower than asking one AI, and it uses more AI, so your plan may cost more.
+- Website builders like Lovable, Bolt or Replit make a first version faster. If you need something to show tonight, use one.
 - Tests can still miss mistakes. The work is only as good as the AI in your coding assistant.
 - It works best in Claude Code today. Codex and Cursor read the same instructions. Nobody has tried Gemini CLI yet.
-- Putting your app online and storing its data cost extra. You pay those companies yourself. Bea, the agent who handles money, puts those costs in the plan and picks free options first.
+- Developers can use it too, to have one AI's work checked by another.
 
 ## How a project goes
 
@@ -63,7 +67,7 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 
 **1. Get four things ready.**
 
-- A GitHub account. GitHub is a website that keeps your app's code, and every change to it, safe in your name. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
+- A GitHub account. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
 - A coding assistant. [See which ones work](adapters/README.md#tools).
 - Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
 - A password manager, such as [Bitwarden](https://bitwarden.com/) (free). Your project's passwords and keys go there, never in a chat.
