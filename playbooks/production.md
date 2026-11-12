@@ -2,7 +2,7 @@
 
 How merged work reaches users and stays healthy. Releases are for hobby, internal and production projects; prototypes stop at a preview link. Monitoring, incidents and support are for internal and production.
 
-**Who:** Otto (releases, monitoring, incidents, health, housekeeping), Ian (previews, fixes, cleanup), Vera (preview and smoke checks, health numbers), Priya (support triage), owner (approves every production deploy and every spend).
+**Who:** Otto (releases, launch readiness, monitoring, incidents, health, housekeeping), Ian (previews, fixes, cleanup), Vera (preview, smoke and launch checks, health numbers), Quinn (threat list, abuse cases, store review), Max (AI safety and drift), Priya (support triage, the 30-day review), Bea (costs at scale), owner (approves every production deploy and every spend).
 
 ## Release
 
@@ -19,9 +19,57 @@ PR ─▶ preview of the PR head ─▶ Vera checks it ─▶ PASS + green CI �
 6. **Migrations are their own step.** A release says whether its migration is backward compatible. One that isn't gets its own release, after a verified backup.
 7. **Agents never hold production credentials.** Deploys run from CI with the environment's secrets. An agent triggers the workflow and never sees the keys.
 
+## Launch readiness
+
+Green tests don't make a product safe to put in front of real users. Before the first production release, Otto opens a launch issue with this checklist, filtered by the product type in `TEAM.md`. Each item has an owner and a proof committed under `verification/launch/`. The owner approves the first production release only when every item is green or knowingly waived; Ella records each waiver and its risk in the decision log. Internal projects run the rows marked **all**; production projects run every row for their type. Later releases rerun a row when the change touches what it covers.
+
+| Item | Type | Who | Proof |
+|---|---|---|---|
+| **Threat list** for each red-zone area (sign-in, data separation, payments, uploads, admin): how it could be attacked and the check that stops it | all | Quinn at planning; checks join the spec | `docs/specs/vN-review/threats.md` |
+| **Security scan** of the running preview with OWASP ZAP's baseline scan, and the OWASP ASVS Level 1 checklist marked pass, fail or not relevant | web, api | Vera | Scan report, checklist |
+| **Data list** in the spec: what personal data, why, where it's kept, which outside services see it, how long | all | Priya | Spec section |
+| **Privacy policy and terms** from a managed generator (buy, don't build), matching the data list; legal pages are red zone | all | Priya drafts, owner approves | Links |
+| **Users can download and delete their own data;** tracking waits for consent where the rules require it | all | Vera | Check scripts |
+| **Load test** with k6 at 10 times the expected load in the spec, against a production-sized preview; costs shown at today's load and at 10 times | web, api, ai | Otto runs, Arjun sets the load, Bea prices | k6 summary, cost table |
+| **Speed budgets** from the spec met: page speed via Lighthouse CI on the preview, start time and crash-free rate on mobile, response time and cost per call for AI | all | Vera | Report |
+| **Accessibility** to WCAG 2.2 AA: the automated check plus a keyboard and screen-reader pass of the main flows; platform scanners on mobile | web, mobile | Vera | Notes, screenshots |
+| **Backup restore** rehearsed within the last 90 days, inside the spec's data-loss and recovery targets | all | Otto | Drill log |
+| **Monitoring** live (below) and **analytics** sending the spec's events | all | Otto | Dashboard links |
+| **Email** that reaches inboxes: SPF, DKIM and DMARC set on the sending domain | if it sends email | Otto, owner edits DNS | Record check |
+| **Support channel** feeding `support` issues, and the help pages live | all | Priya | Links |
+| **Store must-haves** (below) | mobile | Priya, Quinn, owner | Store checklist |
+| **AI abuse cases** pass (below) | ai | Max, Vera | Eval report |
+
+Agents never say a product is "compliant" with a law. Where a project touches health, money, children or sensitive personal data, Ella tells the owner plainly that an hour with a lawyer is worth it before launch, and records the answer.
+
+## Mobile apps
+
+A store app can't be rolled back once it's on people's phones, and the store can reject it. So:
+
+1. **Accounts.** The owner creates the store developer accounts; Ella walks them through it and Bea lists the fees. New store accounts can have waiting periods (a new personal Google Play account needs a closed test with a minimum number of testers for a minimum time); Rohan checks today's rules at intake and Bea puts them and review time in the calendar.
+2. **Previews are test builds** (TestFlight on iOS, an internal test track on Android) of the PR head, or of `main` where per-PR builds cost too much. Vera checks them on simulators or emulators at the phone sizes the spec names.
+3. **Build and sign in CI or a managed build service.** Signing keys live with the store or the service, never with agents. macOS build minutes cost far more than Linux, so Bea prices a managed build service against the CI plan.
+4. **Version 1 ships a remote off switch** for risky features and a minimum-version check that asks users to update. Releases roll out in stages (a small share of users first), and Otto watches crash rate before widening.
+5. **Store must-haves**, drafted by Priya and approved by the owner: listing text and screenshots, the privacy label or data safety form matching the data list, the privacy policy link, account deletion inside the app if users can sign up, and age rating. Before each submission Quinn checks the build against the store's published review guidelines and common rejection reasons.
+6. **A rejection is a ticket,** with the store's message quoted, not an incident.
+
+## AI features and agents
+
+Max's evals measure whether AI output is good. These rules cover whether it can be tricked, leak, or do harm.
+
+1. **Abuse cases.** Quinn writes them from the OWASP Top 10 for LLM applications and the spec: prompt injection (including through documents, web pages or emails the AI reads), leaking personal data or its own instructions, harmful or off-topic output, an agent acting beyond its job, and runaway cost. Max adds them to the golden set as a red-team slice with its own pass mark, run before every prompt or model change.
+2. **Least power.** An agent inside the product gets only the tools its job needs, and asks the user before it spends money, sends a message, deletes anything or acts outside the app. Its tool permissions are red zone.
+3. **Tell users** when they're talking to an AI, and where its answers can be wrong.
+4. **Drift.** Each month Max scores a small sample of real AI calls against the golden set's metric, only where users agreed and only through a mode that doesn't train on the data. A drop below the pass mark is a SEV3.
+5. **Model changes are eval-gated.** Providers retire models. A new model or version goes through the full eval, red-team slice included, before release; retirement dates go on the coming-due list.
+
 ## Monitoring (buy, don't build)
 
-Set up at the first release with managed services, on free tiers where they fit. Otto proposes each with its monthly cost; the owner approves any spend. Cover: an uptime check on the main page and a health endpoint, error tracking tagged with the release, searchable logs with an approved retention, automatic backups in an account no agent can delete, and spend alerts on every paid service and model provider. Every alert opens or updates a GitHub issue labelled `incident`, so the board is the one place to look.
+Set up at the first release with managed services, on free tiers where they fit. Otto proposes each with its monthly cost; the owner approves any spend. Cover: an uptime check on the main page and a health endpoint, error tracking tagged with the release, searchable logs with an approved retention, automatic backups in an account no agent can delete (restored in a drill every quarter, not just once), product analytics for the spec's events from a privacy-friendly service, and spend alerts on every paid service and model provider. Every alert opens or updates a GitHub issue labelled `incident`, so the board is the one place to look.
+
+## After launch
+
+Thirty days after the first production release, then each quarter, Priya and Bea write a short review on `team/records`: each "How we'll know" signal from the brief against its target, cost per active user, the top support issues and incidents. Ella brings the owner one recommendation: keep going, change course (a change request) or stop.
 
 ## Incidents
 
@@ -41,7 +89,7 @@ User reports from email, a form or app feedback become GitHub issues labelled `s
 
 The quality gate stops new mess. This part measures what's left and pays it down, in every project with merged code.
 
-**Monthly report.** Otto writes `reports/health-<YYYY-MM>.md` ([template](../templates/documents.md#health-report)) from numbers it can recompute, and commits the script. A fresh Vera re-runs it before the owner sees the report. It covers change failure rate (merged PRs followed within 14 days by a revert, hotfix or bug ticket naming them), rework (lines changed again within 30 days), warnings, complexity and duplication against the baseline and last month, copying versus refactoring, BLOCK rounds per ticket, typed blockers by type, owner send-backs with reasons, and the least healthy modules. Never report "% of code written by AI"; nobody measures it with a disclosed method. It ends with at most three recommendations, each with one line of evidence.
+**Monthly report.** Otto writes `reports/health-<YYYY-MM>.md` ([template](../templates/documents.md#health-report)) from numbers it can recompute, and commits the script. A fresh Vera re-runs it before the owner sees the report. It covers change failure rate (merged PRs followed within 14 days by a revert, hotfix or bug ticket naming them), rework (lines changed again within 30 days), warnings, complexity and duplication against the baseline and last month, copying versus refactoring, BLOCK rounds per ticket, typed blockers by type, owner send-backs with reasons, and the least healthy modules. Never report "% of code written by AI"; nobody measures it with a disclosed method. It also shows headroom (load and spend against their limits) and a coming-due list for the next 90 days: renewals, store and platform deadlines, model retirements, runtime end-of-life, free-tier limits, the next restore drill. Each item past due or within 30 days becomes a ticket. It ends with at most three recommendations, each with one line of evidence.
 
 **Cleanup.** Every cycle (default two weeks), Otto files one cleanup ticket from the latest report, a normal change spec with owned paths and a proof command and a fixed budget (default one Ian and one Vera session). What doesn't fit waits for the next cycle. Ian refactors in small steps with existing tests green; Vera checks behaviour didn't change and the numbers moved the right way. A module flagged unhealthy is cleaned before a new feature lands in it, and Priya adds that cleanup to the feature's plan. When a count drops, the same PR lowers `quality/baseline.json`.
 

@@ -7,7 +7,7 @@ tier: deep
 capabilities: all
 skills: team-comment, testable-criteria
 memory: elephant
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Architect
@@ -27,7 +27,7 @@ A unit is a **base** (the commit it starts from), a **scope** (the paths it may 
 5. **Release notes** if `TEAM.md` has a release section: a version bump with its reason, and notes for Otto ([production](../playbooks/production.md#release)). A preview defect is a BLOCK inside the unit's rounds; a defect after release is Otto's incident.
 6. **Order.** Units start in dispatch order; independent units may run in parallel, each from `main`. A dependent unit waits until the owner merges its dependency, then starts from `main`: that merge is a planned stop (`needs-human` + `human:merge`), not a question, and it pauses only the units that depend on it.
 7. **Keep labels current;** the board is the status. A usage limit is a blocker comment with the reset time.
-8. **Decision records** for your design choices, in the usual format, each with its check.
+8. **Decision records** for your design choices, in the usual format, each with its check. Design for the spec's expected load and say in a record where the first limit will be.
 9. **Final report:** what was accepted with revisions and check results, every existing test Vera changed and why, what failed or is blocked, where the evidence is, and each unit's version and preview.
 
 After each handoff, end your turn. When woken, read the repo and every message first. Resend a handoff at most once, and only if the repo shows no progress.

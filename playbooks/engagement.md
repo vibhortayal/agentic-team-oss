@@ -17,7 +17,19 @@ Ella's first question is what kind of project this is, because the answer sets h
 | **production** | A product for real users | Everything, including the UI kit, monitoring, incidents and support | Yes | A live, supported app |
 | **other** | Anything else | The closest profile, with the differences written down | As that profile | A new profile once the same kind of project shows up twice |
 
-Moving up a profile (say prototype to production) is a change request. Bea prices a hardening pass first: tests for untested paths, a security, dependency and red-zone review, monitoring, a rollback rehearsal. The owner approves it before the profile changes.
+Moving up a profile (say prototype to production) is a change request. Bea prices a hardening pass first: tests for untested paths, a security, dependency and red-zone review, monitoring, a rollback rehearsal, and the [launch readiness](production.md#launch-readiness) items for the product type. The owner approves it before the profile changes.
+
+## Product types
+
+The profile says how much process applies; the product type says which checks apply. Ella records it next to the profile in `TEAM.md`. A product can be more than one type (a phone app with an AI assistant is both).
+
+| Type | What changes |
+|---|---|
+| **web** | The default. Previews are URLs; releases deploy and roll back |
+| **mobile** | Store accounts, test builds as previews, store review, no rollback once installed ([mobile release](production.md#mobile-apps)) |
+| **ai** | An AI feature or agent inside the product: quality evals plus abuse tests, drift checks and eval-gated model changes ([AI safety](production.md#ai-features-and-agents)) |
+| **api** | No screens; the contract, load and abuse limits carry the weight |
+| **other** | The closest type, with the differences written down, as for profiles |
 
 ## Lifecycle
 
@@ -42,6 +54,7 @@ Before the brief goes to the owner, Ella checks what good looks like for this ki
 1. **Brief Rohan** with a [research brief](../templates/documents.md#research-brief) in informed mode. The question: what are the leading practices for this kind of project on this stack, and which skills would help the roles Ella plans to hire? It must read the interview notes and the team's own `skills/` (installed as `.team/skills/`), so he doesn't propose what the team already has.
 2. **Rohan looks in this order** and grades each find like any source:
    - **Practices** from primary sources: the framework's and platform's own guides, security guides such as OWASP's for the project's kind of app, app-store or accessibility rules where they apply. Only what changes how this project should be built; skip what the model already knows.
+   - **Rules that apply** (internal and production): from where the users are and who they are, which privacy laws, children's rules, accessibility laws, AI disclosure rules and store rules bind this product, each with its official page. This is a list for the owner, never legal advice.
    - **Skills** in the open Agent Skills format, from the stack's own vendors first (a database or hosting company's official skills), then well-known publishers, then community collections. Stars and download counts are a weak signal, never a reason on their own. For each candidate: link at an exact commit, licence, what it does, which role it's for, and what it would replace.
 3. **Quinn vets every candidate skill** before Ella may propose it. A skill is instructions plus scripts that run with the agent's permissions, so two checks, both required:
    - **Scan it first** with [SkillSpector](https://github.com/NVIDIA/SkillSpector) (Apache-2.0), pinned at the tested commit `3c2c5d7a1ee148d228398070b91d3beaf0d73b11` (v2.12.0), in its own virtual environment or its Docker image, never in the project's dependencies: `skillspector scan <skill folder> --no-llm --fail-on-findings --fail-on-incomplete --format json --output research/skill-scans/<name>.json`. Commit the report. `--no-llm` keeps the files on the machine and costs nothing; its AI mode sends them to a provider and runs only with the owner's OK. The scan is an alarm, not a verdict: in our test it called a skill that merges to `main` and tells the builder to edit tests "SAFE", and it flags some harmless text as high. So its score never counts as a pass. Every finding gets a line in the verdict, either harmless with the reason or a REJECT, and a high or critical finding nobody can explain is a REJECT. If the scanner can't run, the skill can't be adopted until it does.

@@ -86,7 +86,7 @@ Agents left alone produce the generic AI look. Pin them to a design system and m
 2. Token lint: CI fails on raw colours (and raw spacing where possible) outside the token file.
 3. Screenshots of every changed screen at phone and desktop widths, light and dark, in the Verifier's evidence.
 4. Committed visual baselines. Changing one needs `human:approve-ui`.
-5. An automated accessibility check fails on new violations, and new components get a keyboard-only pass. Automated checks catch about half of real issues, so this is a floor.
+5. An automated accessibility check fails on new violations, and new components get a keyboard-only pass. The target is WCAG 2.2 AA. Automated checks catch about half of real issues, so this is a floor; the screen-reader pass comes at [launch readiness](production.md#launch-readiness).
 6. The Critic in design mode reviews screenshots against `DESIGN.md` before the owner sees them.
 7. Before launch, a few target users try it while someone watches. Findings become tickets.
 
@@ -112,7 +112,7 @@ Agents never act through the owner's GitHub account. If they did, no gate could 
 - [ ] New-dependency check in CI
 - [ ] **Gate rehearsal:** the kit's self-test, then the six planted PRs in the [kit's install steps](../templates/foundation/README.md#install-in-a-project) each fail at the step meant to catch it, and the agents' account can't merge a green PR; run link, failing step and message for each in `verification/foundation/rehearsal.md` on a `gate/rehearsal` branch
 - [ ] `zones.yml` edited to the project's real folders: the red zone, the tests zone, and any script the test command calls (added to the gate zone). The shipped patterns are only a start
-- [ ] A preview per PR (or one staging slot) and a production environment with an approval rule
+- [ ] A preview per PR (or one staging slot) and a production environment with an approval rule; for mobile, a test build track per store and a managed signing setup ([mobile apps](production.md#mobile-apps))
 - [ ] Rollback and backup restore rehearsed once, commands written down
 - [ ] Apps: layering rule and single entry points in CI, recorded as DR-1
 - [ ] Screens: `DESIGN.md`, token lint, screenshots, visual baselines, accessibility check

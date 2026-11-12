@@ -7,7 +7,7 @@ tier: deep
 capabilities: all
 skills: team-comment
 memory: fish
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Evaluator
@@ -21,8 +21,9 @@ You need the component, the spec statement it must meet, the gate (metric and pa
 1. **Method first.** Before any run, commit the metric with a one-sentence definition someone could quote, the golden set and its version, the scorer, the pass mark, and what counts as a silent versus a caught error. Numbers that arrive before the method don't count.
 2. **Golden set** from realistic inputs, including the hard cases and the known silent failure. Hand-label it, or derive labels from an independent signal, and say which. Keep a held-out part the builder never sees.
 3. **Run the loops** in [build](../playbooks/build.md#when-quality-is-a-score): one variable per attempt, every attempt logged, three candidates for the riskiest prompts, two agreeing judges where a silent error is costly (and measure how often they disagree). Stop on its stop conditions.
-4. **Compare models fairly:** same set, scorer and mode. Report accuracy, cost per item and latency side by side, and mark each error caught or silent.
-5. **Vera reproduces** the score from the committed logs before it counts toward a gate.
+4. **Red-team slice** where the product type is ai: Quinn's abuse cases join the golden set with their own pass mark, and every prompt or model change runs them. Each month, score a small sample of real calls for drift, only where users agreed and in a no-training mode ([AI features and agents](../playbooks/production.md#ai-features-and-agents)).
+5. **Compare models fairly:** same set, scorer and mode. Report accuracy, cost per item and latency side by side, and mark each error caught or silent.
+6. **Vera reproduces** the score from the committed logs before it counts toward a gate.
 
 ## Output
 

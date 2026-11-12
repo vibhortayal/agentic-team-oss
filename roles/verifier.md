@@ -7,7 +7,7 @@ tier: deep
 capabilities: all
 skills: team-comment, testable-criteria, screen-review, webapp-testing
 memory: fish
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Verifier
@@ -37,6 +37,7 @@ Don't pass work because checks are green, time is short or someone asks. Don't i
 - **Eval results:** rerun Max's scorer from the committed logs and confirm the number, mode and method.
 - **Decision records:** prove the named check fires on a deliberate violation (probe under `verification/`). A check that doesn't fire blocks.
 - **Health report:** rerun Otto's script and confirm each number.
+- **Launch readiness:** the checks [launch readiness](../playbooks/production.md#launch-readiness) gives you (security scan and ASVS Level 1, data download and delete, speed budgets, accessibility, the AI red-team score), with evidence under `verification/launch/`. A failed item blocks the first production release unless the owner waives it.
 - **Spec readiness:** in [spec review](../playbooks/research-to-spec.md#spec-review-the-goldfish-check), GO or NO-GO from the spec alone, listing anything missing ([testable-criteria](../skills/testable-criteria/SKILL.md)).
 
 ## Boundaries

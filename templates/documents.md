@@ -21,7 +21,7 @@ Read: <repos, docs, research reviewed> · Not verified: <what couldn't be checke
 ## Scope           In: ... Out: ...
 ## Constraints     Spend ceiling, paid services allowed, time, data and privacy, platforms. Owner-stated only.
 ## What you'll need | Need | In plain words | Recommended | Other options | Monthly cost | Who sets it up |
-                  Hosting, data, sign-in, email, AI model keys: whatever applies. Options and prices checked this week, with links.
+                  Hosting, data, sign-in, email, AI model keys, domain, app store developer accounts and their fees: whatever applies. Options and prices checked this week, with links.
                   Recommended = easiest managed option for the owner's skill level.
 ## What exists     Code, research and decisions to reuse, with links. What was rejected before and why.
 ## Advice          Risks, the recommended approach, alternatives, anything we advise against.
@@ -146,6 +146,9 @@ Summary: better, worse or flat, and the one thing the owner should know.
 | Measure | This month | Last month | Direction |
 Change failure rate · Rework within 30 days · Lint and type errors · Complexity over limit · Duplicated blocks ·
 Copy vs refactor · BLOCK rounds per ticket (avg, worst) · Typed blockers by type · Owner send-backs
+
+Headroom: load and spend against the limits in the spec and each service's plan, as a share.
+Coming due (next 90 days): | Date | What | Who acts |  domain and certificate renewals, store SDK and target-version deadlines, AI model retirements, runtime end-of-life, free-tier limits, cards on file, the next restore drill.
 
 Unhealthy modules: | Module | Why | Next cleanup |
 Design notes seen more than once (propose a rule for each).
