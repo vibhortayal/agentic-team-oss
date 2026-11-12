@@ -11,11 +11,17 @@ Copy the section you need into the path shown. Keep each document to a page; if 
 Approved: <link to owner's message> · Date: <YYYY-MM-DD> · Profile: <research | prototype | hobby | internal | production | other>
 Read: <repos, docs, research reviewed> · Not verified: <what couldn't be checked>
 
+## Plan in short  Readable in a minute, in everyday words; the sections below are the detail.
+                  What we'll build (two or three sentences) · What you'll need (the table below, one line) ·
+                  What you'll do (your steps, minutes each) · Who's on the team (one line each, why) · When I'll need you (the checkpoints)
 ## Goal            The outcome in the owner's words, then one plain sentence.
 ## Who it's for    Users and what changes for them.
 ## How we'll know  Two to four measurable signals.
 ## Scope           In: ... Out: ...
 ## Constraints     Spend ceiling, paid services allowed, time, data and privacy, platforms. Owner-stated only.
+## What you'll need | Need | In plain words | Recommended | Other options | Monthly cost | Who sets it up |
+                  Hosting, data, sign-in, email, AI model keys: whatever applies. Options and prices checked this week, with links.
+                  Recommended = easiest managed option for the owner's skill level.
 ## What exists     Code, research and decisions to reuse, with links. What was rejected before and why.
 ## Advice          Risks, the recommended approach, alternatives, anything we advise against.
 ## Open questions  | Question | Proposed default | Who answers | Blocking? |
@@ -87,7 +93,8 @@ Cost $low–$high · Agent time <range> · Calendar time <range>, assuming <owne
 | # | Ticket | Size | Tiers | Cost low | Cost high | Cap (sessions, rounds) |
 
 Assumptions that move the number most: ...
-Not included: hosting, paid services, anything outside agent runs unless listed.
+Running costs: | Service | Plan | Monthly $ |  from the brief's "What you'll need"; free tiers listed with their limits.
+Not included: anything not listed above.
 Changes since last version: | Date | Change | Cost | Time | Approved |
 ```
 
