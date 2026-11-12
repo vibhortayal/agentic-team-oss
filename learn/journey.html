@@ -1,7 +1,7 @@
 ---
 layout: portal
+theme: plain
 title: How a project goes
-theme: light
 summary: The six steps from idea to launch, and the three where you are needed.
 next: {url: /learn/big-picture.html, title: "The whole picture"}
 ---
@@ -10,26 +10,26 @@ next: {url: /learn/big-picture.html, title: "The whole picture"}
 .map-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
 .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; font-size: .9rem; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: 8px; }
-.legend i { width: 16px; height: 16px; border-radius: 50%; border: 4px solid #e8452c; background: #fff; }
+.legend i { width: 16px; height: 16px; border-radius: 50%; border: 4px solid var(--warm); background: #fff; }
 .legend i.x { border-color: #1d1a22; box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1d1a22; width: 12px; height: 12px; }
 
 .line { position: relative; padding: 30px 0 80px; }
-.track { position: absolute; left: 47px; top: 0; bottom: 60px; width: 10px; border-radius: 10px; background: #e7e1d8; }
-.track .fill { position: absolute; inset: 0 0 auto 0; height: 0; border-radius: 10px; background: linear-gradient(#e8452c, #f59f1b 30%, #2e9e5b 60%, #2563eb); }
+.track { position: absolute; left: 47px; top: 0; bottom: 60px; width: 10px; border-radius: 10px; background: var(--line); }
+.track .fill { position: absolute; inset: 0 0 auto 0; height: 0; border-radius: 10px; background: var(--warm); }
 .train { position: absolute; left: 30px; top: 0; width: 44px; height: 50px; border-radius: 12px; background: #1d1a22; padding-top: 2px; color: #fff; display: grid; place-items: center; font-size: 18px; box-shadow: 0 6px 16px -4px #0006; z-index: 2; transition: top .15s linear; }
 .stop { position: relative; display: grid; grid-template-columns: 104px 1fr; align-items: start; min-height: 220px; }
-.stop .pin { margin: 14px 0 0 33px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 7px solid #e8452c; z-index: 1; transition: transform .4s; }
+.stop .pin { margin: 14px 0 0 33px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 6px solid var(--warm); z-index: 1; transition: transform .4s; }
 .stop.you .pin { border-color: #1d1a22; box-shadow: 0 0 0 5px #fff, 0 0 0 10px #1d1a22; }
 .stop.in .pin { transform: scale(1.12); }
-.stop .board { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; box-shadow: 0 10px 30px -18px #0004; }
-.stop .zone { font: 600 .75rem "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.stop h2 { font-family: Inter, sans-serif; font-weight: 800; font-size: 1.7rem; margin: .2em 0 .3em; letter-spacing: -.01em; }
+.stop .board { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 22px 24px; }
+.stop .zone { font: 500 .75rem "Geist Mono", monospace; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.stop h2 { font-size: 1.6rem; margin: .2em 0 .3em; }
 .stop p { color: var(--muted); }
 .riders { display: flex; flex-wrap: wrap; gap: 8px; }
-.rider { font-size: .82rem; font-weight: 600; padding: 2px 12px 2px 2px; border-radius: 999px; background: #f3eee6; display: inline-flex; align-items: center; gap: 6px; }
+.rider { font-size: .82rem; font-weight: 600; padding: 2px 12px 2px 2px; border-radius: 999px; background: var(--bg2); display: inline-flex; align-items: center; gap: 6px; }
 .rider b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: .72rem; background: var(--c); }
-.youdo { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #1d1a22; color: #fff; font-size: .92rem; }
-.youdo strong { color: #ffcf6e; }
+.youdo { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 14px; border-radius: 4px; background: #111113; color: #fff; font-size: .92rem; }
+.youdo strong { color: #f08a4b; }
 @media (max-width: 600px) {
   .track { left: 27px; } .train { left: 14px; }
   .stop { grid-template-columns: 64px 1fr; } .stop .pin { margin-left: 13px; }
@@ -37,7 +37,6 @@ next: {url: /learn/big-picture.html, title: "The whole picture"}
 </style>
 
 <header class="map-hero"><div class="wrap">
-  <div class="kicker">Lesson 01 · 3 minutes</div>
   <h1>How a project goes</h1>
   <p class="muted" style="font-size:1.15rem;max-width:40em">Every project goes through the same six steps. The team handles most of them. The stops with a double ring are the ones where you're needed. Scroll down to follow a project through.</p>
   <div class="legend"><span><i></i> The team handles it</span><span><i class="x"></i> You step in</span></div>
