@@ -11,6 +11,10 @@ require:
   - lint
   - cap
 
+# Checks still being tried: they report "would block" but pass (limits, quality, docs only).
+# A new check starts here for a week or ten PRs; moving it out is a gate change.
+watch:
+
 # Gate files: CI, agent rules, role files and skills, the autonomy stage (TEAM.md), lint and type
 # config, test-runner config, the command surface, this file. Any change needs the owner's
 # `gate-change-approved` label.

@@ -11,7 +11,7 @@ Reference implementation of the gates in the [foundation playbook](../../playboo
 | [scripts/app-token.sh](scripts/app-token.sh) | Verifier sessions only | Mints a short-lived token for the checker App, so the Verifier can approve the head as `TEAM_CHECKER` |
 | [verdict.schema.json](verdict.schema.json) | `.github/team/verdict.schema.json` | The shape of `verification/<issue>/verdict.json` |
 | [pull_request_template.md](pull_request_template.md), [ISSUE_TEMPLATE/ticket.md](ISSUE_TEMPLATE/ticket.md) | `.github/` | PR and ticket shapes the gates expect |
-| [tests/selftest.sh](tests/selftest.sh) | stays here | 73 cases in a scratch repo: each planted violation must be blocked and each legitimate change allowed |
+| [tests/selftest.sh](tests/selftest.sh) | stays here | 77 cases in a scratch repo: each planted violation must be blocked and each legitimate change allowed |
 
 ## Pull request classes
 
@@ -34,7 +34,8 @@ Any other branch name fails.
 - **Verifier checks.** Every check script a Verifier commits runs on every PR, so a BLOCK stays red until it is fixed.
 - **Docs budget.** New Markdown files only in the folders made for them (changes, change requests, decisions, specs, reports, research, work, verification), and the standing docs may not grow past `DOCS_BUDGET` words (default 6,000).
 - **Quality gate.** Block new violations only: the project's lint command runs at base and head (after `SETUP_CMD`), and a changed file may not gain violations of any rule. A crashing linter or an unset command fails.
-- **Limits.** A ticket stops when its sessions pass the cap the Budget Analyst set, or after three BLOCK verdicts. The check counts the `team-event` lines on the ticket's issue and PR, and uses the first cap posted, so a later, bigger one changes nothing. Only the **owner's own account** can let it go on, by adding `spend-approved` or `rounds-approved` to the issue. With `cap` in `require:`, a ticket with no cap fails too.
+- **Limits.** A ticket stops when its sessions pass the cap the Budget Analyst set, or after three BLOCK verdicts. The check counts the `team-event` lines on the ticket's issue and PR, and uses the first cap posted, so a later, bigger one changes nothing. Only the **owner's own account** can let it go on, by adding `spend-approved` or `rounds-approved` to the issue. With `cap` in `require:`, a ticket with no cap fails too. Only comments by the owner, members and collaborators count, so an outsider on a public repo can't post a cap or a verdict.
+- **Watch mode.** A check listed under `watch:` in `zones.yml` (limits, quality or docs) reports "would block" and passes, so a new check can be tried first. Any check that crashes reports NEVER RAN; an enforcing one fails.
 - **Verifier PASS.** No merge of a ticket without `verification/<issue>/verdict.json` saying PASS with every check passed, for a revision in the branch; every file that differs from that revision must be the Verifier's evidence or exactly main's version (so merging main is fine and anything smuggled in is not); and, with `TEAM_CHECKER` set, the checker identity's approval of the exact head. Check rows whose command isn't a script under `verification/<issue>/checks/` are listed in a note, because CI can't re-run them.
 
 ## Install in a project

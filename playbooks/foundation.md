@@ -17,9 +17,10 @@ Prototype and hobby projects use the [foundation kit](../templates/foundation/RE
 6. **AI review informs; checks decide.** AI reviewers miss and invent problems ([research](../docs/research/agentic-software-company-practices.md)), and a human clicking approve without reading is weak too. Required checks, path rules and environment approvals carry the weight.
 7. **The red zone never auto-merges.** One owner-controlled file lists it: sign-in and sessions, authorisation and data separation, payments, secrets, migrations, data export and deletion, infrastructure and production config, production deploys, the gates, anything that deletes or weakens a test, new dependencies, prompts and model ids unless the eval gate passed, quotas and spend caps, legal pages.
 8. **Contain the agents.** Unattended work runs in vendor cloud sessions or a container with no production credentials. Backups sit in an account no agent can delete. Rollback and restore are rehearsed.
-9. **Hard caps.** Limit tickets in progress, attempts per ticket (three, then a typed blocker), and sessions and fix rounds per ticket (set by Bea from the estimate). Scripted runs get turn, time and dollar limits. One agent per ticket, and a single agent before many.
+9. **Hard caps.** Limit tickets in progress, attempts per ticket (three, then a typed blocker), and sessions and fix rounds per ticket (set by Bea from the estimate). Scripted runs get turn, time and dollar limits. One agent per ticket, and a single agent before many. The limits check in CI enforces the session cap and the three BLOCKs.
 10. **Own the logs and evals.** Log every model call and agent run in your own schema. Evaluate AI features on labelled files you own, split into dev and holdout (say 70/30).
 11. **Typed blockers.** When a ticket can't be done honestly, the agent stops and files one of: unclear request, missing access, too big, impossible. That's a good outcome.
+12. **New checks watch first.** A new check starts under `watch:` in `zones.yml`: for a week or ten PRs it reports what it would have blocked and lets the PR through. Ops reads those reports, fixes false alarms, then moves it to enforcing with a gate PR. Checks that guard tests, gates or the red zone enforce from day one. A check that didn't run says NEVER RAN, never ok.
 
 ## Staged autonomy
 
