@@ -1,10 +1,35 @@
 # Agentic Team
 
-Tell it your idea in plain words, and a team of AI agents plans it, builds it, checks it and helps you launch and run it. You talk to one of them, Ella. She interviews you, shows you a short plan with what it'll cost and what you'll need to do, and then runs the rest of the team in the background. She comes back only when something is truly yours to decide.
+**An AI software team you can hand an idea to.**
 
-**Why not just ask a chat assistant?** A chat assistant knows a lot, and Ella uses whichever AI you already have. What the team adds is discipline. A chat improvises a new plan every time; the team follows the same proven steps on every project. A chat forgets; the team keeps every decision and every step in your project's own GitHub repository. In a chat, the AI that wrote the code also tells you it works; here a separate agent checks it against what you agreed, and automatic checks stop shortcuts. And nothing that costs money or can't be undone happens without your yes.
+Agentic Team is a free, open-source set of instructions. It turns the AI coding tool you already use (Claude Code, Codex, Cursor and others) into a small company: ten agents with one job each, a fixed way of working, and checks they can't skip. You only talk to one of them, Ella. She interviews you, shows you a one-page plan with the cost, runs the rest of the team, and comes back when something needs your decision.
 
-**Who it's for today.** Right now you start the team from an AI coding tool on your computer, so it suits someone comfortable with a terminal, or a beginner with a technical friend for the first setup. A friendly web front door, where Ella walks a complete beginner through everything, is planned ([ROADMAP.md](ROADMAP.md)).
+**Who it's for.** People with an app idea who don't write code, and developers who want AI work checked instead of taken on trust. Today you start it from a coding tool in a terminal, so a beginner may want a technical friend for the first setup. A web front door is planned ([ROADMAP.md](ROADMAP.md)).
+
+**Why it exists.** AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.
+
+## How it's different
+
+| | A chatbot | An app builder | A coding assistant on its own | Your coding assistant + Agentic Team |
+|---|---|---|---|---|
+| For example | ChatGPT, Claude, Gemini | Lovable, Bolt, Replit | Claude Code, OpenAI Codex, Cursor, GitHub Copilot | Any of those coding assistants, running this team |
+| Who decides what gets built | You, one prompt at a time | You, by describing changes in a chat | You, one prompt at a time | Ella interviews you and writes a one-page plan for you to approve |
+| Who checks the work | You | You, by clicking around the preview | The same AI that wrote it | A different agent, using tests written from your plan before any code existed, plus automatic checks |
+| What it remembers next week | The chat | The project, on their platform | Whatever notes you kept | Everything is on GitHub: plans, decisions and test results |
+| Cost | Your subscription. The rest you work out. | A monthly plan, and usage can add up | You find out later | Priced before work starts, with a short weekly spend note |
+| Where your code lives | Wherever you paste it | Their platform (some sync to GitHub) | Your computer | Your own GitHub account |
+| When it stops to ask you | It only answers | Rarely | When it gets stuck | Before spending money, launching, or anything that can't be undone |
+
+For a quick script or a one-off fix, a coding assistant on its own is enough. Agentic Team is for building something you'll keep.
+
+**Honest caveats.**
+
+- **It's early.** The team is written and tested on its own, but it hasn't yet carried a real project all the way from idea to launch. That's the next step on the [roadmap](ROADMAP.md).
+- **It's slower and uses more AI than one assistant.** Planning and checking are separate runs, so a small change costs more than just asking.
+- **App builders are faster to a first version.** If you want something to show by tonight, use one.
+- **Checks lower the risk. They don't remove it.** The work is only as good as the AI model in your tool, and tests can miss things.
+- **It works best in Claude Code today.** That's the only tool with its own installer, where each agent runs as a separate session. Codex and Cursor read the same instructions. Gemini CLI should work but hasn't been tested.
+- **Hosting and databases aren't included.** You pay those providers directly. Bea, the budget agent, prices them in the plan, and free tiers come first.
 
 ## How a project goes
 

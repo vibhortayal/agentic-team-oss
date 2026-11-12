@@ -43,7 +43,7 @@ youtube: ""
 <header class="demo-hero"><div class="wrap">
   <div class="kicker">Lesson 05 · 2 minutes</div>
   <h1>Watch a demo</h1>
-  <p class="muted" style="max-width:38em;margin:0 auto">A short walkthrough: installing the team once, then a first chat with Ella. It plays by itself; pause it or jump to any chapter. The chat is an example, so your plan will differ.</p>
+  <p class="muted" style="max-width:38em;margin:0 auto">A short walkthrough: installing the team once, then a first chat with Ella. It plays by itself. You can pause it or jump to any chapter. The chat is an example, so your plan will differ.</p>
 </div></header>
 
 <div class="wrap" style="padding-bottom:90px">
@@ -72,12 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
       ["out", "<span class='warm'>Done. Open your AI tool in this folder and say hello to Ella.</span>"] ] },
     { tab: "chat", caption: "<b>Say hello:</b> one line, with your idea in your own words.", steps: [
       ["me", "You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I want an app where my family can share a grocery list."],
-      ["ella", "Lovely idea. Two quick questions: is it just for your family, and should it work on phones?"],
+      ["ella", "Two quick questions: is it just for your family, and should it work on phones?"],
       ["me", "Just the four of us, on our phones."] ] },
     { tab: "chat", caption: "<b>The plan:</b> one page, with the cost, before anything starts.", steps: [
       ["plan", "<b>Ella · your one-page plan</b>Here's what I recommend:<ul><li><b style='display:inline;color:inherit'>Build:</b> one shared list that updates live on every phone</li><li><b style='display:inline;color:inherit'>You'll need:</b> free hosting and a free database. $0 a month at your size</li><li><b style='display:inline;color:inherit'>You'll do:</b> create one account (5 min), try the preview, say go</li><li><b style='display:inline;color:inherit'>Team:</b> Priya, Ian, Vera, Otto. Bea estimates 2 to 3 days of agent work</li></ul>Shall I start?"],
       ["me", "Yes, go ahead."],
-      ["ella", "On it. I'll come back when the preview is ready for you to try. 🚀"] ] },
+      ["ella", "On it. I'll come back when the preview is ready for you to try."] ] },
   ];
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   let run = 0, paused = false;

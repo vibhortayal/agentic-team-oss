@@ -18,6 +18,30 @@ title: Home
 .lesson h3 { font-size: 1.25rem; margin-bottom: .3em; }
 .lesson p { color: var(--muted); font-size: .95rem; margin: 0 0 14px; }
 .lesson .meta { font-size: .8rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+/* first-screen facts */
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 22px 0 0; max-width: 36em; font-size: .98rem; }
+.facts dt { font-weight: 700; color: var(--text); }
+.facts dd { margin: 0; color: var(--muted); }
+@media (max-width: 520px) { .facts { grid-template-columns: 1fr; gap: 2px; } .facts dd { margin-bottom: 10px; } }
+/* comparison */
+.compare { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+.compare table { width: 100%; min-width: 820px; border-collapse: collapse; font-size: .93rem; }
+.compare th, .compare td { text-align: left; vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.compare tr:last-child th, .compare tr:last-child td { border-bottom: 0; }
+.compare thead th { font-size: .85rem; color: var(--text); }
+.compare tbody th { font-weight: 600; color: var(--text); width: 16%; }
+.compare td { color: var(--muted); }
+.compare .us { background: #ff6fae14; color: var(--text); border-left: 2px solid var(--pink); }
+.compare thead .us { color: var(--pink); }
+.center-note { text-align: center; max-width: 640px; margin: 26px auto 0; }
+.fit { display: grid; grid-template-columns: 1fr 1.4fr; gap: 18px; align-items: start; }
+@media (max-width: 860px) { .fit { grid-template-columns: 1fr; } }
+.fit ul { margin: 10px 0 0; padding-left: 1.1em; color: var(--muted); font-size: .96rem; }
+.fit li { margin-bottom: .6em; }
+.fit li b { color: var(--text); }
+.fit .good { border-top: 3px solid var(--green); }
+.fit .bad { border-top: 3px solid var(--warm); }
+.fit .card:hover { transform: none; }
 /* why cards */
 .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
 
@@ -25,7 +49,7 @@ title: Home
 .journey { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; counter-reset: step; }
 .journey::before { content: ""; position: absolute; top: 34px; left: 6%; right: 6%; height: 3px; background: linear-gradient(90deg, var(--warm), var(--pink), var(--teal), var(--green)); border-radius: 3px; transform-origin: left; transform: scaleX(var(--progress, 0)); transition: transform 1.6s ease; }
 .step { text-align: center; position: relative; }
-.step .dot { width: 70px; height: 70px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; font-size: 1.7rem; background: var(--card); border: 2px solid var(--line); position: relative; z-index: 1; transition: border-color .4s, box-shadow .4s; }
+.step .dot { width: 70px; height: 70px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; font: 600 1.5rem Fraunces, serif; background: var(--card); border: 2px solid var(--line); position: relative; z-index: 1; transition: border-color .4s, box-shadow .4s; }
 .step.on .dot { border-color: var(--warm); box-shadow: 0 0 0 6px #ffb45e1f; }
 .step h3 { font-size: 1.05rem; margin-bottom: .3em; }
 .step p { font-size: .88rem; color: var(--muted); margin: 0; }
@@ -79,109 +103,143 @@ title: Home
 
 <header class="hero"><div class="wrap">
   <div>
-    <div class="kicker">Your own software team, made of AI agents</div>
-    <h1>Tell it your idea.<br><em>A team builds it.</em></h1>
-    <p class="lead">You talk to one friendly agent, Ella. She asks about your idea, shows you a short plan with the cost, and then runs a whole team that plans, builds, checks and launches it. She only comes back when something is yours to decide.</p>
+    <h1>An AI software team <em>you can hand an idea to.</em></h1>
+    <p class="lead">Agentic Team is a free set of instructions. It turns the AI coding tool you already use (Claude Code, Codex, Cursor and others) into a small company: ten agents with one job each, a fixed way of working, and checks they can't skip. You only talk to one of them, Ella. She plans the work, runs the others, and comes back when something needs your decision.</p>
+    <dl class="facts">
+      <dt>Who it's for</dt><dd>People with an app idea who don't write code, and developers who want AI work checked instead of taken on trust.</dd>
+      <dt>Why it exists</dt><dd>AI tools write code fast. But they mark their own homework, forget last week's decisions and rarely tell you the cost up front.</dd>
+    </dl>
     <div class="ctas">
-      <a class="btn primary" href="#learn">Start learning →</a>
-      <a class="btn ghost" href="{{ '/learn/demo.html' | relative_url }}">▶ Watch the demo</a>
+      <a class="btn primary" href="#compare">How it's different</a>
+      <a class="btn ghost" href="{{ '/learn/demo.html' | relative_url }}">Watch the demo</a>
     </div>
   </div>
   <div class="shot reveal">
     <div class="scene hero-scene" role="img" aria-label="You chat with Ella, a pink robot, who shows a one-page plan with the cost">
       <span data-bot="you" data-size="150" data-label="no"></span>
-      <div class="bubble-card plan-card"><b>📋 Your plan</b><br>✓ What we'll build<br>✓ What you'll need<br>✓ Who's on the team<br><span style="color:var(--warm)">💰 $0 to start · you approve</span></div>
+      <div class="bubble-card plan-card"><b>Your plan</b><br>What we'll build<br>What you'll need<br>Who's on the team<br><span style="color:var(--warm)">$0 to start, you approve</span></div>
       <span data-bot="ella" data-size="170" data-label="no"></span>
     </div>
   </div>
 </div></header>
 
-<section id="learn"><div class="wrap">
+<section class="alt" id="compare"><div class="wrap">
   <div class="center reveal">
-    <div class="kicker">Learning portal</div>
-    <h2>Learn it in short, visual lessons</h2>
-    <p class="muted">No jargon needed. Each lesson takes a few minutes, and you can go in any order.</p>
+    <h2>Why not just use a chatbot or a coding assistant?</h2>
+    <p class="muted">You can, and this doesn't replace them. The team runs inside the coding assistant you already have. What it adds is everything around the code: someone to plan, someone else to check, a written record, and a price before anything starts.</p>
   </div>
-  <div class="lessons">
-    <a class="lesson reveal" style="--c:#ffb45e" href="{{ '/learn/journey.html' | relative_url }}"><span class="n">01</span><span class="ico">🚇</span><h3>How a project goes</h3><p>Ride the line from idea to launch, and see where you step in.</p><span class="meta">3 min · map</span></a>
-    <a class="lesson reveal" style="--c:#4fd1c5" href="{{ '/learn/big-picture.html' | relative_url }}"><span class="n">02</span><span class="ico">🏙️</span><h3>The whole picture</h3><p>Ella, the team, GitHub and the checks, in one little world.</p><span class="meta">3 min · explorer</span></a>
-    <a class="lesson reveal" style="--c:#ff6fae" href="{{ '/learn/team.html' | relative_url }}"><span class="n">03</span><span class="ico">🤖</span><h3>Meet the team</h3><p>Ten agents, one job each. Open their cards.</p><span class="meta">4 min · cards</span></a>
-    <a class="lesson reveal" style="--c:#5ee08a" href="{{ '/learn/first-project.html' | relative_url }}"><span class="n">04</span><span class="ico">✏️</span><h3>Your first project</h3><p>A step-by-step lesson, from no accounts to your first chat with Ella.</p><span class="meta">8 min · tutorial</span></a>
-    <a class="lesson reveal" style="--c:#6aa8ff" href="{{ '/learn/demo.html' | relative_url }}"><span class="n">05</span><span class="ico">▶️</span><h3>Watch a demo</h3><p>See the setup and a real conversation with Ella play out.</p><span class="meta">2 min · demo</span></a>
-    <a class="lesson reveal" style="--c:#b28dff" href="{{ '/learn/principles.html' | relative_url }}"><span class="n">06</span><span class="ico">📐</span><h3>The rules we follow</h3><p>Why the team works the way it does, in plain words.</p><span class="meta">4 min · principles</span></a>
-    <a class="lesson reveal" style="--c:#9fb3c8" href="{{ '/learn/underneath.html' | relative_url }}"><span class="n">07</span><span class="ico">📘</span><h3>What's underneath</h3><p>For the curious: roles, playbooks, checks and adapters.</p><span class="meta">5 min · blueprint</span></a>
+  <div class="compare reveal"><table>
+    <thead><tr><th></th><th>A chatbot</th><th>An app builder</th><th>A coding assistant on its own</th><th class="us">Your coding assistant + Agentic Team</th></tr></thead>
+    <tbody>
+      <tr><th>For example</th><td>ChatGPT, Claude, Gemini</td><td>Lovable, Bolt, Replit</td><td>Claude Code, OpenAI Codex, Cursor, GitHub Copilot</td><td class="us">Any of those coding assistants, running this team</td></tr>
+      <tr><th>Who decides what gets built</th><td>You, one prompt at a time</td><td>You, by describing changes in a chat</td><td>You, one prompt at a time</td><td class="us">Ella interviews you and writes a one-page plan for you to approve</td></tr>
+      <tr><th>Who checks the work</th><td>You</td><td>You, by clicking around the preview</td><td>The same AI that wrote it</td><td class="us">A different agent, using tests written from your plan before any code existed, plus automatic checks</td></tr>
+      <tr><th>What it remembers next week</th><td>The chat</td><td>The project, on their platform</td><td>Whatever notes you kept</td><td class="us">Everything is on GitHub: plans, decisions and test results</td></tr>
+      <tr><th>Cost</th><td>Your subscription. The rest you work out.</td><td>A monthly plan, and usage can add up</td><td>You find out later</td><td class="us">Priced before work starts, with a short weekly spend note</td></tr>
+      <tr><th>Where your code lives</th><td>Wherever you paste it</td><td>Their platform (some sync to GitHub)</td><td>Your computer</td><td class="us">Your own GitHub account</td></tr>
+      <tr><th>When it stops to ask you</th><td>It only answers</td><td>Rarely</td><td>When it gets stuck</td><td class="us">Before spending money, launching, or anything that can't be undone</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted center-note reveal">For a quick script or a one-off fix, a coding assistant on its own is enough. Agentic Team is for building something you'll keep.</p>
+</div></section>
+
+<section id="fit"><div class="wrap">
+  <div class="center reveal">
+    <h2>Where it helps, and where it doesn't</h2>
+    <p class="muted">An honest list, based on how the team works today.</p>
+  </div>
+  <div class="fit">
+    <div class="card reveal good">
+      <h3>Good fit</h3>
+      <ul>
+        <li>An app you'll keep and change for months, not a one-off. The team covers launch, fixes and support as well as the first build.</li>
+        <li>You can't judge code yourself, so you need someone other than the builder to check it.</li>
+        <li>You want the code and its whole history in your own GitHub account, and the freedom to switch AI tools later.</li>
+        <li>You want a price before work starts, and a say before anything is spent.</li>
+      </ul>
+    </div>
+    <div class="card reveal bad">
+      <h3>Not a good fit, or not yet</h3>
+      <ul>
+        <li><b>It's early.</b> The team is written and tested on its own, but it hasn't yet carried a real project all the way from idea to launch. That's the next step on the roadmap.</li>
+        <li><b>Setup still needs a terminal.</b> You install Git and a coding assistant and paste a few commands. The friendly portal that hides this isn't built yet. If that sounds daunting, ask a technical friend to do the first 15 minutes.</li>
+        <li><b>It's slower and uses more AI than one assistant.</b> Planning and checking are separate runs, so a small change costs more than just asking. For a quick script or a fix, skip the team.</li>
+        <li><b>App builders are faster to a first version.</b> If you want something good-looking to show by tonight, Lovable or Replit will get you there sooner.</li>
+        <li><b>Checks lower the risk. They don't remove it.</b> The work is only as good as the AI model in your tool, and tests can miss things.</li>
+        <li><b>It works best in Claude Code today.</b> That's the only tool with its own installer, where each agent runs as a separate session. Codex and Cursor read the same instructions. Gemini CLI should work but hasn't been tested.</li>
+        <li><b>Hosting and databases aren't included.</b> You pay those providers directly. Bea prices them in the plan, and free tiers come first.</li>
+      </ul>
+    </div>
   </div>
 </div></section>
 
-<section class="alt" id="why"><div class="wrap">
+<section class="alt" id="learn"><div class="wrap">
   <div class="center reveal">
-    <div class="kicker">Why not just ask a chatbot?</div>
-    <h2>A chat assistant improvises. A team follows a method.</h2>
-    <p class="muted">Ella uses whichever AI you already have. What the team adds is discipline.</p>
+    <h2>Seven short lessons</h2>
+    <p class="muted">A few minutes each, in any order. You don't need to know how to code.</p>
   </div>
-  <div class="grid4">
-    <div class="card reveal"><div class="icon">🧭</div><h3>The same proven steps</h3><p>Every project goes idea, plan, build, check, launch. No new plan invented each time.</p></div>
-    <div class="card reveal"><div class="icon">🗂️</div><h3>Nothing is forgotten</h3><p>Every decision and every step is written down in your project's own GitHub, in your name.</p></div>
-    <div class="card reveal"><div class="icon">🔍</div><h3>Nobody marks their own homework</h3><p>One agent builds, a different one checks it against what you agreed, and automatic checks stop shortcuts.</p></div>
-    <div class="card reveal"><div class="icon">✋</div><h3>Nothing happens without your yes</h3><p>No spending, no launch and nothing that can't be undone until you say go.</p></div>
+  <div class="lessons">
+    <a class="lesson reveal" style="--c:#ffb45e" href="{{ '/learn/journey.html' | relative_url }}"><span class="n">01</span><h3>How a project goes</h3><p>The six steps from idea to launch, and the three where you're needed.</p><span class="meta">3 min</span></a>
+    <a class="lesson reveal" style="--c:#4fd1c5" href="{{ '/learn/big-picture.html' | relative_url }}"><span class="n">02</span><h3>The whole picture</h3><p>Ella, the team, GitHub and the checks on one map.</p><span class="meta">3 min</span></a>
+    <a class="lesson reveal" style="--c:#ff6fae" href="{{ '/learn/team.html' | relative_url }}"><span class="n">03</span><h3>Meet the team</h3><p>Who the ten agents are and what each one does.</p><span class="meta">4 min</span></a>
+    <a class="lesson reveal" style="--c:#5ee08a" href="{{ '/learn/first-project.html' | relative_url }}"><span class="n">04</span><h3>Your first project</h3><p>Setup from scratch, up to your first chat with Ella.</p><span class="meta">8 min</span></a>
+    <a class="lesson reveal" style="--c:#6aa8ff" href="{{ '/learn/demo.html' | relative_url }}"><span class="n">05</span><h3>Watch a demo</h3><p>The install and a first conversation, played out on screen.</p><span class="meta">2 min</span></a>
+    <a class="lesson reveal" style="--c:#b28dff" href="{{ '/learn/principles.html' | relative_url }}"><span class="n">06</span><h3>The rules we follow</h3><p>The twelve rules every agent works by.</p><span class="meta">4 min</span></a>
+    <a class="lesson reveal" style="--c:#9fb3c8" href="{{ '/learn/underneath.html' | relative_url }}"><span class="n">07</span><h3>What's underneath</h3><p>The files that make up the team, for the curious.</p><span class="meta">5 min</span></a>
   </div>
 </div></section>
 
 <section id="how"><div class="wrap">
   <div class="center reveal">
-    <div class="kicker">How a project goes</div>
-    <h2>Six steps, and you're only needed at a few</h2>
-    <p class="muted">Everything between the pink checkpoints runs on its own. <a href="{{ '/learn/journey.html' | relative_url }}">Ride the full line →</a></p>
+    <h2>How a project goes</h2>
+    <p class="muted">Six steps. You're needed at three of them: approving the plan, trying the preview and saying go. <a href="{{ '/learn/journey.html' | relative_url }}">The full walkthrough</a></p>
   </div>
   <div class="journey" id="journey">
-    <div class="step"><div class="dot">💡</div><div><h3>Idea</h3><p>You chat with Ella in plain words.</p></div></div>
-    <div class="step"><div class="dot">📋</div><div><h3>Plan</h3><p>A one-page plan: what, who, cost.</p><span class="you">You approve</span></div></div>
-    <div class="step"><div class="dot">🛠️</div><div><h3>Build</h3><p>Agents write the code.</p></div></div>
-    <div class="step"><div class="dot">✅</div><div><h3>Check</h3><p>A separate agent tests it.</p><span class="you">You try the preview</span></div></div>
-    <div class="step"><div class="dot">🚀</div><div><h3>Launch</h3><p>Your app goes live.</p><span class="you">You say go</span></div></div>
-    <div class="step"><div class="dot">🌱</div><div><h3>Keep it running</h3><p>Fixes, updates, support.</p></div></div>
+    <div class="step"><div class="dot">1</div><div><h3>Idea</h3><p>You describe it to Ella in plain words.</p></div></div>
+    <div class="step"><div class="dot">2</div><div><h3>Plan</h3><p>One page: what gets built, who builds it, what it costs.</p><span class="you">You approve</span></div></div>
+    <div class="step"><div class="dot">3</div><div><h3>Build</h3><p>Agents write the code.</p></div></div>
+    <div class="step"><div class="dot">4</div><div><h3>Check</h3><p>A separate agent tests it.</p><span class="you">You try the preview</span></div></div>
+    <div class="step"><div class="dot">5</div><div><h3>Launch</h3><p>The app goes live.</p><span class="you">You say go</span></div></div>
+    <div class="step"><div class="dot">6</div><div><h3>Keep it running</h3><p>Fixes, updates and support.</p></div></div>
   </div>
 </div></section>
 
 <section class="alt" id="team"><div class="wrap">
   <div class="center reveal">
-    <div class="kicker">Meet the team</div>
     <h2>Ten agents, one job each</h2>
-    <p class="muted">You only ever talk to Ella. She brings in the others when your project needs them. <a href="{{ '/learn/team.html' | relative_url }}">Open their cards →</a></p>
+    <p class="muted">You only talk to Ella. She brings in the others when the project needs them. <a href="{{ '/learn/team.html' | relative_url }}">More about each one</a></p>
   </div>
   <div class="scene reveal" style="margin-bottom:36px;min-height:0"><div class="parade"><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="ella" data-size="96"></span><br>Ella</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="priya" data-size="80"></span><br>Priya</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="rohan" data-size="80"></span><br>Rohan</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="quinn" data-size="80"></span><br>Quinn</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="arjun" data-size="80"></span><br>Arjun</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="ian" data-size="80"></span><br>Ian</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="vera" data-size="80"></span><br>Vera</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="max" data-size="80"></span><br>Max</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="bea" data-size="80"></span><br>Bea</a><a class="who" href="{{ '/learn/team.html' | relative_url }}"><span data-bot="otto" data-size="80"></span><br>Otto</a></div></div>
   <div class="team">
-    <a class="agent lead reveal" style="--c:#ff6fae" href="{{ '/roles/engagement-lead.html' | relative_url }}"><span class="badge">Your contact</span><span class="mini" data-bot="ella" data-size="58" data-label="no"></span><h3>Ella</h3><div class="role">Engagement Lead</div><p>Your guide on every project. Interviews you, plans the work, runs the team and brings you only the decisions, each with one recommendation.</p></a>
-    <a class="agent reveal" style="--c:#b28dff" href="{{ '/roles/product-manager.html' | relative_url }}"><span class="mini" data-bot="priya" data-size="58" data-label="no"></span><h3>Priya</h3><div class="role">Product Manager</div><p>Turns your idea into a clear, testable plan.</p></a>
-    <a class="agent reveal" style="--c:#6aa8ff" href="{{ '/roles/researcher.html' | relative_url }}"><span class="mini" data-bot="rohan" data-size="58" data-label="no"></span><h3>Rohan</h3><div class="role">Researcher</div><p>Finds real evidence before big choices.</p></a>
-    <a class="agent reveal" style="--c:#ff8f5e" href="{{ '/roles/critic.html' | relative_url }}"><span class="mini" data-bot="quinn" data-size="58" data-label="no"></span><h3>Quinn</h3><div class="role">Critic</div><p>Pokes holes in a plan before money is spent.</p></a>
-    <a class="agent reveal" style="--c:#4fd1c5" href="{{ '/roles/architect.html' | relative_url }}"><span class="mini" data-bot="arjun" data-size="58" data-label="no"></span><h3>Arjun</h3><div class="role">Architect</div><p>Breaks big builds into safe pieces.</p></a>
-    <a class="agent reveal" style="--c:#ffd35e" href="{{ '/roles/implementer.html' | relative_url }}"><span class="mini" data-bot="ian" data-size="58" data-label="no"></span><h3>Ian</h3><div class="role">Implementer</div><p>Builds one piece at a time, with its own tests.</p></a>
-    <a class="agent reveal" style="--c:#5ee08a" href="{{ '/roles/verifier.html' | relative_url }}"><span class="mini" data-bot="vera" data-size="58" data-label="no"></span><h3>Vera</h3><div class="role">Verifier</div><p>Checks the work independently, and can say no.</p></a>
-    <a class="agent reveal" style="--c:#9fb3c8" href="{{ '/roles/evaluator.html' | relative_url }}"><span class="mini" data-bot="max" data-size="58" data-label="no"></span><h3>Max</h3><div class="role">Evaluator</div><p>Measures AI quality and keeps the team sharp.</p></a>
-    <a class="agent reveal" style="--c:#ffb45e" href="{{ '/roles/budget-analyst.html' | relative_url }}"><span class="mini" data-bot="bea" data-size="58" data-label="no"></span><h3>Bea</h3><div class="role">Budget Analyst</div><p>Prices everything up front and tracks the spend.</p></a>
-    <a class="agent reveal" style="--c:#c8e85e" href="{{ '/roles/ops.html' | relative_url }}"><span class="mini" data-bot="otto" data-size="58" data-label="no"></span><h3>Otto</h3><div class="role">Ops</div><p>Launches with your OK and keeps it running.</p></a>
+    <a class="agent lead reveal" style="--c:#ff6fae" href="{{ '/roles/engagement-lead.html' | relative_url }}"><span class="badge">Your contact</span><span class="mini" data-bot="ella" data-size="58" data-label="no"></span><h3>Ella</h3><div class="role">Engagement Lead</div><p>Interviews you, plans the work and runs the team. When something needs you, she brings the decision with her recommendation.</p></a>
+    <a class="agent reveal" style="--c:#b28dff" href="{{ '/roles/product-manager.html' | relative_url }}"><span class="mini" data-bot="priya" data-size="58" data-label="no"></span><h3>Priya</h3><div class="role">Product Manager</div><p>Writes down what "done" means for each piece of work.</p></a>
+    <a class="agent reveal" style="--c:#6aa8ff" href="{{ '/roles/researcher.html' | relative_url }}"><span class="mini" data-bot="rohan" data-size="58" data-label="no"></span><h3>Rohan</h3><div class="role">Researcher</div><p>Looks things up properly before a big choice.</p></a>
+    <a class="agent reveal" style="--c:#ff8f5e" href="{{ '/roles/critic.html' | relative_url }}"><span class="mini" data-bot="quinn" data-size="58" data-label="no"></span><h3>Quinn</h3><div class="role">Critic</div><p>Looks for how a plan could fail before money goes into it.</p></a>
+    <a class="agent reveal" style="--c:#4fd1c5" href="{{ '/roles/architect.html' | relative_url }}"><span class="mini" data-bot="arjun" data-size="58" data-label="no"></span><h3>Arjun</h3><div class="role">Architect</div><p>Splits big builds into pieces and decides the order.</p></a>
+    <a class="agent reveal" style="--c:#ffd35e" href="{{ '/roles/implementer.html' | relative_url }}"><span class="mini" data-bot="ian" data-size="58" data-label="no"></span><h3>Ian</h3><div class="role">Implementer</div><p>Writes the code, one piece at a time, with his own tests.</p></a>
+    <a class="agent reveal" style="--c:#5ee08a" href="{{ '/roles/verifier.html' | relative_url }}"><span class="mini" data-bot="vera" data-size="58" data-label="no"></span><h3>Vera</h3><div class="role">Verifier</div><p>Tests Ian's work against your plan and can send it back.</p></a>
+    <a class="agent reveal" style="--c:#9fb3c8" href="{{ '/roles/evaluator.html' | relative_url }}"><span class="mini" data-bot="max" data-size="58" data-label="no"></span><h3>Max</h3><div class="role">Evaluator</div><p>Scores AI features, and the team's own work, the same way each time.</p></a>
+    <a class="agent reveal" style="--c:#ffb45e" href="{{ '/roles/budget-analyst.html' | relative_url }}"><span class="mini" data-bot="bea" data-size="58" data-label="no"></span><h3>Bea</h3><div class="role">Budget Analyst</div><p>Prices the work before it starts and tracks what's spent.</p></a>
+    <a class="agent reveal" style="--c:#c8e85e" href="{{ '/roles/ops.html' | relative_url }}"><span class="mini" data-bot="otto" data-size="58" data-label="no"></span><h3>Otto</h3><div class="role">Ops</div><p>Launches the app when you say go, then keeps an eye on it.</p></a>
   </div>
 </div></section>
 
 <section><div class="wrap">
   <div class="split">
-    <div class="shot reveal"><div class="scene" role="img" aria-label="Vera, the green robot, holds up a red BLOCKED sign while Ian looks on with his wrench"><span data-bot="ian" data-size="130" data-label="no"></span><div class="sign" style="--g:#e8322b;align-self:center">⛔ BLOCKED<br><small style="font-weight:600;letter-spacing:0">2 checks failed · fix and resend</small></div><span data-bot="vera" data-size="150" data-label="no"></span></div></div>
+    <div class="shot reveal"><div class="scene" role="img" aria-label="Vera, the green robot, holds up a red BLOCKED sign while Ian looks on with his wrench"><span data-bot="ian" data-size="130" data-label="no"></span><div class="sign" style="--g:#e8322b;align-self:center">BLOCKED<br><small style="font-weight:600;letter-spacing:0">2 checks failed. Fix and resend.</small></div><span data-bot="vera" data-size="150" data-label="no"></span></div></div>
     <div class="reveal">
-      <div class="kicker">Checked, not just claimed</div>
-      <h2>When it isn't right, Vera says so</h2>
-      <p class="muted">Vera writes her checks from your plan before she sees any code. If Ian's work doesn't pass, she blocks it and he fixes it. You never have to take an AI's word that something works.</p>
+      <h2>When the work isn't right, Vera sends it back</h2>
+      <p class="muted">Vera writes her checks from your plan before she sees any code. If Ian's work fails them, it goes back to him with the evidence. After three failed rounds the team stops and tells you, so nothing loops forever on your bill. You don't have to take an AI's word that something works.</p>
     </div>
   </div>
   <div class="split flip">
-    <div class="shot reveal"><div class="scene" role="img" aria-label="A green ALL CHECKS PASSED sign lights up between Vera and you, ready for your yes"><span data-bot="vera" data-size="120" data-label="no"></span><div style="display:grid;gap:12px;align-self:center;justify-items:center"><div class="sign" style="--g:#22a55a">✅ ALL CHECKS PASSED</div><div class="bubble-card" style="animation-delay:-2s">Ready for your preview 👀</div></div><span data-bot="you" data-size="130" data-label="no"></span></div></div>
+    <div class="shot reveal"><div class="scene" role="img" aria-label="A green ALL CHECKS PASSED sign lights up between Vera and you, ready for your yes"><span data-bot="vera" data-size="120" data-label="no"></span><div style="display:grid;gap:12px;align-self:center;justify-items:center"><div class="sign" style="--g:#22a55a">ALL CHECKS PASSED</div><div class="bubble-card" style="animation-delay:-2s">Ready for you to try</div></div><span data-bot="you" data-size="130" data-label="no"></span></div></div>
     <div class="reveal">
-      <div class="kicker">You stay in charge</div>
-      <h2>Green lights, then your yes</h2>
+      <h2>Nothing goes live without you</h2>
       <ul class="ticks">
-        <li>A piece of work is done when the checker passes it and every automatic check is green.</li>
-        <li>Then you try it and approve it. Nothing goes live without you.</li>
-        <li>Ella tells you before trying anything she isn't sure of, and what it might cost.</li>
+        <li>A piece of work counts as done once Vera passes it and every automatic check is green.</li>
+        <li>Then you try it. It only launches when you say so.</li>
+        <li>If Ella wants to try something she isn't sure about, she tells you first, along with what it might cost.</li>
       </ul>
     </div>
   </div>
@@ -189,25 +247,24 @@ title: Home
 
 <section class="alt"><div class="wrap">
   <div class="center reveal">
-    <div class="kicker">Before you start</div>
     <h2>What you'll need</h2>
-    <p class="muted">If any of this is new, Ella walks you through it.</p>
+    <p class="muted">Ella can walk you through any of these that are new to you.</p>
   </div>
   <div class="need">
-    <div class="card reveal"><div class="icon">🐙</div><h3>A GitHub account</h3><p>Free. Your project and its whole history live there. <a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one</a></p></div>
-    <div class="card reveal"><div class="icon">🤖</div><h3>An AI coding tool</h3><p>Claude Code, Codex, Cursor, Gemini CLI or another. The agents run inside it.</p></div>
-    <div class="card reveal"><div class="icon">⌨️</div><h3>Git and a terminal</h3><p>To copy the team into your project, once. <a href="https://git-scm.com/downloads">Install Git</a></p></div>
-    <div class="card reveal"><div class="icon">🔐</div><h3>A password manager</h3><p>Such as Bitwarden (free), for your project's keys. Never paste them in a chat.</p></div>
+    <div class="card reveal"><h3>A GitHub account</h3><p>Free. Your project and its history live there. <a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one</a></p></div>
+    <div class="card reveal"><h3>An AI coding assistant</h3><p>Claude Code, Codex, Cursor, Gemini CLI or similar. The agents run inside it.</p></div>
+    <div class="card reveal"><h3>Git and a terminal</h3><p>Used once, to copy the team into your project. <a href="https://git-scm.com/downloads">Install Git</a></p></div>
+    <div class="card reveal"><h3>A password manager</h3><p>Bitwarden is free. Your project's keys go there, never into a chat.</p></div>
   </div>
 </div></section>
 
 <section class="cta" id="start"><div class="wrap">
   <div class="parade reveal" style="margin-bottom:24px" aria-hidden="true"><span data-bot="you" data-size="90"></span><span data-bot="ella" data-size="90"></span><span data-bot="ian" data-size="74"></span><span data-bot="vera" data-size="74"></span><span data-bot="otto" data-size="74"></span></div>
-  <h2 class="reveal">Ready when you are</h2>
-  <p class="muted reveal">Put the team in your project, open your AI tool and paste one line:</p>
+  <h2 class="reveal">Start a project</h2>
+  <p class="muted reveal">Install the team into your project folder, open your coding assistant there and paste this line with your idea at the end:</p>
   <div class="prompt reveal"><span class="p">›</span> You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <em>&lt;your idea, in your own words&gt;</em></div>
   <div class="ctas reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-    <a class="btn primary" href="{{ '/start/#your-first-project-step-by-step' | relative_url }}">Step-by-step setup guide →</a>
+    <a class="btn primary" href="{{ '/learn/first-project.html' | relative_url }}">Step-by-step setup</a>
     <a class="btn ghost" href="{{ site.github.repository_url }}">View on GitHub</a>
   </div>
 </div></section>

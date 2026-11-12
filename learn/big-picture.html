@@ -26,8 +26,8 @@ next: {url: /learn/team.html, title: "Meet the team"}
 
 <header class="iso-hero"><div class="wrap">
   <div class="kicker">Lesson 02 · 3 minutes</div>
-  <h1>The whole picture, in one frame</h1>
-  <p class="muted" style="max-width:40em;margin:0 auto">This little world is your project. The glowing dots are messages and work moving around. Click any building to see what it does.</p>
+  <h1>The whole picture</h1>
+  <p class="muted" style="max-width:40em;margin:0 auto">This map shows one project. The moving dots are work passing between the parts. Click a building to see what it does.</p>
 </div></header>
 
 <div class="wrap stage">
@@ -107,13 +107,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const info = document.getElementById("info"), pills = document.getElementById("pills");
   for (const [key, p] of Object.entries(places)) {
-    const b = document.createElement("button"); b.textContent = p.icon + " " + p.name; b.dataset.key = key;
+    const b = document.createElement("button"); b.textContent = p.name; b.dataset.key = key;
     b.onclick = () => show(key); pills.appendChild(b);
   }
   function show(key) {
     const p = places[key];
     info.style.setProperty("--c", p.c);
-    info.innerHTML = `<div class="tag">${p.tag}</div><h2>${p.icon} ${p.name}</h2><p>${p.text}</p>`;
+    info.innerHTML = `<div class="tag">${p.tag}</div><h2>${p.name}</h2><p>${p.text}</p>`;
     document.querySelectorAll("[data-key]").forEach((n) => n.classList.toggle("sel", n.dataset.key === key));
   }
   show("ella");
