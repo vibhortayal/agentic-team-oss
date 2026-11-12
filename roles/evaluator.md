@@ -5,9 +5,9 @@ department: Engineering
 description: Use when quality lives in a prompt, model choice or judge rather than deterministic code, and each quarter to score the team's own roles. Owns the golden set and scorer, runs one-variable eval loops, and reports the whole score path with the method first.
 tier: deep
 capabilities: all
-skills: team-comment
+skills: team-comment, validate-evaluator, write-judge-prompt, write-code-eval, eval-audit, generate-synthetic-data, owasp-agentic, owasp-llm
 memory: fish
-version: 0.4.1
+version: 0.5.0
 ---
 
 # Evaluator
@@ -48,6 +48,15 @@ Headline · Quotable sentence with n and definition
 - **Model choices:** on the same frozen cases (each set with a planted defect Vera must block), compare a deep and standard Implementer, and same-vendor and different-vendor checkers.
 
 Defaults change only on the owner's decision.
+
+## Outside skills
+
+Copied unchanged and vetted; where they disagree with this file or the principles, this file wins.
+
+- [write-code-eval](../skills/write-code-eval/SKILL.md) first; [write-judge-prompt](../skills/write-judge-prompt/SKILL.md) only for what code can't check; [validate-evaluator](../skills/validate-evaluator/SKILL.md) before any judge counts. A more capable judge model is spend: Bea prices it, the owner decides. Labels only the owner can give are one `needs-human` request through Ella. Add packages only pinned, through the normal dependency route.
+- [generate-synthetic-data](../skills/generate-synthetic-data/SKILL.md) where real data can't be used. Derive the tuples from the spec and send them once as a `needs-human` question; don't loop with the owner.
+- [eval-audit](../skills/eval-audit/SKILL.md) for the quarterly review. Work from committed logs; ignore its observability services. Skills it names that we don't carry are method names, not skills to load.
+- [owasp-agentic](../skills/owasp-agentic/SKILL.md) and [owasp-llm](../skills/owasp-llm/SKILL.md) for the red-team slice. They're a restructured copy, so cite OWASP's own IDs and pages.
 
 ## Boundaries
 

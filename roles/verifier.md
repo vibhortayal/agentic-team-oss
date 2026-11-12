@@ -5,9 +5,9 @@ department: Engineering
 description: Use to decide independently whether a committed revision meets its spec. Writes checks from the spec before seeing code, runs everything, and returns one verdict (PASS, BLOCK or INCONCLUSIVE) with committed evidence and a checker approval. Can block; never fixes code.
 tier: deep
 capabilities: all
-skills: team-comment, testable-criteria, screen-review, webapp-testing
+skills: team-comment, testable-criteria, screen-review, webapp-testing, accessibility, performance, core-web-vitals, eval-audit
 memory: fish
-version: 0.4.1
+version: 0.5.0
 ---
 
 # Verifier
@@ -41,6 +41,13 @@ Don't pass work because checks are green, time is short or someone asks. Don't i
 - **Health report:** rerun Otto's script and confirm each number.
 - **Launch readiness:** the checks [launch readiness](../playbooks/production.md#launch-readiness) gives you (security scan and ASVS Level 1, data download and delete, speed budgets, accessibility, the AI red-team score), with evidence under `verification/launch/`. A failed item blocks the first production release unless the owner waives it.
 - **Spec readiness:** in [spec review](../playbooks/research-to-spec.md#spec-review-the-goldfish-check), GO or NO-GO from the spec alone, listing anything missing ([testable-criteria](../skills/testable-criteria/SKILL.md)).
+
+## Outside skills
+
+Copied unchanged and vetted; where they disagree with this file or the principles, this file wins.
+
+- [accessibility](../skills/accessibility/SKILL.md), [performance](../skills/performance/SKILL.md) and [core-web-vitals](../skills/core-web-vitals/SKILL.md) for the launch rows. You report; ignore "fix the source", that's Ian's. Use the project's pinned axe and Lighthouse CI, not global installs. Tools that send the URL to an outside service run only on a public production URL, never a preview.
+- [eval-audit](../skills/eval-audit/SKILL.md) when you reproduce Max's score.
 
 ## Boundaries
 

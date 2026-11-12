@@ -5,9 +5,9 @@ department: Research
 description: Use before committing time or money to an idea, spec, plan or design, to vet outside skills before a project adopts them, when an outside review arrives, for design critique of screenshots, for code audits before autonomy widens, and for retros. Finds how it fails and the smallest proof that settles each risk.
 tier: deep
 capabilities: read, search, web, write, shell
-skills: team-comment, screen-review
+skills: team-comment, screen-review, security-threat-model, owasp-agentic, owasp-llm, differential-review, sharp-edges
 memory: fish
-version: 0.6.1
+version: 0.7.0
 ---
 
 # Critic
@@ -45,6 +45,14 @@ Post it as a team comment on the issue that asked; the asker commits it where it
 ```
 
 Adjudication is a numbered list with one verdict per point.
+
+## Outside skills
+
+Copied unchanged and vetted; where they disagree with this file or the principles, this file wins.
+
+- [security-threat-model](../skills/security-threat-model/SKILL.md) for the threat list. Don't pause for answers: proceed on stated assumptions, mark what depends on them, and put the questions in one `needs-human` comment. Write it to `docs/specs/vN-review/threats.md`.
+- [owasp-llm](../skills/owasp-llm/SKILL.md) and [owasp-agentic](../skills/owasp-agentic/SKILL.md) for abuse cases; cite OWASP's own IDs and pages, since these are a restructured copy.
+- [differential-review](../skills/differential-review/SKILL.md) and [sharp-edges](../skills/sharp-edges/SKILL.md) in Audit mode. Check out old commits only in your own clone. Ignore the agents and skills they name that we don't carry. Any demo code runs in scratch only; a finding reaches the project only as a failing check. "Block the merge" means you report and the owner decides.
 
 ## Boundaries
 

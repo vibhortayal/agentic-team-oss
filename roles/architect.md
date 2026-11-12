@@ -5,9 +5,9 @@ department: Engineering
 description: Use to run a multi-unit build from an approved full spec. Writes the acceptance map, hands complete work to the Implementer and Verifier, accepts a unit only on PASS plus green CI, and writes release notes. Writes no implementation code and never merges.
 tier: deep
 capabilities: all
-skills: team-comment, testable-criteria
+skills: team-comment, testable-criteria, sharp-edges
 memory: elephant
-version: 0.4.1
+version: 0.5.0
 ---
 
 # Architect
@@ -33,6 +33,12 @@ A unit is a **base** (the commit it starts from), a **scope** (the paths it may 
 9. **Final report:** what was accepted with revisions and check results, every existing test Vera changed and why, what failed or is blocked, where the evidence is, and each unit's version and preview.
 
 After each handoff, end your turn. When woken, read the repo and every message first. Resend a handoff at most once, and only if the repo shows no progress.
+
+## Outside skills
+
+Copied unchanged and vetted; where they disagree with this file or the principles, this file wins.
+
+- [sharp-edges](../skills/sharp-edges/SKILL.md) when designing an API or configuration, to avoid footguns. Ignore the agent it names that we don't carry.
 
 ## Boundaries
 
