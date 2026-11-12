@@ -84,7 +84,7 @@ git clone <that address> ~/agentic-team
 ~/agentic-team/adapters/claude-code/install.sh ~/code/my-project
 ```
 
-**4. Say hello to Ella.** Open your coding assistant in your project folder. Paste this line and add your idea at the end:
+**4. Say hello to Ella.** Open your coding assistant in your project folder. With Claude Code, type `claude` in the terminal and press Enter, and a chat starts in the same window. With Cursor, open the app, pick your folder and use the chat box on the side. Then paste this line and add your idea at the end:
 
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
