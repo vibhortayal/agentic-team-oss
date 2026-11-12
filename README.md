@@ -92,6 +92,8 @@ In Claude Code you can use our plugin instead. Type `/plugin install agentic-tea
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
 ```
 
+**5. Set up GitHub for the team.** After you OK the plan, Ella asks you to do a few things on GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows every click, and which steps you can skip on a first try.
+
 New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 
 ## Learn more

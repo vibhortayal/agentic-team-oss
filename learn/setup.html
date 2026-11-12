@@ -1,0 +1,180 @@
+---
+layout: portal
+theme: plain
+title: Set up GitHub for your team
+summary: The GitHub steps after your first chat with Ella, with what you can skip on a first try.
+next: {url: /learn/demo.html, title: "Watch a demo"}
+---
+<style>
+.board { background: #fff; border-radius: 6px; margin: 40px auto 80px; padding: clamp(24px, 5vw, 60px); border: 1px solid var(--line); position: relative; }
+.wb-hero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); margin: 0 0 .3em; }
+.wb-hero p { font-size: 1.1rem; color: var(--muted); max-width: 36em; }
+.marker {  }
+.step { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 28px; padding: 46px 0; border-top: 1px solid var(--line); }
+@media (max-width: 640px) { .step { grid-template-columns: minmax(0, 1fr); gap: 10px; } .board { padding: 20px; margin: 24px auto 56px; } }
+.step > * { min-width: 0; }
+.step .num { font: 500 1rem "Geist Mono", monospace; color: var(--muted); position: relative; }
+.step .num::before { content: "0"; }
+.step .num svg { display: none; position: absolute; left: -14px; top: -10px; width: 110px; height: 110px; overflow: visible; }
+.step h2 { font-size: 1.6rem; margin: 0 0 .2em; position: relative; display: inline-block; }
+.step h2::after { display: none; content: ""; position: absolute; left: 0; bottom: 2px; height: 10px; width: 0; background: #ffe36e; opacity: .7; z-index: -1; border-radius: 4px; transition: width 1s .5s ease; }
+.step.in h2::after { width: 100%; }
+.step p, .step li { color: #333; }
+.draw path, .draw circle, .draw rect, .draw line, .draw polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: var(--len, 600); stroke-dashoffset: var(--len, 600); transition: stroke-dashoffset 1.6s ease; }
+.step.in .draw path, .step.in .draw circle, .step.in .draw rect, .step.in .draw line, .step.in .draw polyline { stroke-dashoffset: 0; }
+.doodles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-top: 16px; }
+.doodle { border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; background: var(--bg); }
+.doodle:nth-child(2) { --r: .8deg; } .doodle:nth-child(3) { --r: -1deg; } .doodle:nth-child(4) { --r: .5deg; }
+.doodle b { font-weight: 600; margin-bottom: 4px; display: block; }
+.doodle small { color: #555; }
+.doodle a { color: var(--warm); font-weight: 500; }
+.code { position: relative; background: #111113; color: #e9e9ec; border-radius: 6px; padding: 40px 18px 16px; font: 14px/1.7 "Geist Mono", monospace; overflow-x: auto; margin: 14px 0; white-space: pre; }
+.code .c { color: #8a8399; }
+.copy { position: absolute; top: 10px; right: 10px; font: 500 12px "Geist Mono", monospace; background: #ffffff1a; color: #fff; border: 0; border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+.note { font-size: .9rem; color: var(--muted); display: inline-block; margin-top: 2px; }
+.bubble { background: var(--bg2); border-radius: 6px; padding: 14px 18px; max-width: 34em; margin: 10px 0; }
+.bubble.me { background: #fbeee6; border-radius: 6px; margin-left: auto; }
+.part { font-size: 1.5rem; margin: 56px 0 4px; }
+.part-sub { color: var(--muted); margin: 0 0 8px; }
+.step ol { padding-left: 1.2em; }
+.step li { margin: 6px 0; }
+.ready { background: var(--bg2); border-radius: 6px; padding: 18px 22px; margin: 24px 0 8px; }
+.ready p { margin: 0 0 .6em; }
+</style>
+<div class="wrap">
+<div class="board">
+  <header class="wb-hero">
+    <h1>Set up GitHub for your team</h1>
+    <p>Do this after <a href="{{ '/learn/first-project.html' | relative_url }}">your first chat with Ella</a>. Part 1 is all you need for a first try. Part 2 makes the checks strict, for an app real people will use. Ella does most of the work and tells you when it's your turn.</p>
+  </header>
+  <h2 class="part">Part 1 · For a first try</h2>
+  <p class="part-sub">You need these. About 20 minutes, most of it waiting for Ella.</p>
+  <div class="step reveal">
+    <div class="num">1<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Let your computer talk to GitHub</h2>
+      <p>Your team saves its work on GitHub. Your coding assistant needs a way in. GitHub makes a small free program for this, called the GitHub command line tool.</p>
+      <ol>
+        <li><a href="https://cli.github.com/">Install it from GitHub's site</a>.</li>
+        <li>Open the terminal and type <code>gh auth login</code>, then press Enter.</li>
+        <li>Pick GitHub.com, then HTTPS, then "Login with a web browser". Your browser opens. Sign in and click Authorize.</li>
+      </ol>
+      <p>Not sure? Ask Ella "help me sign in to GitHub". She walks you through it.</p>
+      <span class="note">about 5 minutes, once per computer</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">2<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Say yes to the plan</h2>
+      <p>This is the plan from <a href="{{ '/learn/first-project.html' | relative_url }}">your first project</a>. When you say yes, Ella asks if she can make a private repository for your app on your GitHub account. A repository is your app's folder on GitHub. Say yes.</p>
+
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Add the automatic checks</h2>
+      <p>Otto, the team's ops agent, adds the automatic checks to your project. They run on GitHub every time something changes. He sends them as a pull request: a proposed change you look at before it's added.</p>
+      <ol>
+        <li>Ella sends you the link. Open it.</li>
+        <li>Read the short summary at the top. Ask Ella about anything that's unclear.</li>
+        <li>Click the green "Merge pull request" button, then "Confirm merge". Merge means "add this change for real".</li>
+      </ol>
+      <span class="note">about 5 minutes</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Fill in three settings</h2>
+      <p>The checks need to know a few things about your project. Only you can change these settings, because the agents don't get admin rights. Ella tells you the exact values to type.</p>
+      <ol>
+        <li>On your repository's page, click Settings.</li>
+        <li>On the left, click "Secrets and variables", then Actions.</li>
+        <li>Open the Variables tab and click "New repository variable". Add each one:</li>
+      </ol>
+      <div class="doodles">
+        <div class="doodle"><b>TEAM_OWNER</b><small>Your GitHub name, so the checks know whose OK counts.</small></div>
+        <div class="doodle"><b>LINT_CMD</b><small>Type <code>none</code> for a first try. Later Ella gives you a command that checks code style.</small></div>
+        <div class="doodle"><b>SETUP_CMD</b><small>The command that gets your app ready to test. Ella tells you what it is.</small></div>
+      </div>
+      <span class="note">about 5 minutes</span>
+    </div>
+  </div>
+
+  <div class="ready">
+    <p><b>That's it. The team can start building.</b></p>
+    <p>One honest note. On a first try, the agents use your own GitHub sign-in. So the checks can't tell your OK from an agent's. They still run and show problems, but they can't stop anything on their own. Read Vera's proof before you merge. That's fine for a test app. Before real people use your app, do Part 2.</p>
+  </div>
+  <h2 class="part">Part 2 · Before real people use your app</h2>
+  <p class="part-sub">Skip these on a first try. They make the checks strict, so no agent can skip a step. About 40 minutes.</p>
+  <div class="step reveal">
+    <div class="num">5<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>A second GitHub account for the builders</h2>
+      <p>The building agents need their own account, so GitHub can tell their work from yours. GitHub allows one free extra account like this per person, for this kind of job.</p>
+      <ol>
+        <li>In a private browser window, create a new GitHub account. Use a name like <code>yourname-agents</code>. Turn on two-step sign-in.</li>
+        <li>Back in your own account, open your repository. Go to Settings, then Collaborators, then "Add people". Invite the new account with Write access. Then accept the invite from the new account.</li>
+        <li>In the new account, make a key: Settings, then "Developer settings", then "Personal access tokens", then "Fine-grained tokens", then "Generate new token".</li>
+        <li>Give it access to your app's repository only. Under Permissions, set Contents, Issues and Pull requests to "Read and write". Leave everything else off.</li>
+        <li>Save the key in your safe place for keys. Never paste it into a chat.</li>
+      </ol>
+      <span class="note">about 10 minutes</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">6<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>A checker app for Vera</h2>
+      <p>Vera checks the work. She gets her own GitHub app, so her approval can't be faked by the agents who built it.</p>
+      <ol>
+        <li>In your own account: Settings, then "Developer settings", then "GitHub Apps", then "New GitHub App".</li>
+        <li>Name it, for example <code>yourname-team-checker</code>. For the homepage, use your repository's address. Under Webhook, untick Active.</li>
+        <li>Under Repository permissions, set Pull requests to "Read and write" and Contents to "Read-only". Leave everything else off. Pick "Only on this account", then create it.</li>
+        <li>Write down the App ID. Click "Generate a private key". A key file downloads. Put it in your safe place for keys.</li>
+        <li>Click "Install App", pick your account, choose "Only select repositories" and pick your app's repository.</li>
+        <li>Add one more setting from step 4: <code>TEAM_CHECKER</code>, set to the app's name.</li>
+      </ol>
+      <span class="note">about 10 minutes</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">7<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Keep the two keys apart</h2>
+      <p>The builders' key and Vera's key must never be in the same place. If they were, a builder could approve its own work.</p>
+      <p>Most coding assistants have a place for secret settings, such as separate workspaces or environments. Put the builders' key in one, and Vera's app ID and key file in another that only Vera's sessions use. Ella tells you where this is in your coding assistant. If yours has no way to keep them apart, you start Vera's sessions yourself.</p>
+      <span class="note">about 10 minutes</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">8<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Turn on the branch rules</h2>
+      <p>These rules make GitHub refuse any change that hasn't passed the checks and your review. Before you start, Ella checks your GitHub plan. On a free plan, GitHub may only enforce these rules on public repositories. If you need a paid plan, she tells you the price first.</p>
+      <ol>
+        <li>In your repository: Settings, then Rules, then Rulesets, then "New branch ruleset".</li>
+        <li>Ella gives you the exact choices. In short: changes only through pull requests, the two checks <code>team-gates</code> and <code>team-checks</code> must pass, your review is required, and nobody but you can skip the rules.</li>
+      </ol>
+      <span class="note">about 5 minutes</span>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">9<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Watch a practice run</h2>
+      <p>Otto tests the checks before real work starts. He sends six practice changes that should all be stopped, such as one that edits a test. Then he sends one good change that should pass. Vera writes down what happened. You just read the result.</p>
+      <span class="note">Otto does this. You read one short report.</span>
+    </div>
+  </div>
+</div>
+</div>
