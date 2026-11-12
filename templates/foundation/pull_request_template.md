@@ -6,6 +6,9 @@ One or two sentences.
 ## Spec
 `docs/changes/<issue>.md` at `<commit>`
 
+## Receipt
+Checks passed <n> of <n> · BLOCK rounds <n> · sessions <n> of cap <n> · cost $<n> or unknown
+
 ## Evidence
 - Verifier verdict: `verification/<issue>/verdict.json`
 - CI: the team-gates run on this head

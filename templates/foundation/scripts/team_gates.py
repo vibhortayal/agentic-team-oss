@@ -33,10 +33,16 @@ limits    Ticket PRs only. Reads the team-event lines on the ticket's issue and 
           the sessions so far pass the cap the Budget Analyst set (the first cap_sessions
           event), or after three Verifier BLOCKs, unless the owner's own account added
           spend-approved or rounds-approved to the issue. No cap recorded fails only when
-          zones.yml requires "cap"; otherwise it is reported as not checked.
+          zones.yml requires "cap"; otherwise it is reported as not checked. Only comments by
+          the owner, members and collaborators count, so an outsider can't post a cap or a verdict.
 docs      Keeps documentation lean. A new Markdown file may only appear in a folder made
           for it (DOC_FOLDERS); the standing docs (README, AGENTS, TEAM, DESIGN and
           docs/*.md) may not grow past DOCS_BUDGET words in total.
+
+Watch mode: a check listed under "watch:" in zones.yml (base branch) reports what it
+would block and passes, so a new check can be tried before it enforces. Only limits,
+quality and docs can watch. In either mode a check that crashes says NEVER RAN, and an
+enforcing one fails.
 """
 import argparse, json, os, re, subprocess, sys, tempfile, urllib.request
 
@@ -47,6 +53,8 @@ APPROVAL_LABELS = set(APPROVAL.values())
 # (strip-approvals only touches the PR), because they approve more budget, not one version.
 LIMIT_APPROVAL = {"spend": "spend-approved", "rounds": "rounds-approved"}
 MAX_BLOCKS = 3
+TRUSTED = {"OWNER", "MEMBER", "COLLABORATOR"}
+WATCHABLE = {"limits", "quality", "docs"}
 EVENT_RE = re.compile(r"<!--\s*team-event\s+(.*?)\s*-->", re.S)
 
 # Paths each non-ticket class may touch (besides what zones allow with a label).
@@ -261,14 +269,15 @@ def cmd_limits(a):
     if cls != "ticket":
         print(f"limits check: not needed for a '{cls}' pull request"); return 0
     if a.events is not None:
-        with open(a.events) as f:
-            bodies = json.load(f)
+        with open(a.events) as f:  # strings are trusted comments; {"body", "trusted": false} is an outsider's
+            bodies = [c if isinstance(c, str) else c.get("body", "") for c in json.load(f)
+                      if isinstance(c, str) or c.get("trusted", True)]
         approved = set(filter(None, (a.approved or "").split(",")))
     else:
         seen, bodies = set(), []
         for n in filter(None, (str(issue), os.environ.get("PR_NUMBER"))):
             for c in paged(f"issues/{n}/comments"):
-                if c["id"] not in seen:
+                if c["id"] not in seen and c.get("author_association") in TRUSTED:
                     seen.add(c["id"]); bodies.append(c.get("body", ""))
         approved = owner_labels(issue)
     events = team_events(bodies)
@@ -463,8 +472,25 @@ def main():
                            help="yes|no; local tests only (CI asks GitHub)")
     sub.add_parser("strip-approvals")
     a = ap.parse_args()
-    return {"classify": cmd_classify, "tamper": cmd_tamper, "verdict": cmd_verdict,
-            "limits": cmd_limits, "quality": cmd_quality, "docs": cmd_docs, "strip-approvals": cmd_strip}[a.cmd](a)
+    run = {"classify": cmd_classify, "tamper": cmd_tamper, "verdict": cmd_verdict,
+           "limits": cmd_limits, "quality": cmd_quality, "docs": cmd_docs, "strip-approvals": cmd_strip}[a.cmd]
+    watching = False
+    if a.cmd in WATCHABLE:
+        watching = a.cmd in (load_zones(git("show", f"{a.base}:zones.yml")).get("watch", []) or [])
+    try:
+        rc = run(a)
+    except SystemExit as e:
+        if e.code in (None, 0):
+            raise
+        print(e.code if isinstance(e.code, str) else "", file=sys.stderr)
+        rc = 1
+    except Exception as e:  # a crash is never a pass, and never a silent clean result
+        print(f"{a.cmd} check: NEVER RAN ({type(e).__name__}: {e})" + ("" if watching else "\n" + f"{a.cmd} check: FAIL"))
+        return 0 if watching else 1
+    if watching and rc:
+        print(f"WATCH {a.cmd} would block this PR; not enforced while zones.yml lists it under watch")
+        return 0
+    return rc
 
 
 if __name__ == "__main__":

@@ -152,6 +152,15 @@ ev "$S"
 expect 1 "no cap when zones.yml requires one is blocked" limits
 grep -v '^  - cap$' zones.yml > z && mv z zones.yml && git commit -qam no-cap-required
 expect 0 "no cap is only a note when zones.yml doesn't require one" $G limits --base HEAD --head HEAD --branch "$T" --events "$work/ev.json"
+ev '{"from":"budget-analyst","cap_sessions":1}' "$S" "$S"
+expect 1 "watch mode is off by default" $G limits --base HEAD --head HEAD --branch "$T" --events "$work/ev.json"
+printf 'watch:\n  - limits\n' >> zones.yml && git commit -qam watch-limits
+expect 0 "a watched check reports but passes" $G limits --base HEAD --head HEAD --branch "$T" --events "$work/ev.json"
+git checkout -q -B l2 "$base"
+python3 -c 'import json; print(json.dumps([{"body": "<!-- team-event {\"from\":\"budget-analyst\",\"cap_sessions\":99} -->", "trusted": False}, "<!-- team-event {\"from\":\"budget-analyst\",\"cap_sessions\":1} -->", "<!-- team-event {\"from\":\"implementer\"} -->", "<!-- team-event {\"from\":\"implementer\"} -->"]))' > "$work/ev2.json"
+expect 1 "an outsider's earlier, bigger cap is ignored" $G limits --base $base --head HEAD --branch "$T" --events "$work/ev2.json"
+echo 'not json' > "$work/bad.json"
+expect 1 "a crashing check says NEVER RAN and fails" $G limits --base $base --head HEAD --branch "$T" --events "$work/bad.json"
 expect 0 "limits not needed for a docs PR" $G limits --base $base --head HEAD --branch docs/x --events "$work/ev.json"
 
 echo "-- quality gate"

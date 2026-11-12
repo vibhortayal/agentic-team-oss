@@ -48,7 +48,7 @@ Every piece of work has a named checker. The checker is:
 
 **Scale review to risk.** Red-zone work and new products get the full row. Docs, copy and small chores get one fresh check. Do not add a checker whose findings nobody acts on.
 
-**Same-model blind spots.** A checker on a different model than the maker is allowed as an experiment, not required; no study was found on whether it helps. Record it in the decision log if a project tries it.
+**Same-model blind spots.** A checker on a different model than the maker is allowed as an experiment, not required. The claim that same-model critique is weakest traces back to a course lecture remark (on Constitutional AI), not a controlled study (checked 2026-11-12). Record it in the decision log if a project tries it.
 
 ## Evidence
 
