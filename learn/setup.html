@@ -71,13 +71,9 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Add the automatic checks</h2>
-      <p>Otto, the team's ops agent, adds the automatic checks to your project. They run on GitHub every time something changes. He sends them as a pull request: a proposed change you look at before it's added.</p>
-      <ol>
-        <li>Ella sends you the link. Open it.</li>
-        <li>Read the short summary at the top. Ask Ella about anything that's unclear.</li>
-        <li>Click the green "Merge pull request" button, then "Confirm merge". Merge means "add this change for real".</li>
-      </ol>
-      <span class="note">about 5 minutes</span>
+      <p>Otto, the team's ops agent, adds the automatic checks to your project. They run on GitHub every time something changes, and catch any agent that skips a step.</p>
+      <p>Ella tells you in plain words what they do and asks for your OK. Say yes, and they're added. You don't need to read any code.</p>
+      <span class="note">about 2 minutes</span>
     </div>
   </div>
 
@@ -102,7 +98,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 
   <div class="ready">
     <p><b>That's it. The team can start building.</b></p>
-    <p>One honest note. On a first try, the agents use your own GitHub sign-in. So the checks can't tell your OK from an agent's. They still run and show problems, but they can't stop anything on their own. Read Vera's proof before you merge. That's fine for a test app. Before real people use your app, do Part 2.</p>
+    <p>One honest note. On a first try, the agents use your own GitHub sign-in. So the checks can't tell your OK from an agent's. They still run and show problems, but they can't stop anything on their own. So before you say yes to a new version, try it yourself in the preview Ella sends, like a tester would. That's fine for a test app. Before real people use your app, do Part 2.</p>
   </div>
   <h2 class="part">Part 2 · Before real people use your app</h2>
   <p class="part-sub">Skip these on a first try. They make the checks strict, so no agent can skip a step. About 40 minutes.</p>
@@ -156,7 +152,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
       <p>These rules make GitHub refuse any change that hasn't passed the checks and your review. Before you start, Ella checks your GitHub plan. On a free plan, GitHub may only enforce these rules on public repositories. If you need a paid plan, she tells you the price first.</p>
       <ol>
         <li>In your repository: Settings, then Rules, then Rulesets, then "New branch ruleset".</li>
-        <li>Ella gives you the exact choices. In short: changes only through pull requests, the two checks <code>team-gates</code> and <code>team-checks</code> must pass, your review is required, and nobody but you can skip the rules.</li>
+        <li>Ella gives you the exact choices. In short: changes only through pull requests, the two checks <code>team-gates</code> and <code>team-checks</code> must pass, your yes is required, and nobody but you can skip the rules.</li>
       </ol>
       <span class="note">about 5 minutes</span>
     </div>
@@ -166,8 +162,8 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <div class="num">9<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Watch a practice run</h2>
-      <p>Otto tests the checks before real work starts. He sends six practice changes that should all be stopped, such as one that edits a test. Then he sends one good change that should pass. Vera writes down what happened. You just read the result.</p>
-      <span class="note">Otto does this. You read one short report.</span>
+      <p>Otto tests the checks before real work starts. He sends six practice changes that should all be stopped, such as one that edits a test. Then he sends one good change that should pass. Vera writes down what happened, and Ella tells you in one line if it all worked.</p>
+      <span class="note">Otto does this. You don't need to do anything.</span>
     </div>
   </div>
 </div>
