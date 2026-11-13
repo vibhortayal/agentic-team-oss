@@ -17,7 +17,7 @@ FAKE_GH = os.path.join(ROOT, "tools", "sandbox", "gh")
 TIERS = {"deep", "standard", "fast"}
 CAPS = {"read", "search", "web", "write", "edit", "shell"}
 MEMORY = {"fish", "elephant"}
-KINDS = {"handoff", "verdict", "blocker", "question", "report", "note"}
+KINDS = {"handoff", "verdict", "blocker", "question", "report", "note", "approval"}
 VERDICTS = {"PASS", "BLOCK", "INCONCLUSIVE"}
 COORDINATORS = {"engagement-lead", "product-manager", "architect"}
 # Tool and model names that must never appear in a role, playbook, template or the principles.
@@ -547,8 +547,10 @@ def replay(state, names=None, strict_identity=False, origin=None):
             continue
         frm, to, kind = ev.get("from"), ev.get("to"), ev.get("kind")
         issue = linked_issue(it)
-        if frm not in names:
+        if frm not in names and not (kind == "approval" and frm == "owner"):
             errs.append("%s: from %r is not a role" % (where, frm))
+        if kind == "approval" and frm not in ("engagement-lead", "owner"):
+            errs.append("%s: an approval receipt from %s; only Ella (or the owner) writes one" % (where, frm))
         if to is not None and to not in names | {"owner"}:
             errs.append("%s: to %r is not a role or owner" % (where, to))
         if kind not in KINDS:

@@ -8,7 +8,8 @@ Every change starts as a small written spec with testable criteria. It's built a
 Idea ─▶ Intake (Ella) ─▶ Spec (Priya) ─▶ Spec review (fresh agents) ─▶ Owner approves
   ─▶ Tickets on the board (WIP limit)
   ─▶ Build (Ian) ─▶ Verify (Vera, checks from the spec first) ─▶ CI gates   [BLOCK: up to 3 rounds]
-  ─▶ PASS + green CI + preview ─▶ Owner merges ─▶ Release (Otto, owner approves) ─▶ Operate
+  ─▶ PASS + green CI + preview ─▶ Owner tries it, says yes ─▶ Ella merges (test version)
+  ─▶ Owner says "put it live" ─▶ Release (Otto) ─▶ Operate
 ```
 
 Around it sits the [engagement](../playbooks/engagement.md) layer: an estimate before work starts, priced change requests, weekly status and re-baselining.

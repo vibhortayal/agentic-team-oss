@@ -7,8 +7,8 @@ How merged work reaches users and stays healthy. Releases are for hobby, interna
 ## Release
 
 ```text
-PR ─▶ preview of the PR head ─▶ Vera checks it ─▶ owner tries it ─▶ PASS + green CI ─▶ owner merges
-  ─▶ staging (all of main) ─▶ smoke + owner run-through ─▶ owner approves ─▶ same build to production
+PR ─▶ preview of the PR head ─▶ Vera checks it ─▶ owner tries it ─▶ "yes" ─▶ Ella merges
+  ─▶ staging, the test version (all of main) ─▶ smoke + owner run-through ─▶ "put it live" ─▶ same build to production
   ─▶ smoke ─▶ watch ─▶ released or rolled back
 ```
 
@@ -23,10 +23,10 @@ The app runs in up to three places. The owner never has to read a pull request; 
 Previews and staging use made-up or scrubbed data, never real users' personal data. Staging matches production's setup (same services and config shape, smaller plans) so what passes there behaves the same live.
 
 1. **Preview before merge.** Every PR that changes behaviour gets a preview of its exact head: per PR where the host offers it, otherwise one staging slot, one ticket at a time. Ian deploys it with the command in `TEAM.md`; Vera checks it as part of the verdict.
-2. **The owner tries it.** With the PASS, Ella sends the preview link and three to five "try this" steps in plain words, which Vera writes from the acceptance criteria. The owner answers "looks right" or "not right, because…", then approves with the one link Ella gives. A "not right" goes back like a BLOCK and counts as a send-back. A change with nothing to see (a fix inside the code) skips this step and says so.
+2. **The owner tries it.** With the PASS, Ella sends the preview link and three to five "try this" steps in plain words, which Vera writes from the acceptance criteria. The owner answers "yes" or what to change, in the chat; they never open GitHub. A change goes onto the same ticket and PR, not as a BLOCK (it doesn't count toward the three), and counts as a send-back in the health report. On a yes, Ella posts the receipt and merges. A change with nothing to see (a fix inside the code) skips this step and says so.
 3. **A release is a list of merged PRs, tried together on staging.** Otto cuts it from `main` with a semver version, plain release notes, its migrations and the exact rollback command, on a release issue labelled `needs-human` + `human:approve-release`. Vera runs the smoke checks on staging; Ella sends the owner the staging link and a ten-minute checklist covering what's new and the main journeys.
 4. **Build once, promote the same build.** The artifact the owner tried on staging is the one deployed to production; it is never rebuilt in between.
-5. **The owner approves every production deploy** through the environment's approval rule, until the autonomy stage covers releases. Migrations, sign-in, payments and data deletion always need the owner.
+5. **The owner approves every production deploy** by saying "put it live" to Ella, always as its own question, until the autonomy stage covers releases. Ella posts the receipt (`approves` `release`, with the tag) and approves the environment's approval rule for them; Otto deploys only after that receipt. Migrations, sign-in, payments and data deletion always need the owner.
 6. **Deploy, smoke, watch.** Otto deploys the approved version, runs the smoke checks from `TEAM.md` and watches errors and latency for the window (default 30 minutes). The tag comes after the window.
 7. **Roll back first.** A failed smoke check or an error alert in the window means roll back, then open an incident. Rollback and restore are rehearsed at foundation and after any change to how the app deploys.
 8. **Database changes never break the running app.** They go in two steps: add the new shape and write to both, then, in a later release once nothing reads the old shape, remove it. A release says which step its migration is. One that can't be split gets its own release, after a verified backup.
@@ -135,6 +135,7 @@ Weekly, before the owner resets or merges anything, and whenever the owner asks,
 3. Unpushed commits per branch (`git log --oneline origin/<branch>..<branch>`). A local `main` ahead of `origin/main` is always reported.
 4. Delete branches whose tip is in `origin/main` and whose PR merged. Never delete `main`, an active branch, one with an open PR, or one with unmerged commits; ask its owner.
 5. `git worktree prune`, and remove only your own clean, merged worktrees.
-6. Post one short summary: what was deleted, what's dirty or unpushed and whose, what's left for the owner.
+6. Match every merge to `main`, owner label and release since last week to an approval receipt from before it ([principle 1](../principles.md#authority)). One without a receipt is an incident: report it to the owner through Ella.
+7. Post one short summary: what was deleted, what's dirty or unpushed and whose, receipts matched, what's left for the owner.
 
-Merging to or resetting `main`, tags, force-pushes, deploys and deleting a repo stay with the owner.
+Resetting `main`, force-pushes and deleting a repo stay with the owner. Merges, release tags and deploys wait for the owner's yes.

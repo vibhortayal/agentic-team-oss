@@ -163,6 +163,39 @@ echo 'not json' > "$work/bad.json"
 expect 1 "a crashing check says NEVER RAN and fails" $G limits --base $base --head HEAD --branch "$T" --events "$work/bad.json"
 expect 0 "limits not needed for a docs PR" $G limits --base $base --head HEAD --branch docs/x --events "$work/ev.json"
 
+echo "-- approval receipts"
+# log <label> <receipt-time|none> <label-time> [actor] [unlabel-time]: one owner label with or without a receipt.
+log() { python3 - "$@" > "$work/log.json" <<'PY'
+import json, sys
+label, rec, at = sys.argv[1:4]; actor = sys.argv[4] if len(sys.argv) > 4 else "owner"
+unl = sys.argv[5] if len(sys.argv) > 5 else None
+ev = '<!-- team-event {"from":"engagement-lead","to":"owner","kind":"approval","approves":"%s"} -->' % label
+events = [{"event": "labeled", "label": {"name": label}, "actor": {"login": actor}, "created_at": at}]
+if unl:
+    events = [{"event": "labeled", "label": {"name": label}, "actor": {"login": actor}, "created_at": "2026-01-01T00:00:00Z"},
+              {"event": "unlabeled", "label": {"name": label}, "actor": {"login": "github-actions"}, "created_at": unl}] + events
+comments = [] if rec == "none" else [{"user": {"login": "owner"}, "created_at": rec, "body": "Owner said: yes, add more budget.\n\n" + ev}]
+print(json.dumps({"owner": "owner", "events": events, "comments": comments}))
+PY
+}
+git checkout -q -B r1 "$base"; echo weakened > tests/a.test.js; git commit -qam r1
+log tests-approved 2026-01-02T10:00:00Z 2026-01-02T10:01:00Z
+expect 0 "an owner label with a receipt before it counts" $G tamper --base $base --head HEAD --branch $T --label-log "$work/log.json"
+log tests-approved none 2026-01-02T10:01:00Z
+expect 1 "an owner label with no receipt doesn't count" $G tamper --base $base --head HEAD --branch $T --label-log "$work/log.json"
+log tests-approved 2026-01-02T10:05:00Z 2026-01-02T10:01:00Z
+expect 1 "a receipt written after the label doesn't count" $G tamper --base $base --head HEAD --branch $T --label-log "$work/log.json"
+log tests-approved 2026-01-02T10:00:00Z 2026-01-03T10:00:00Z owner 2026-01-02T12:00:00Z
+expect 1 "an old receipt can't be reused after the label was removed" $G tamper --base $base --head HEAD --branch $T --label-log "$work/log.json"
+log tests-approved 2026-01-02T10:00:00Z 2026-01-02T10:01:00Z ian-agents
+expect 1 "a label added by another account doesn't count, receipt or not" $G tamper --base $base --head HEAD --branch $T --label-log "$work/log.json"
+git checkout -q -B r2 "$base"
+ev "$CAP" "$S" "$S" "$S" '{"from":"engagement-lead","to":"owner","kind":"approval","approves":"spend-approved"}'
+log spend-approved 2026-01-02T10:00:00Z 2026-01-02T10:01:00Z
+expect 0 "a receipted spend-approved lifts the cap, and the receipt isn't a session" $G limits --base $base --head HEAD --branch "$T" --events "$work/ev.json" --label-log "$work/log.json"
+log spend-approved none 2026-01-02T10:01:00Z
+expect 1 "spend-approved without a receipt doesn't lift the cap" $G limits --base $base --head HEAD --branch "$T" --events "$work/ev.json" --label-log "$work/log.json"
+
 echo "-- quality gate"
 lint="grep -rn TODO src | sed -E 's/^([^:]*):.*/\\1\tTODO/'; exit 0"
 branch q1; echo 'w = 4  # TODO new' >> src/app.py; git commit -qam q1
