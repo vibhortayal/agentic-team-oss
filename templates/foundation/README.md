@@ -26,7 +26,7 @@ The gate reads the branch name; agents only open these.
 | `deps/<name>`, `dependabot/...` | dependency updates | Only the deps zone, with the owner's `deps-approved` label |
 | `gate/<topic>` | changes to gate files (including the kit itself) | Only gate files, with the owner's `gate-change-approved` label |
 
-Any other branch name fails.
+Any other branch name fails, with one exception: some agent tools may only push to a branch name they pick. Then the PR description carries one line, `Team branch: <name>`, naming the branch it would have been (say `Team branch: team/12-sign-in`), and the gate applies exactly that branch's class and rules.
 
 ## What the gates enforce
 

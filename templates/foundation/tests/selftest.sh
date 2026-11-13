@@ -32,6 +32,10 @@ echo "-- branch classes"
 expect 0 "ticket branch is a class" $G classify --branch team/7-feature
 expect 1 "unknown branch is refused" $G classify --branch wip
 expect 1 "main-like branch is refused" $G classify --branch feature/x
+expect 0 "tool-named branch takes its class from the PR's Team branch line" env PR_BODY=$'Closes #7\n\nTeam branch: `team/7-feature`' $G classify --branch tool/abc
+expect 1 "tool-named branch without a Team branch line is refused" env PR_BODY='Closes #7' $G classify --branch tool/abc
+expect 1 "Team branch line naming a non-team branch is refused" env PR_BODY='Team branch: feature/x' $G classify --branch tool/abc
+expect 1 "two Team branch lines are refused" env PR_BODY=$'Team branch: team/7-a\nTeam branch: docs/b' $G classify --branch tool/abc
 
 echo "-- tamper guard"
 branch t1; echo new > tests/b.test.js; git add -A; git commit -qm t1
@@ -61,6 +65,7 @@ branch t11; echo 'more' >> docs/brief.md; git commit -qam t11
 expect 0 "docs PR may change docs" tamper docs/brief
 branch t12; echo 'y=1' > src/x.py; git add -A; git commit -qm t12
 expect 1 "docs PR may not change code" tamper docs/brief
+expect 1 "tool branch named as docs may not change code either" env PR_BODY='Team branch: docs/brief' $G tamper --base $base --head HEAD --branch tool/abc --approved ""
 branch t13; echo weakened > tests/a.test.js; git commit -qam t13
 expect 1 "test-change PR without owner label is blocked" tamper verify/7-tests
 expect 0 "test-change PR with owner label is allowed" tamper verify/7-tests tests-approved
@@ -102,6 +107,7 @@ expect 1 "docs PR may not add code under docs/" tamper docs/x
 echo "-- verdict"
 branch v1; echo 'y = 2' > src/feature.py; git add -A; git commit -qm feature; rev=$(git rev-parse --short HEAD)
 expect 1 "no verdict is blocked" verdict
+expect 1 "tool branch named as the ticket still needs the PASS" env PR_BODY="Team branch: $T" $G verdict --base $base --head HEAD --branch tool/abc --checker-approved yes
 pass_at "$rev"
 expect 0 "PASS with only evidence after it" verdict
 expect 1 "PASS without the checker's approval on the head is blocked" verdict no

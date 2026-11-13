@@ -27,7 +27,7 @@ Create the labels once per repo with [adapters/github/labels.sh](../adapters/git
 - **`deps/<name>`, `dependabot/...`.** Dependency updates, merged after the owner's yes and `deps-approved`.
 - **`gate/<topic>`.** Gate files and the foundation kit, from Otto. After the owner's yes, Ella adds `gate-change-approved` and merges.
 
-The gate rejects a pull request from any other branch name and checks that each class only touches its own paths ([foundation kit](../templates/foundation/README.md#pull-request-classes)).
+The gate rejects a pull request from any other branch name (unless the agent tool picks branch names itself; then the PR description says `Team branch: <name>` and that name counts) and checks that each class only touches its own paths ([foundation kit](../templates/foundation/README.md#pull-request-classes)).
 
 ### Git workflow: trunk-based, short-lived branches
 
