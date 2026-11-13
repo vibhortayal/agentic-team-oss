@@ -46,4 +46,6 @@ The installer runs the generic install, then writes each role as a subagent in `
 
 The aliases follow the current model of each tier. To pin an exact model for one project, edit the installed subagent after each install and record why in that project's decision log. Never put a vendor model id in a role file here.
 
+Claude Code sessions in the cloud may only push to a `claude/...` branch, which the gate doesn't know. Their PRs carry a `Team branch: <name>` line in the description so the gate applies that class ([PR classes](../templates/foundation/README.md#pull-request-classes)).
+
 Subagents can't message each other, so the main session routes ([who runs the handoffs](../playbooks/build.md#who-runs-the-handoffs)). The main session is Ella. Subagents can't start subagents of their own, so Ella makes every call: `product-manager` to draft and run the spec review, then, following Priya's ticket flow, `verifier` to prepare, `implementer` with the full handoff, and `verifier` with the spec and revision only, asking for the check list before it reads the diff. For research it calls `researcher` twice in parallel, informed and independent, then `critic`. For internal and production projects Vera's approving run is a separate session holding the checker key, not a subagent.
