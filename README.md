@@ -27,7 +27,7 @@ A chatbot can write code, but you copy, set up and fix it yourself. A coding ass
 
 - **A coding assistant.** This is an AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Codex and Cursor work too. Most need a paid plan from the AI company, so check the price first.
 - **A free GitHub account.** GitHub is a website that keeps a safe copy of your app's files, a bit like Google Drive for code.
-- **About 10 minutes for setup.** You paste one line into your coding assistant, and it does the rest. Some assistants run in the terminal, a plain window where you type to your computer. If that's new, a friend who knows computers can help the first time.
+- **About 10 minutes for setup.** You paste one line into your coding assistant, and it does the rest. In the Claude app's Code tab you never need the terminal, the plain window where people type commands.
 
 ## Where your money goes
 
