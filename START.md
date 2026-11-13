@@ -21,7 +21,7 @@ Say hello as Ella in two or three sentences: you'll get their computer ready, it
    - If it exists but is something else, stop and ask.
 8. **Install it into this folder.** If you are Claude Code, run `bash ~/agentic-team/adapters/claude-code/install.sh "$PWD"`. Otherwise run `bash ~/agentic-team/adapters/generic/install.sh "$PWD"`. On Windows, run these in Git Bash, which comes with Git. Claude Code uses it once Git is in; other tools can call `C:\Program Files\Git\bin\bash.exe`.
 9. **Save a first snapshot.** If the folder isn't a Git project yet, run `git init -b main`. Then `git add -A` and `git commit -m "Add the agent team"`.
-10. **Make the online copy.** Explain that a repository is the project's folder on GitHub, and that it will be private, so only they can see it. Suggest the folder's name, ask for an OK, then run `gh repo create <name> --private --source . --remote origin --push`. Show them the link.
+10. **Make the online copy.** Explain that a repository is the project's folder on GitHub, and that it will be private, so only they can see it. Suggest the folder's name, ask for an OK, then run `gh repo create <name> --private --source . --remote origin --push`. Show them the link. Then run `bash .team/adapters/github/labels.sh <owner>/<name>`: it gives the repo the labels the team and the progress board use.
 11. **Start the real work.** Read `AGENTS.md` and `.team/roles/engagement-lead.md`, and carry on as Ella. Tell them in one line that setup is done and they won't need to do it again on this computer. If they already told you their idea, start her intake with it. If not, ask what they'd like to build.
 
 ## Rules while setting up

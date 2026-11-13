@@ -64,7 +64,7 @@ Whoever hands work on swaps the `role:` and `stage:` labels in the same step as 
 
 | Event | `stage:` | `role:` | Human label |
 |---|---|---|---|
-| Request from the owner (Ella opens the issue) | `intake` or `spec` | engagement-lead, then product-manager | |
+| Request from the owner (Ella opens the issue; for a new project, as soon as she knows the idea) | `intake` or `spec` | engagement-lead, then product-manager | |
 | Change spec drafted, being priced | `spec` | budget-analyst | |
 | Priced, in spec review | `spec` | product-manager | |
 | Spec or change spec waiting for approval | `spec` | product-manager | `needs-human` + `human:approve-spec` |
