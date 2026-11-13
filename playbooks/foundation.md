@@ -106,7 +106,7 @@ Agents never act through the owner's GitHub account. If they did, no gate could 
 
 - **Builders use a machine account** (GitHub allows one free one per person) with Write access to this repo only, through a fine-grained token: contents, issues and PRs read and write; no admin, workflows or secrets. It isn't on the ruleset's bypass list, and approval labels it adds don't count.
 - **The Verifier uses a separate GitHub App from the start** (internal and production), set as `TEAM_CHECKER`. Every PASS ends with the App approving the exact head commit. The verdict gate requires that approval, so a builder can't write its own PASS, and any later push voids it. Only Verifier sessions can reach the App's key, so for internal and production projects Vera's approving run is her own session, never a subagent of the session that ran Ian. In practice: put the key in a separate tool workspace or cloud environment that only Vera's sessions use, and run builders where it isn't. If your tool can't keep secrets apart, the owner starts Vera's session by hand. Before every verdict she diffs `verification/<issue>/` from her own last commit to the head; any change she didn't make is a BLOCK, raised with `needs-human` as tampering.
-- **Prototypes may skip the App** and run everything in one session. The gate then prints a note and the owner reads `verification/` before merging.
+- **Prototypes may skip the App** and run everything in one session. The gate then prints a note. Ella tells the owner in plain words what Vera checked, and the owner tries the preview before merging.
 - Tokens and keys live in the agent tool's secret store. Never in the repo, a prompt or a chat.
 
 ## Setup checklist (Ops)

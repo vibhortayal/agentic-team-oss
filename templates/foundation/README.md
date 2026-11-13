@@ -40,7 +40,7 @@ Any other branch name fails.
 
 ## Install in a project
 
-1. Copy the files to the places in the table, on a `gate/foundation` branch. Edit the patterns in `zones.yml` for the project's folders. The gates run from the base branch, so this install PR only gets a notice; the owner reviews it by hand.
+1. Copy the files to the places in the table, on a `gate/foundation` branch. Edit the patterns in `zones.yml` for the project's folders. The gates run from the base branch, so this install PR only gets a notice; Ella explains it to the owner in plain words before they merge it.
 2. Set repository variables: `TEAM_OWNER` (the owner's GitHub login), `TEAM_CHECKER` (the Verifier's GitHub App login), `LINT_CMD` (prints `<path>\t<rule>` per violation and exits 0 or 1; Ops writes the small adapter for the project's linter; `none` for prototypes) and `SETUP_CMD` (installs dependencies).
 3. Create the labels: `.team/adapters/github/labels.sh <owner/repo>`.
 4. **Check the plan first.** On a personal account, rulesets and required reviews on a private repo may need a paid GitHub plan; without enforcement every gate is only advice. Ops checks the current plan and price and brings the monthly figure to the owner before going further.
