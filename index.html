@@ -18,8 +18,6 @@ theme: plain
 .path i { font-style: normal; font-weight: 600; margin-top: 6px; }
 .path.dark { background: var(--text); color: var(--bg); }
 .path.dark small, .path.dark span { color: var(--bg); opacity: .8; }
-.how-link { margin: 22px 0 0; }
-.how-link a { color: var(--muted); }
 
 .head { max-width: 720px; margin-bottom: 36px; }
 .head p { color: var(--muted); margin: 0; }
@@ -44,23 +42,10 @@ theme: plain
 .caveats b { color: var(--text); font-weight: 600; }
 
 .intro .sub { font-family: inherit; font-size: clamp(1.05rem, 2.2vw, 1.25rem); max-width: 34em; margin: 0 auto 32px; }
-.chat { max-width: 720px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 26px clamp(16px, 4vw, 32px); display: grid; gap: 14px; box-shadow: 0 30px 60px -48px #0005; }
-.bub { max-width: 82%; padding: 12px 16px; border-radius: 16px; line-height: 1.55; font-size: 1rem; }
-.bub small { display: block; font-size: .78rem; color: var(--muted); margin-bottom: 2px; font-weight: 600; }
-.bub.you { justify-self: end; background: #ececea; border-bottom-right-radius: 4px; }
-.bub.ella { justify-self: start; background: #d4561a12; border: 1px solid #d4561a33; border-bottom-left-radius: 4px; }
-.chat-cap { text-align: center; color: var(--muted); font-size: .85rem; margin: 14px 0 0; }
 .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 @media (max-width: 860px) { .three { grid-template-columns: 1fr; gap: 20px; } }
 .three h3 { font-size: 1.25rem; margin: 0 0 6px; }
 .three p { color: var(--muted); margin: 0; }
-.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: s; }
-@media (max-width: 1000px) { .steps { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
-.steps li { counter-increment: s; }
-.steps li::before { content: counter(s); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--text); color: var(--bg, #fff); font-weight: 600; margin-bottom: 14px; }
-.steps h3 { font-size: 1.2rem; margin: 0 0 6px; }
-.steps p { color: var(--muted); margin: 0; }
 .vs { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 6px; font-size: .97rem; }
 .vs th, .vs td { text-align: left; vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--line); }
 .vs thead th { font-size: .9rem; }
@@ -82,18 +67,7 @@ theme: plain
     <a class="path" href="#learn"><small>New to all this?</small><b>Learn the basics first</b><span>Short lessons in plain words, a few minutes each.</span><i>See the lessons →</i></a>
     <a class="path dark" href="{{ '/learn/first-project.html' | relative_url }}"><small>Ready to build?</small><b>Start your first app</b><span>Step by step, from zero. Ella guides you the whole way.</span><i>Start now →</i></a>
   </div>
-  <p class="how-link"><a href="#how">Or see how it works ↓</a></p>
 </div></header>
-
-<div class="wrap">
-  <div class="chat" role="img" aria-label="An example chat: you tell Ella about a family grocery list app, she asks two questions and offers a one-page plan">
-    <div class="bub you"><small>You</small>I want an app where my family can share a grocery list.</div>
-    <div class="bub ella"><small>Ella</small>Nice idea. Two quick questions. Is it just for your family? And should it work on phones?</div>
-    <div class="bub you"><small>You</small>Just the four of us, on our phones.</div>
-    <div class="bub ella"><small>Ella</small>Got it. Here's my plan: one shared list that updates on every phone. It's free to run for a family. You'll make one account, which takes about 5 minutes. You'll try the app before it goes live. Shall I start?</div>
-  </div>
-  <p class="chat-cap">An example chat with Ella. You talk to her the way you'd talk to ChatGPT.</p>
-</div>
 
 <section id="what"><div class="wrap three">
   <div><h3>It's free</h3><p>Agentic Team is a set of written instructions for AI. Anyone can read and use them for free. This project makes no money, and nobody sells you anything here.</p></div>
@@ -101,17 +75,7 @@ theme: plain
   <div><h3>It teaches as it goes</h3><p>This is a learning site. Ella explains each step as it happens, so you learn how apps are planned, built and tested.</p></div>
 </div></section>
 
-<section class="alt" id="how"><div class="wrap">
-  <div class="head"><h2>How it works</h2><p>Ella is an AI you chat with. Behind her is a team of AI helpers, called agents. Each one has one job.</p></div>
-  <ol class="steps">
-    <li><h3>Tell Ella your idea</h3><p>Use your own words. She asks a few questions until she understands it.</p></li>
-    <li><h3>Get a one-page plan</h3><p>It says what will be built and what it will cost. Nothing is spent without your yes.</p></li>
-    <li><h3>The team builds and checks it</h3><p>One AI builds. A different AI checks the work, like a teacher marking homework.</p></li>
-    <li><h3>Try it, then say go</h3><p>You try your app first. It only goes online when you're happy with it.</p></li>
-  </ol>
-</div></section>
-
-<section id="compare"><div class="wrap">
+<section class="alt" id="compare"><div class="wrap">
   <div class="head"><h2>Can't ChatGPT do this?</h2><p>ChatGPT can write code. But you'd have to copy it, set it up and fix it yourself. Ella's team does that part for you, and checks it.</p></div>
   <table class="vs">
     <thead><tr><th></th><th>ChatGPT</th><th class="us">Ella and her team</th></tr></thead>
@@ -124,7 +88,7 @@ theme: plain
   </table>
 </div></section>
 
-<section class="alt" id="need"><div class="wrap">
+<section id="need"><div class="wrap">
   <div class="head"><h2>What you'll need</h2><p>Three things. The step-by-step lesson shows every click.</p></div>
   <ul class="need">
     <li><b>A coding assistant</b><p>An AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Codex and Cursor work too. Most need a paid plan from the AI company, so check the price first.</p></li>
@@ -133,7 +97,7 @@ theme: plain
   </ul>
 </div></section>
 
-<section id="money"><div class="wrap">
+<section class="alt" id="money"><div class="wrap">
   <div class="head"><h2>Where your money goes</h2><p>This project makes no money. There are no ads, no sign-up and nothing to buy from us. We made it so new builders can learn to build safely and properly, instead of throwing away code an AI wrote in a hurry.</p></div>
   <ul class="need">
     <li><b>The AI tool</b><p>Usually a monthly plan from the AI company. This is where most of your money goes, because it pays for the AI doing the work. Check the price on the company's own website. Before a big job, Ella tells you roughly how much of your AI plan it will use.</p></li>
@@ -145,7 +109,7 @@ theme: plain
   <p class="note">Why spend on planning and checking at all? Because an app that's planned, tested and saved properly is one you can keep improving for years. A rushed one often has to be thrown away and started again.</p>
 </div></section>
 
-<section class="alt" id="fit"><div class="wrap">
+<section id="fit"><div class="wrap">
   <div class="head"><h2>Before you start, know this</h2></div>
   <ul class="caveats">
     <li>It's new. It hasn't built a real app all the way from idea to launch yet.</li>
@@ -155,7 +119,7 @@ theme: plain
   </ul>
 </div></section>
 
-<section id="learn"><div class="wrap">
+<section class="alt" id="learn"><div class="wrap">
   <div class="head"><h2>Short lessons</h2><p>A few minutes each. If a word is new, start with the first one.</p></div>
   <ol class="lessons">
     <li><a href="{{ '/learn/words.html' | relative_url }}"><span class="n">00</span><span><b>Words you'll meet</b><span class="d">Chatbot, coding assistant, terminal, GitHub and more, in plain words.</span></span><span class="t">4 min</span></a></li>
@@ -170,7 +134,7 @@ theme: plain
   </ol>
 </div></section>
 
-<section class="alt start" id="start"><div class="wrap">
+<section class="start" id="start"><div class="wrap">
   <h2>Ready to try?</h2>
   <p>The first lesson walks you through setup, one step at a time. Then you say hello to Ella.</p>
   <div class="ctas">
