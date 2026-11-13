@@ -1,6 +1,6 @@
 # How we work
 
-Every change starts as a small written spec with testable criteria. It's built as a ticket that flows through build, an independent check and automated gates, with a limit on work in progress. The owner merges it and it ships in small steps. There are no sprints, story points or standups. Agents swarm on reading, research and review, never on writing: each piece of code has one builder.
+Every change starts as a small written spec with testable criteria. It's built as a ticket that flows through build, an independent check and automated gates, with a limit on work in progress. The owner tries it, says yes, Ella merges it, and it ships in small steps. There are no sprints, story points or standups. Agents swarm on reading, research and review, never on writing: each piece of code has one builder.
 
 **[M]** marks a claim from a measured study, **[P]** one from practitioner or vendor guidance.
 

@@ -21,6 +21,17 @@ Every handoff, verdict, blocker and question on the team is one GitHub comment i
    Use `--human human:merge` (or another `human:` label) when the comment asks a person to act, and add that label in the same step.
 3. Post `comment.md` as written (`gh issue comment 42 --body-file comment.md`), then swap the `role:` and `stage:` labels as the table in `github-state.md` says. One role label and one stage label at a time.
 
+## Approval receipts (Ella only)
+
+When the owner says yes in chat, Ella posts a receipt before she merges, adds an owner label or asks Otto to release. The body quotes the owner's words in a `>` line and says when they said them and the one thing approved:
+
+```bash
+python3 <this skill>/scripts/team_comment.py --from engagement-lead --to owner \
+  --kind approval --approves spend-approved --body body.md > comment.md
+```
+
+`--approves` is the label, `merge` or `release`; add `--rev <head>` for a merge. The gates ignore an owner label with no receipt before it.
+
 ## Check one
 
 `python3 <this skill>/scripts/team_comment.py --check comment.md` prints `ok` or each problem. Run it on a comment you wrote by hand before posting.

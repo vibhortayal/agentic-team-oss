@@ -35,7 +35,7 @@ One main line, `main`, always releasable; no `develop` or long-lived release bra
 
 - **Small and short.** One branch per ticket, cut from the latest `main`, merged within about two working days. A ticket that would take longer is split; unfinished work hides behind a feature flag rather than waiting on a branch.
 - **No overlapping tickets.** Each ticket lists its owned paths. Priya doesn't start a ticket whose paths overlap one already in progress; it waits.
-- **Up to date before the check and before the merge.** The branch takes in the latest `main` (a merge, never a rebase or force-push, so reviewed revisions stay findable) before Vera's verdict and again before the owner merges. The ruleset requires branches to be up to date; with several auto-merges a day, use the host's merge queue where the plan offers it.
+- **Up to date before the check and before the merge.** The branch takes in the latest `main` (a merge, never a rebase or force-push, so reviewed revisions stay findable) before Vera's verdict and again before the merge. The ruleset requires branches to be up to date; with several auto-merges a day, use the host's merge queue where the plan offers it.
 - **Squash merge.** Each ticket lands on `main` as one commit named after its issue, so the history reads as a list of changes and any one reverts cleanly. Branches are deleted after merge.
 - **Releases are tags on `main`,** and a production fix is a normal small ticket from `main`.
 
@@ -77,7 +77,7 @@ Whoever hands work on swaps the `role:` and `stage:` labels in the same step as 
 | PASS, coordinator checking CI | stays `verifying` | the coordinator | |
 | INCONCLUSIVE | stays `verifying` | the role that must supply the missing evidence | |
 | PASS + green CI, waiting for the owner to try it | `review` (owner trying it) | product-manager | `needs-human` + `human:merge` |
-| Owner asks for a change | `building` | implementer, same branch and PR | `owner-rejected` (kept for the record; not a BLOCK) |
+| Owner asks for a change (same branch and PR, not a BLOCK) | `building` | implementer | `owner-rejected` (kept for the record) |
 | Merged | `done` | none (Ella removes the label on her next board read) | |
 | Typed blocker | stays | role that stopped | `needs-human` + `human:blocker` + `blocker:*` |
 | Anything else the owner must approve (brief, estimate, change request, zone map, re-baseline, release) | stays | role that asked | `needs-human` + `human:approve` (or `human:approve-spec`, `human:approve-release`); the comment names what |
