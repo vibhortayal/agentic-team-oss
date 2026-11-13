@@ -1,6 +1,6 @@
 ---
 name: restore-point
-description: Save a named restore point after each change the owner approves, list them in plain words, and take the app back to one when the owner asks ("go back to Tuesday's version"). Use after every owner merge, and whenever the owner wants to undo, compare or recover an earlier version.
+description: Save a named restore point after each change the owner approves, list them in plain words, and take the app back to one when the owner asks ("go back to Tuesday's version"). Use after every merge the owner said yes to, and whenever the owner wants to undo, compare or recover an earlier version.
 license: Apache-2.0
 ---
 
@@ -10,7 +10,7 @@ A newcomer is often afraid to break things. A restore point is a saved version o
 
 ## Save one
 
-Right after the owner merges a change into `main`, tag the merge commit:
+Right after a change the owner said yes to is merged into `main`, tag the merge commit:
 
 ```bash
 git tag -a "restore/$(date +%Y-%m-%d)-<issue>-<slug>" <merge-commit> -m "<one plain sentence: what the app could do at this point>"

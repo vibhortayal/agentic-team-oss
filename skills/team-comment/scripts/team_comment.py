@@ -2,7 +2,8 @@
 """Build or check a team comment. Standard library only.
 
   team_comment.py --from ROLE --to ROLE|owner --kind KIND [--verdict V --rev SHA --round N]
-                  [--issue N] [--human human:LABEL] [--body FILE] [--roles DIR]
+                  [--issue N] [--human human:LABEL] [--approves LABEL|merge|release]
+                  [--body FILE] [--roles DIR]
   team_comment.py --check FILE [--roles DIR]
 
 Role names come from the role files: .team/roles/ in a project, roles/ in the team repo.
@@ -10,7 +11,7 @@ Prints the comment (or "ok") on stdout; problems go to stderr with exit code 1.
 """
 import argparse, json, os, re, sys
 
-KINDS = ("handoff", "verdict", "blocker", "question", "report", "note")
+KINDS = ("handoff", "verdict", "blocker", "question", "report", "note", "approval")
 VERDICTS = ("PASS", "BLOCK", "INCONCLUSIVE")
 EVENT = re.compile(r"<!--\s*team-event\s+(.*?)\s*-->", re.S)
 HEADER = re.compile(r"^\*\*[^*()]+\(([a-z-]+)\)\s*(?:→|->)")
@@ -48,7 +49,7 @@ def load_roles(path):
 def problems(ev, roles, body=""):
     errs = []
     frm, to, kind = ev.get("from"), ev.get("to"), ev.get("kind")
-    if frm not in roles:
+    if frm not in roles and not (kind == "approval" and frm == "owner"):
         errs.append("from %r is not a role" % frm)
     if to is not None and to not in roles and to != "owner":
         errs.append("to %r is not a role or owner" % to)
@@ -69,6 +70,15 @@ def problems(ev, roles, body=""):
                 errs.append("the third BLOCK goes to the coordinator, not the implementer")
     elif "verdict" in ev:
         errs.append("verdict field on a %s" % kind)
+    if kind == "approval":
+        if frm not in ("engagement-lead", "owner"):
+            errs.append("only Ella (or the owner) writes an approval receipt")
+        if not ev.get("approves"):
+            errs.append("an approval receipt needs approves (the label, merge or release it approves)")
+        if not re.search(r'^> ', body, re.M):
+            errs.append("an approval receipt quotes the owner's words in a > line")
+    elif "approves" in ev:
+        errs.append("approves field on a %s" % kind)
     if ev.get("human") and not str(ev["human"]).startswith("human:"):
         errs.append("human %r is not a human: label" % ev["human"])
     if kind in ("handoff", "verdict") and to in roles:
@@ -87,6 +97,8 @@ def build(a, roles):
         ev["round"] = a.round
     if a.human:
         ev["human"] = a.human
+    if a.approves:
+        ev["approves"] = a.approves
     body = open(a.body, encoding="utf-8").read().strip() if a.body else ""
     who = lambda r: "owner" if r == "owner" else "%s (%s)" % (roles.get(r, {}).get("persona", r), r)
     header = "**%s → %s** · %s" % (who(a.frm), who(a.to), a.kind)
@@ -135,6 +147,7 @@ def main(argv):
     p.add_argument("--from", dest="frm")
     p.add_argument("--to")
     p.add_argument("--kind", choices=KINDS)
+    p.add_argument("--approves", help="approval receipts: the label, merge or release the owner said yes to")
     p.add_argument("--verdict", choices=VERDICTS)
     p.add_argument("--rev")
     p.add_argument("--round", type=int)

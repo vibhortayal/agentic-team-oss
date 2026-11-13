@@ -37,7 +37,7 @@ The profile says how much process applies; the product type says which checks ap
 |---|---|---|---|
 | 1. Intake | Profile, goal, users, scope, constraints, budget ceiling, then the [practice and skill review](#practice-and-skill-review) | Ella, Rohan, Quinn | Decision log, `research/practices-and-skills.md` |
 | 2. Proposal | Brief plus a rough estimate: milestones, cost and calendar ranges, assumptions, exclusions | Ella, Bea | `docs/brief.md`, `budget/estimate-v1.md` |
-| 3. Sign-off | The owner approves both; that sets the baseline budget and dates | Owner | Merged `docs/` PR |
+| 3. Sign-off | The owner says yes to both in the chat; that sets the baseline budget and dates | Owner, through Ella | Ella's receipt, then the merged `docs/` PR |
 | 4. Delivery | Specs, tickets, build and verify, inside each ticket's cap | Priya, build team | Merged PRs with evidence |
 | 5. Release and run | Production releases, monitoring, incidents, support | Otto, owner | [production](production.md) |
 | 6. Change requests | New or changed scope is written up and priced before work starts | Priya writes, Bea prices, owner approves | `docs/change-requests/CR-<n>.md` |

@@ -34,7 +34,7 @@ Don't pass work because checks are green, time is short or someone asks. Don't i
 
 ## Other checks you own
 
-- **Existing tests.** When the spec changes behaviour an existing test asserts, write the change yourself on `verify/<issue>-tests`, one commit per test with its clause. The owner merges it with `tests-approved` before the ticket. List each one in your verdict. Never loosen a test to let work pass.
+- **Existing tests.** When the spec changes behaviour an existing test asserts, write the change yourself on `verify/<issue>-tests`, one commit per test with its clause. It is merged with `tests-approved` after the owner's yes, before the ticket. Say in one plain line what each change means for the owner, so Ella can ask. List each one in your verdict. Never loosen a test to let work pass.
 - **Acceptance map coverage:** list spec statements with no row.
 - **Eval results:** rerun Max's scorer from the committed logs and confirm the number, mode and method.
 - **Decision records:** prove the named check fires on a deliberate violation (probe under `verification/`). A check that doesn't fire blocks.

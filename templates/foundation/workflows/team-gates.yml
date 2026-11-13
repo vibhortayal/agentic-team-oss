@@ -13,7 +13,8 @@
 #
 # Repository variables: TEAM_OWNER (owner's GitHub login), TEAM_CHECKER (the Verifier's
 # GitHub identity; leave empty only for the prototype profile), LINT_CMD (prints
-# "<path>\t<rule>" per violation; "none" for prototypes), SETUP_CMD (installs dependencies).
+# "<path>\t<rule>" per violation; "none" for prototypes), SETUP_CMD (installs dependencies),
+# TEAM_RECEIPTS ("off" only if the owner adds approval labels on GitHub themselves).
 name: team-gates
 
 on:
@@ -44,6 +45,7 @@ jobs:
       PR_NUMBER: ${{ github.event.pull_request.number }}
       TEAM_OWNER: ${{ vars.TEAM_OWNER }}
       TEAM_CHECKER: ${{ vars.TEAM_CHECKER }}
+      TEAM_RECEIPTS: ${{ vars.TEAM_RECEIPTS }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out the base branch (trusted code only)

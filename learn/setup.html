@@ -52,15 +52,10 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
   <div class="step reveal">
     <div class="num">1<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Let your computer talk to GitHub</h2>
-      <p>Your team saves its work on GitHub. Your coding assistant needs a way in. GitHub makes a small free program for this, called the GitHub command line tool.</p>
-      <ol>
-        <li><a href="https://cli.github.com/">Install it from GitHub's site</a>.</li>
-        <li>Open the terminal (on Windows, Git Bash) and type <code>gh auth login</code>, then press Enter.</li>
-        <li>Pick GitHub.com, then HTTPS, then "Login with a web browser". Your browser opens. Sign in and click Authorize.</li>
-      </ol>
-      <p>Not sure? Ask Ella "help me sign in to GitHub". She walks you through it.</p>
-      <span class="note">about 5 minutes, once per computer</span>
+      <h2>Check what Ella already did</h2>
+      <p>During setup, Ella signed your computer in to GitHub. You saw a short code, your browser opened, and you clicked Authorize. She also made your app's repository: its private folder on GitHub, where the team saves its work. Only you can see it.</p>
+      <p>Skipped any of that? Ask Ella "help me connect to GitHub". She picks up where setup stopped.</p>
+      <span class="note">usually done already, once per computer</span>
     </div>
   </div>
 
@@ -68,8 +63,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <div class="num">2<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Say yes to the plan</h2>
-      <p>This is the plan from <a href="{{ '/learn/first-project.html' | relative_url }}">your first project</a>. When you say yes, Ella asks if she can make a private repository for your app on your GitHub account. A repository is your app's folder on GitHub. Say yes.</p>
-
+      <p>This is the plan from <a href="{{ '/learn/first-project.html' | relative_url }}">your first project</a>. When you say yes, the team gets to work in your repository.</p>
     </div>
   </div>
 
@@ -86,19 +80,14 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
   <div class="step reveal">
     <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Fill in three settings</h2>
-      <p>The checks need to know a few things about your project. Only you can change these settings, because the agents don't get admin rights. Ella tells you the exact values to type.</p>
-      <ol>
-        <li>On your repository's page, click Settings.</li>
-        <li>On the left, click "Secrets and variables", then Actions.</li>
-        <li>Open the Variables tab and click "New repository variable". Add each one:</li>
-      </ol>
+      <h2>Three settings for the checks</h2>
+      <p>The checks need to know a few things about your project. Ella fills them in for you after you say yes. Here is what each one is for.</p>
       <div class="doodles">
         <div class="doodle"><b>TEAM_OWNER</b><small>Your GitHub name, so the checks know whose OK counts.</small></div>
         <div class="doodle"><b>LINT_CMD</b><small>Type <code>none</code> for a first try. Later Ella gives you a command that checks code style.</small></div>
         <div class="doodle"><b>SETUP_CMD</b><small>The command that gets your app ready to test. Ella tells you what it is.</small></div>
       </div>
-      <span class="note">about 5 minutes</span>
+      <span class="note">about 1 minute</span>
     </div>
   </div>
 

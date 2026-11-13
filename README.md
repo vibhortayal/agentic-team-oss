@@ -67,16 +67,14 @@ Ella needs you at a few points: to OK the plan and cost, to try each new version
 
 Here's the whole setup. The "Your first project" lesson on our website shows the same steps with more help.
 
-**1. Get four things ready.**
+**1. Get two things ready.**
 
-- A GitHub account. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
-- A coding assistant. [See which ones work](adapters/README.md#tools).
-- Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads). On Windows it comes with Git Bash, the terminal to use for setup.
-
-Mac and Linux are tested. Windows should work through Git Bash, but nobody has tested it yet.
+- A coding assistant: an AI like ChatGPT that can also work with the files on your computer. The Claude app is the one we've tested most; install it and sign in. [See which others work](adapters/README.md#tools).
 - A safe place for your app's keys. A key is a long password that lets your app use another service. Use any password manager you like (your phone or computer may have one built in), or a private file kept outside your project folder. Never paste a key into a chat.
 
-**2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal in that folder. On a Mac, type `cd` and a space, drag the folder from Finder into the window and press Enter. On Windows, right-click inside the folder in File Explorer and pick "Open Git Bash here". Then type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
+That's all you do by hand. Ella installs Git and GitHub's tool for you during setup, after asking. No GitHub account yet? She opens the sign-up page and walks you through it; you type the details, because GitHub checks you're a person. Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.
+
+**2. Open a new folder.** In the Claude app, click Code, pick Local, then Open folder… and make a new folder for your app. In a terminal, open it in the folder and type `claude`. With Cursor, open the app and pick the folder.
 
 **3. Paste this one line,** with your idea at the end:
 
@@ -84,7 +82,7 @@ Mac and Linux are tested. Windows should work through Git Bash, but nobody has t
 Set up Agentic Team here by following https://raw.githubusercontent.com/vibhortayal/agentic-team-oss/main/START.md. My idea: <what you want, in your own words>
 ```
 
-Your coding assistant downloads the team's instruction files and adds them to your folder. It saves a first snapshot, then Ella says hello. If something is missing, like Git, it tells you what to do.
+Ella says hello and gets your computer ready, asking before each install. You click Yes on your computer's pop-ups and Authorize once on GitHub. She adds the team to your folder, saves a first snapshot and makes your app's private repository on GitHub. Then she asks about your idea.
 
 In Claude Code you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
 
@@ -95,6 +93,8 @@ You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lea
 ```
 
 **5. Set up GitHub for the team.** After you OK the plan, Ella asks you to do a few things on GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows every click, and which steps you can skip on a first try.
+
+**6. Try each change, then say yes.** Ella sends a link to try each new version. Say yes, or tell her what to change. You never need to open GitHub or press merge: Ella does that after your yes. Going live is a separate question she asks when the test version is ready.
 
 New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 

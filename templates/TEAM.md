@@ -8,8 +8,9 @@ This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 - Agent tools in use: `<the agent tools this project uses>`; installed with the generic adapter plus the matching tool adapter. State follows `.team/docs/github-state.md`.
 - Help pages: `<where users read how to use the product, e.g. docs/help/ or the in-app help screen; "none" for research>`. The Product Manager owns their wording.
 - Spec of record: `<paths, e.g. docs/specs/v1.md, docs/specs/v1-openapi.yaml>`; decision records in `docs/decisions/`.
-- Main branch: `<main>`. Only the owner merges to it, except what the autonomy stage below allows.
-- Autonomy stage: `0` while the gates are built, then `1` (owner merges everything). Moves to 2 or 3 only on the owner's explicit message, linked here: `<link>`, after the entry criteria in the foundation playbook are met (override the numbers here if needed). `CODEOWNERS` is what enforces it.
+- Main branch: `<main>`, the test version. Nothing merges to it without the owner's yes, except what the autonomy stage below allows.
+- Who presses merge: `Ella, after the owner's yes in chat` (default) or `the owner, on GitHub`. If the owner presses it, set the repository variable `TEAM_RECEIPTS=off`.
+- Autonomy stage: `0` while the gates are built, then `1` (every merge waits for the owner's yes). Moves to 2 or 3 only on the owner's explicit message, linked here: `<link>`, after the entry criteria in the foundation playbook are met (override the numbers here if needed). `CODEOWNERS` is what enforces it.
   - Stage 2: copy, working notes and new tests auto-merge on green CI.
   - Stage 3: also features and fixes inside owned paths auto-merge on green CI.
   - The red zone, gate files and approved documents never auto-merge at any stage.
