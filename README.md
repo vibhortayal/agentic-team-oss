@@ -75,7 +75,7 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 
 That's all you do by hand. Ella installs Git and GitHub's tool for you during setup, after asking. No GitHub account yet? She opens the sign-up page and walks you through it; you type the details, because GitHub checks you're a person. Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.
 
-**2. Open a new folder.** In the Claude app, click Code, pick Local, then Open folder… and make a new folder for your app. In a terminal, open it in the folder and type `claude`. With Cursor, open the app and pick the folder.
+**2. Open a new folder.** In the Claude app, click Code, pick Local, then Open folder… and make a new folder for your app. In a terminal, open it in the folder and type `claude`. With Cursor, open the app and pick the folder. Then pick the model, the AI's "brain". Your plan decides which one you start on (type `/model` in a terminal to see it). For Ella, pick the strongest one you have, today Opus. She plans and tracks your whole project, so careful thinking pays off most there. Others work too: they use less of your plan, but may miss more. [Which model, and why](https://agents.teamnightshift.org/learn/words.html#models).
 
 **3. Paste this one line,** with your idea at the end:
 
@@ -83,19 +83,21 @@ That's all you do by hand. Ella installs Git and GitHub's tool for you during se
 Set up Agentic Team here by following https://raw.githubusercontent.com/vibhortayal/agentic-team-oss/main/START.md. My idea: <what you want, in your own words>
 ```
 
-Ella says hello and gets your computer ready, asking before each install. You click Yes on your computer's pop-ups and Authorize once on GitHub. She adds the team to your folder, saves a first snapshot and makes your app's private repository on GitHub. Then she asks about your idea.
+Ella says hello and gets your computer ready, asking before each install. You click Yes on your computer's pop-ups and Authorize once on GitHub. She adds the team to your folder, saves a first snapshot and makes your project: your app's private repository on GitHub.
 
 In Claude Code you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
 
-**4. Next time, just say hello to Ella.** Open your coding assistant in the same folder and paste this:
+**4. Tell Ella your idea and say yes to the plan.** She asks a few questions. Then she gives you one page with what she'll build and what it costs. After your yes, she turns on the automatic checks and fills in the settings on GitHub. You don't need to find your way around GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows what she does.
+
+**5. Open your progress board.** Now your project exists, Ella opens the board's download page for you. It's a free app for Mac and Windows that shows, in plain words, what's waiting for you and a link to try each new version. It opens straight on your project. [Step 6 of the lesson](https://agents.teamnightshift.org/learn/first-project.html#board) shows the download, Mac and Windows side by side.
+
+**6. Try each change, then say yes.** Ella sends a link to try each new version. Say yes, or tell her what to change. You never need to open GitHub or press merge: Ella does that after your yes. Going live is a separate question she asks when the test version is ready.
+
+**Next time, just say hello to Ella.** Open your coding assistant in the same folder and paste this:
 
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
 ```
-
-**5. Let Ella set up GitHub for the team.** After you OK the plan, Ella turns on the automatic checks and fills in the settings. She uses your sign-in, and asks first. You don't need to find your way around GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows what she does, and which steps you can skip on a first try.
-
-**6. Try each change, then say yes.** Ella sends a link to try each new version. Say yes, or tell her what to change. You never need to open GitHub or press merge: Ella does that after your yes. Going live is a separate question she asks when the test version is ready.
 
 New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 

@@ -54,7 +54,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
       <p class="note">Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.</p>
       <div class="doodles">
         <div class="doodle"><b>The Claude app</b><small>An AI like ChatGPT that can also work with the files on your computer. Install it and sign in. It usually needs a paid plan, so check the price first. Other coding assistants work too. <a href="{{ '/learn/words.html' | relative_url }}">Why not ChatGPT?</a></small><br><a href="https://claude.ai/download">Get the Claude app →</a> · <a href="{{ '/learn/words.html#reach' | relative_url }}">Others that work →</a></div>
-        <div class="doodle"><b>A safe place for keys</b><small>Your app will need a few keys. A key is a long password that lets your app use another service. Keep them in a password manager (your phone or computer may already have one built in), or in a private file outside your project folder. When Ella asks for one, you paste it into your progress board (step 7), never into a chat.</small></div>
+        <div class="doodle"><b>A safe place for keys</b><small>Your app will need a few keys. A key is a long password that lets your app use another service. Keep them in a password manager (your phone or computer may already have one built in), or in a private file outside your project folder. When Ella asks for one, you paste it into your progress board (step 6), never into a chat.</small></div>
       </div>
       <p>No GitHub account yet? That's fine. GitHub is a free website that keeps a safe copy of your app's files, a bit like Google Drive for code. During setup, Ella opens the sign-up page and helps you through it. You type the details yourself, because GitHub checks that you're a person.</p>
     </div>
@@ -65,6 +65,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div>
       <h2>Open a new folder in the Claude app</h2>
       <p>In the Claude app, click <b>Code</b> in the side bar. Pick <b>Local</b>, which means "work on this computer". Then click <b>Open folder…</b> and make a new folder for your app, such as <code>my-grocery-list</code>. Leave the mode on <b>Manual</b>, so Claude asks before it changes a file or runs anything. Each time, it says what and why. Click <b>Allow</b> if that sounds right.</p>
+      <p><b>Pick the model.</b> Near the chat box is a menu for the model, the AI's "brain". Your plan decides which one you start on. For Ella, pick the strongest one you have (today that's Opus). She plans your whole project and keeps track of it, so careful thinking pays off most here. Others work too: they use less of your plan, but may miss more. <a href="{{ '/learn/words.html#models' | relative_url }}">Which model, and why →</a></p>
       <p class="note">Using a terminal instead? Open it in the folder and type <code>claude</code> (or <code>codex</code>). With Cursor, open the app and pick the folder.</p>
     </div>
   </div>
@@ -73,7 +74,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Paste one line</h2>
-      <p>Paste this into the chat, with your own idea at the end. Ella says hello and gets your computer ready. She asks before she installs anything. You'll click Yes a few times, make a GitHub account if you need one, and click Authorize once in your browser. Then she adds the team to your folder and makes your app's private home on GitHub. The first time takes about 15 minutes. After that, a new app takes a minute.</p>
+      <p>Paste this into the chat, with your own idea at the end. Ella says hello and gets your computer ready. She asks before she installs anything. You'll click Yes a few times, make a GitHub account if you need one, and click Authorize once in your browser. Then she adds the team to your folder and makes your project: your app's private home on GitHub. The first time takes about 15 minutes. After that, a new app takes a minute.</p>
       <div class="code"><button class="copy">Copy</button>Set up Agentic Team here by following https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/main/START.md. My idea: I want an app where my family can share a grocery list.</div>
       <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
       <span class="note">swap in your own idea, in your own words</span>
@@ -84,17 +85,8 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
   <div class="step reveal">
     <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Meet Ella</h2>
-      <p>When setup is done, Ella asks about your idea. Next time, open the same folder in the Claude app and paste this one line. It's the only prompt you need to remember.</p>
-      <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I'd like to add a shopping budget.</div>
-    </div>
-  </div>
-
-  <div class="step reveal">
-    <div class="num">5<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
-    <div>
-      <h2>Answer her questions</h2>
-      <p>Ella interviews you, a few questions at a time. Something like:</p>
+      <h2>Tell Ella your idea</h2>
+      <p>When setup is done, Ella asks about your idea, a few questions at a time. Something like:</p>
       <div class="bubble"><b>Ella:</b> Who will use it: just your family, or anyone? And should it work on phones?</div>
       <div class="bubble me"><b>You:</b> Just the four of us, on our phones.</div>
       <div class="bubble"><b>Ella:</b> Got it. Then I'd keep it simple: one shared list, sign-in with Google, free hosting. I'll put the plan and the costs on one page for you.</div>
@@ -102,21 +94,20 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
   </div>
 
   <div class="step reveal">
-    <div class="num">6<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div class="num">5<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Read the plan and say yes</h2>
       <p>You'll get one page. It says what we'll build and what it costs each month. It lists the few steps that are yours, who's on the team, and when Ella will need you. Ask "tell me more" about anything. When you say yes, the team gets to work. Ella comes back when you're needed: to try a new version and say yes or what to change, to OK any spending, and to say go for the launch. You never press merge on GitHub; Ella does it after your yes.</p>
-      <span class="note">that's it, you've started</span>
-      <p>Next, Ella gets your project ready on GitHub. She does the settings for you, so you mostly say yes. <a href="{{ '/learn/setup.html' | relative_url }}">Set up GitHub for your team</a> shows what she does, and what you can skip on a first try.</p>
+      <p>After your yes, Ella gets your project ready on GitHub: the automatic checks and their settings. She does it for you, so you mostly say yes. <a href="{{ '/learn/setup.html' | relative_url }}">Set up GitHub for your team</a> shows what she does, if you're curious.</p>
     </div>
   </div>
 
   <div class="step reveal" id="board">
-    <div class="num">7<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div class="num">6<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Open your progress board</h2>
       <p>The progress board is a free app that shows how your project is going, in plain words. It shows what's waiting for you, with a <b>Try it</b> button for each new version of your app. It's also where you paste keys. You only download it once.</p>
-      <p>Go to the <a href="https://github.com/vibhortayal/agentic-team-dashboard/releases/latest">board's download page</a>. Under <b>Assets</b>, click the file for your computer. It's about 110 MB.</p>
+      <p>Your project exists now, so the board has something to show. When the team starts work, Ella opens the <a href="https://github.com/vibhortayal/agentic-team-dashboard/releases/latest">board's download page</a> for you. Under <b>Assets</b>, click the file for your computer. It's about 110 MB.</p>
       <div class="doodles">
         <div class="doodle"><b>On a Mac</b><small>Take <code>Team-Board-mac-arm64.zip</code>. It needs a Mac with an Apple chip (M1 or newer). To check, open the Apple menu and click About This Mac. Under Chip, it should say Apple. Older Intel Macs can't run it yet.</small>
           <ol>
@@ -135,13 +126,17 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
         </div>
       </div>
       <p>You only see those warnings the first time. Next time, double-click the same file and the board opens straight away.</p>
-      <p>The board opens in your web browser. The first time, it asks you to sign in:</p>
-      <ol>
-        <li>Click <b>Sign in with GitHub</b>. The board shows a short code. Click <b>Copy</b>.</li>
-        <li>Click <b>Open GitHub</b>, paste the code, and click <b>Authorize</b>.</li>
-        <li>Back on the board, click your app's name in the list.</li>
-      </ol>
-      <p>If you signed in to GitHub during Ella's setup, the board may skip the sign-in and go straight to the list.</p>
+      <p>The board opens in your web browser, straight on your project. Ella signed you in to GitHub during setup, so there's nothing to type. Made more than one app? Click the one you want.</p>
+      <p class="note">If the board asks you to sign in: click <b>Sign in with GitHub</b>, copy the short code, click <b>Open GitHub</b>, paste it and click <b>Authorize</b>.</p>
+    </div>
+  </div>
+
+  <div class="step reveal">
+    <div class="num">7<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
+    <div>
+      <h2>Next time</h2>
+      <p>Open the same folder in the Claude app and paste this one line, with what you want. It's the only prompt you need to remember. To see how things are going, double-click the board again.</p>
+      <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I'd like to add a shopping budget.</div>
     </div>
   </div>
 </div>
