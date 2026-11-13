@@ -10,16 +10,18 @@ You tell your idea to Ella, an AI you chat with, a bit like ChatGPT. She asks yo
 - **It runs on your computer.** Your app's files stay on your computer and in your own accounts.
 - **It teaches as it goes.** This is a learning project. Ella explains each step, so you learn how good software is planned, built and checked. The aim is to help new builders do it safely and properly, instead of throwing away code an AI wrote in a hurry.
 
-## Can't ChatGPT do this?
+## Can't a chatbot or coding assistant do this?
 
-ChatGPT can write code. But you'd have to copy it, set it up and fix it yourself. Ella's team does that part for you, and checks it.
+A chatbot can write code, but you copy, set up and fix it yourself. A coding assistant does more, but nobody else checks its work. Here is what Ella's team adds.
 
-| | ChatGPT | Ella and her team |
+| | One AI on its own | Ella and her team |
 |---|---|---|
-| Makes the app on your computer | No. It writes code in the chat for you to copy. | Yes. The team creates and changes the files for you. |
-| Checks the work | You do. | A different AI does, using tests from your plan. |
+| Plans with you first | Only if you ask. | Yes. You agree on a plan before any work starts. |
+| Checks the work | It checks itself, or you do. | A different AI does, using tests from your plan. |
+| Lets you try it first | No. | Yes. You try each new version and say yes or no before it goes live. |
+| Tells you the cost first | No. | Yes, and it stops before going over your budget. |
 | Remembers next week | Only what's in the chat. | Everything: plans, choices and test results, saved in your own account. |
-| Tells you the cost first | No. | Yes, before any work starts. |
+| Helps you learn | Only if you ask. | Yes. Ella explains each step in plain words. |
 
 ## What you'll need
 
