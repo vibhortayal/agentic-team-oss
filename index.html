@@ -24,12 +24,6 @@ theme: plain
 
 .note { color: var(--muted); margin: 20px 0 0; }
 
-.lessons { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
-.lessons a { display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; padding: 16px 4px; border-bottom: 1px solid var(--line); text-decoration: none; align-items: baseline; }
-.lessons a:hover { background: #0000000a; }
-.lessons .n, .lessons .t { font: .8rem "Geist Mono", monospace; color: var(--muted); }
-.lessons b { font-weight: 500; font-size: 1.08rem; }
-.lessons span.d { display: block; color: var(--muted); font-size: .92rem; }
 
 .start { text-align: center; }
 .start h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
@@ -64,7 +58,7 @@ theme: plain
   <h1>Have an idea for an app? Build it, with an AI team to help.</h1>
   <p class="sub">It's free, it runs on your own computer, and it teaches you each step. You learn how real apps are planned, built and checked as you go.</p>
   <div class="paths">
-    <a class="path" href="#learn"><small>New to all this?</small><b>Learn the basics first</b><span>Short lessons in plain words, a few minutes each.</span><i>See the lessons →</i></a>
+    <a class="path" href="{{ '/learn/words.html' | relative_url }}"><small>New to all this?</small><b>Learn the basics first</b><span>Short lessons in plain words, a few minutes each. More in the Learn menu.</span><i>Start the first lesson →</i></a>
     <a class="path dark" href="{{ '/learn/first-project.html' | relative_url }}"><small>Ready to build?</small><b>Start your first app</b><span>Step by step, from zero. Ella guides you the whole way.</span><i>Start now →</i></a>
   </div>
 </div></header>
@@ -119,22 +113,7 @@ theme: plain
   </ul>
 </div></section>
 
-<section class="alt" id="learn"><div class="wrap">
-  <div class="head"><h2>Short lessons</h2><p>A few minutes each. If a word is new, start with the first one.</p></div>
-  <ol class="lessons">
-    <li><a href="{{ '/learn/words.html' | relative_url }}"><span class="n">00</span><span><b>Words you'll meet</b><span class="d">Chatbot, coding assistant, terminal, GitHub and more, in plain words.</span></span><span class="t">4 min</span></a></li>
-    <li><a href="{{ '/learn/journey.html' | relative_url }}"><span class="n">01</span><span><b>How a project goes</b><span class="d">The six steps from idea to launch, and where you come in.</span></span><span class="t">3 min</span></a></li>
-    <li><a href="{{ '/learn/big-picture.html' | relative_url }}"><span class="n">02</span><span><b>The whole picture</b><span class="d">Ella, the team and your app on one map.</span></span><span class="t">3 min</span></a></li>
-    <li><a href="{{ '/learn/team.html' | relative_url }}"><span class="n">03</span><span><b>Meet the team</b><span class="d">What each agent does, and why you won't need them all.</span></span><span class="t">4 min</span></a></li>
-    <li><a href="{{ '/learn/first-project.html' | relative_url }}"><span class="n">04</span><span><b>Your first app</b><span class="d">Setup from scratch, up to your first chat with Ella.</span></span><span class="t">8 min</span></a></li>
-    <li><a href="{{ '/learn/setup.html' | relative_url }}"><span class="n">05</span><span><b>Set up GitHub for your team</b><span class="d">Every click after your first chat, and what you can skip on a first try.</span></span><span class="t">6 min</span></a></li>
-    <li><a href="{{ '/learn/demo.html' | relative_url }}"><span class="n">06</span><span><b>Watch a demo</b><span class="d">Setup and a first chat, played out on screen.</span></span><span class="t">2 min</span></a></li>
-    <li><a href="{{ '/learn/principles.html' | relative_url }}"><span class="n">07</span><span><b>The rules we follow</b><span class="d">The twelve rules every agent works by.</span></span><span class="t">4 min</span></a></li>
-    <li><a href="{{ '/learn/underneath.html' | relative_url }}"><span class="n">08</span><span><b>What's underneath</b><span class="d">The files that make up the team, for the curious.</span></span><span class="t">5 min</span></a></li>
-  </ol>
-</div></section>
-
-<section class="start" id="start"><div class="wrap">
+<section class="alt start" id="start"><div class="wrap">
   <h2>Ready to try?</h2>
   <p>The first lesson walks you through setup, one step at a time. Then you say hello to Ella.</p>
   <div class="ctas">
