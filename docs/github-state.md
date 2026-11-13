@@ -103,7 +103,7 @@ A handoff, fix request or verdict body opens with the **evidence line**: `Rows:`
 
 Every comment that hands work on ends with a **next prompt**: one line in a code block that the next role's session can be started with, for example `You are the Verifier. Read .team/roles/verifier.md and act on issue #42.` Ella uses it to start the next agent. When the next step is several independent fish runs (spec review, research), the comment carries one next prompt per run; Ella starts each, and the `role:` label stays with the role that asked. In a tool that can't start sessions, Ella gives the owner each line to paste.
 
-`from` and `to` are role names (`to` is `owner` when the comment asks a person to act). `kind` is one of `handoff`, `verdict`, `blocker`, `question`, `report`, `note`, `approval`. An `approval` is Ella's receipt for the owner's yes: it quotes their words in a `>` line and adds `"approves"` (a label, `merge` or `release`) and `rev` where there is one. `verdict` is `PASS`, `BLOCK` or `INCONCLUSIVE`. Add `"human":"<human: label>"` when the comment asks a person to act. Bea's pricing comment on a ticket adds `"cap_sessions":<n>`, which the limits check reads. Keep the JSON on one line.
+`from` and `to` are role names (`to` is `owner` when the comment asks a person to act). `kind` is one of `handoff`, `verdict`, `blocker`, `question`, `report`, `note`, `approval`. An `approval` is Ella's receipt for the owner's yes: it quotes their words in a `>` line and adds `"approves"` (a label, `merge` or `release`) and `rev` where there is one. `verdict` is `PASS`, `BLOCK` or `INCONCLUSIVE`. Add `"human":"<human: label>"` when the comment asks a person to act. Bea's pricing comment on a ticket adds `"cap_sessions":<n>`, which the limits check reads. A comment that offers a preview adds `"preview":"<url>"`, which the progress board shows as the change's try-it link. Keep the JSON on one line.
 
 ## verdict.json
 
@@ -115,4 +115,11 @@ Every comment that hands work on ends with a **next prompt**: one line in a code
 
 ## What a person sees
 
-The owner normally just asks Ella, who answers from this data. Filter issues by `needs-human` to get the inbox: everything that is waiting on a person, with the comment that says what is needed. Filter by `role:` to see who is working on what, and by `stage:` for the board. A dashboard is a nicer view over the same data, not a second source of truth.
+The owner normally just asks Ella, who answers from this data, or looks at the progress board, a page on their own computer that reads the same data. It is a view, not a second source of truth, and it reads only these:
+
+- **Waiting for you:** open items labelled `needs-human`, with the text of the comment that added it. Ella's `note` comments show as "Ella handled these herself".
+- **What the team is doing:** the `stage:` label in everyday words, who holds it from the `role:` label, the header of the latest team comment, and the latest verdict.
+- **Try it:** the newest `preview` link in a PR's team comments; otherwise a GitHub deployment of the PR's branch or head with a working address (most hosts report these).
+- **Your app:** the live link is the newest working deployment to an environment named `production`, `prod` or `github-pages`. Versions are the repo's GitHub releases, so every release tag gets a release with plain notes.
+
+Anyone who does use GitHub can filter issues by `needs-human` for the same inbox, by `role:` for who is working on what, and by `stage:` for progress.

@@ -22,7 +22,10 @@ The list (Ella keeps it; it holds names and help, never a secret's value):
 
 Names are upper case and never start with GITHUB_. "value" is only for variables ("@me" means the
 signed-in GitHub login), "make": "random" only for secrets. The progress board's Settings page reads
-the same list, so the owner can paste a key there instead of using `ask`.
+the same list, so the owner can paste a key there instead of using `ask`. The board reads the first 50 entries,
+skips any without a valid name, kind and why, shows a "get" link only if it is https, and shows the checks'
+own settings (TEAM_OWNER, TEAM_CHECKER, TEAM_RECEIPTS, LINT_CMD, SETUP_CMD, DOCS_BUDGET) without letting
+the owner change them there.
 """
 import getpass
 import json
