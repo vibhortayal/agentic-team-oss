@@ -17,7 +17,7 @@ Ella's first question is what kind of project this is, because the answer sets h
 | **production** | A product for real users | Everything, including the UI kit, monitoring, incidents and support | Yes | A live, supported app |
 | **other** | Anything else | The closest profile, with the differences written down | As that profile | A new profile once the same kind of project shows up twice |
 
-Moving up a profile (say prototype to production) is a change request. Bea prices a hardening pass first: tests for untested paths, a security, dependency and red-zone review, monitoring, a rollback rehearsal, and the [launch readiness](production.md#launch-readiness) items for the product type. The owner approves it before the profile changes.
+Moving up a profile (say prototype to production) is a change request. Bea prices a hardening pass first: the strict checks turned on in `zones.yml` (`require:` checker, lint and cap, with the checker App and a linter in place), tests for untested paths, a security, dependency and red-zone review, monitoring, a rollback rehearsal, and the [launch readiness](production.md#launch-readiness) items for the product type. The owner approves it before the profile changes.
 
 ## Product types
 
