@@ -42,7 +42,6 @@ Why spend on planning and checking at all? Because an app that's planned, tested
 
 ## Before you start, know this
 
-- It's new. It hasn't built a real app all the way from idea to launch yet. That's the next step.
 - It's slower than asking one AI, because several agents plan and check the work. That uses more of your AI plan, so it may cost more.
 - Website builders like Lovable, Bolt or Replit make a first version faster. If you need something to show tonight, use one.
 - Tests can still miss mistakes. The work is only as good as the AI in your coding assistant.
