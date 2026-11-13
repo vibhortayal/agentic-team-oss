@@ -57,7 +57,7 @@ Any other branch name fails, with one exception: some agent tools may only push 
 
    Then one real ticket PR that should pass, all the way to Vera's approval and the `verified` label turning the gates green. The last four exercise the GitHub side the self-test can't. Also confirm the agents' account can't merge a green PR on its own. Vera records each run link, failing step and message in `verification/foundation/rehearsal.md` on a `gate/rehearsal` branch. Stage 1 starts only after this.
 
-**Prototype and hobby (lite):** steps 1 to 5, with the `require:` lines removed from `zones.yml`, `LINT_CMD=none` if there's no linter yet, and no `TEAM_CHECKER`; the self-test is the rehearsal. With `require:` in place (the default), a missing checker or `LINT_CMD=none` fails the gates, so a forgotten variable can't quietly weaken a real project.
+**Prototype and hobby (lite, the default):** steps 1 to 5, `LINT_CMD=none` if there's no linter yet, and no `TEAM_CHECKER`; the self-test is the rehearsal. The kit's `zones.yml` ships with its `require:` lines commented out, so a beginner never meets a checker App or a linter on day one. **Internal and production:** turning those lines on is part of moving up a profile. With them on, a missing checker, `LINT_CMD=none` or a ticket with no cap fails the gates, so a forgotten setting can't quietly weaken a real project.
 
 **Merged checks.** Verifier checks keep running on every PR as regression tests. A check is a `*.sh` or executable file; helpers and fixtures beside it are left alone. At each cleanup cycle, Ops moves old ones into the project's own test suite in a `verify/<issue>-tests` PR with `tests-approved`.
 

@@ -10,6 +10,13 @@ work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
 cd "$work"
 git init -q -b main . && git config user.email t@t.invalid && git config user.name t
 cp "$kit/zones.yml" .
+# The kit ships relaxed (prototype); test the strict rules a real project turns on.
+python3 - <<'PY'
+import re
+s = open("zones.yml").read()
+assert re.search(r"^require:\n  # - checker\n  # - lint\n  # - cap$", s, re.M), "zones.yml should ship with require: commented out"
+open("zones.yml", "w").write(re.sub(r"^  # - (checker|lint|cap)$", r"  - \1", s, flags=re.M))
+PY
 mkdir -p tests src .github docs
 echo 'ok' > tests/a.test.js; echo 'x = 1  # TODO old' > src/app.py; echo ci > .github/ci.yml
 echo '{"scripts":{"test":"jest"}}' > package.json; echo '# brief' > docs/brief.md
