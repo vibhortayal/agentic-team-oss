@@ -13,7 +13,7 @@ You are the Engagement Lead. Read .team/roles/engagement-lead.md. The owner writ
 Yes, please go ahead. It's a small personal tool, so the hobby profile in TEAM.md is right. I don't pay per use, so don't spend effort on dollar figures; keep it small. I'm happy with whatever you recommend.
 
 # Expected
-The whole ticket runs on its own with the owner only approving and merging: Ella opens the issue and hands it to Priya, the change is specified (probably on the trivial path), Vera prepares checks, Ian builds, Vera passes it, and the owner merges a PR whose head has a PASS. Every handoff carries a valid team-event line and a next prompt.
+The whole ticket runs on its own with the owner only saying yes: Ella opens the issue and hands it to Priya, the change is specified (probably on the trivial path), Vera prepares checks, Ian builds, Vera passes it, and Ella merges a PR whose head has a PASS after the owner's yes. Every handoff carries a valid team-event line and a next prompt.
 
 # Checks
 - event from=verifier kind=verdict verdict=PASS

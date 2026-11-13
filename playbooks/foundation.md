@@ -26,14 +26,14 @@ Prototype and hobby projects use the [foundation kit](../templates/foundation/RE
 
 Autonomy widens one risk zone at a time, on measured results. The red zone never moves.
 
-| Stage | Merges without the owner | The owner |
+| Stage | Merges without the owner's yes | The owner |
 |---|---|---|
 | 0 | Nothing; gates being built | Owns gate files, approves the zone map |
-| 1 (about a month) | Nothing | Merges everything, judging evidence and previews, not diffs |
+| 1 (about a month) | Nothing | Says yes or no to everything, judging by trying previews, never diffs; Ella presses merge |
 | 2 | Copy, working notes, new tests | Reads the health report |
 | 3 | Features and fixes inside owned paths, on green | About 30 minutes a week on previews, release approvals and the report |
 
-**How it's enforced.** The ruleset on `main` requires a review from code owners. At stages 0 and 1, `CODEOWNERS` names the owner for every path, so nothing merges without the owner's approving review. Moving a zone to stage 2 or 3 means taking its paths out of `CODEOWNERS`; PRs that touch only those paths then merge on green checks (an agent, or the host's auto-merge, can click merge). The red zone, gate files and approved documents (brief, specs, decision records, estimates) always keep the owner. `CODEOWNERS` and `TEAM.md` are gate files, so no agent can change the stage.
+**How it's enforced.** The ruleset on `main` requires a review from code owners. At stages 0 and 1, `CODEOWNERS` names the owner for every path, so nothing merges without the owner's approving review, which Ella gives from the owner's sign-in only after a receipt for their yes. Moving a zone to stage 2 or 3 means taking its paths out of `CODEOWNERS`; PRs that touch only those paths then merge on green checks (an agent, or the host's auto-merge, can click merge). The red zone, gate files and approved documents (brief, specs, decision records, estimates) always keep the owner. `CODEOWNERS` and `TEAM.md` are gate files, so no agent can change the stage.
 
 A stage changes only on the owner's message, after Ops shows the evidence in the health report. Default entry criteria (a project's `TEAM.md` can change the numbers):
 
@@ -102,11 +102,11 @@ Where the app runs is chosen at intake and set up here, the same way whichever h
 
 ## Agent identity
 
-Agents never act through the owner's GitHub account. If they did, no gate could tell an agent's approval from the owner's.
+Builders and the Verifier never act through the owner's GitHub account. If they did, no gate could tell an agent's approval from the owner's. Ella is the one exception, and only for the owner's approvals: she merges, approves the review and adds owner labels from the owner's sign-in, each right after a receipt quoting the owner's yes ([principle 1](../principles.md#authority)). She writes no code and holds neither key below, so a builder still can't approve its own work. What this gives up: GitHub can't tell Ella's click from the owner's, so a confused Ella is caught by the receipt check and Otto's weekly audit, not stopped beforehand. An owner who wants the hard stop presses the buttons on GitHub themselves (`TEAM.md`).
 
 - **Builders use a machine account** (GitHub allows one free one per person) with Write access to this repo only, through a fine-grained token: contents, issues and PRs read and write; no admin, workflows or secrets. It isn't on the ruleset's bypass list, and approval labels it adds don't count.
 - **The Verifier uses a separate GitHub App from the start** (internal and production), set as `TEAM_CHECKER`. Every PASS ends with the App approving the exact head commit. The verdict gate requires that approval, so a builder can't write its own PASS, and any later push voids it. Only Verifier sessions can reach the App's key, so for internal and production projects Vera's approving run is her own session, never a subagent of the session that ran Ian. In practice: put the key in a separate tool workspace or cloud environment that only Vera's sessions use, and run builders where it isn't. If your tool can't keep secrets apart, the owner starts Vera's session by hand. Before every verdict she diffs `verification/<issue>/` from her own last commit to the head; any change she didn't make is a BLOCK, raised with `needs-human` as tampering.
-- **Prototypes may skip the App** and run everything in one session. The gate then prints a note. Ella tells the owner in plain words what Vera checked, and the owner tries the preview before merging.
+- **Prototypes may skip the App** and run everything in one session. The gate then prints a note. Ella tells the owner in plain words what Vera checked and that the check wasn't separate, and the owner tries the preview before saying yes.
 - Tokens and keys live in the agent tool's secret store. Never in the repo, a prompt or a chat.
 
 ## Setup checklist (Ops)

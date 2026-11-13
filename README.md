@@ -94,6 +94,8 @@ You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lea
 
 **5. Set up GitHub for the team.** After you OK the plan, Ella asks you to do a few things on GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows every click, and which steps you can skip on a first try.
 
+**6. Try each change, then say yes.** Ella sends a link to try each new version. Say yes, or tell her what to change. You never need to open GitHub or press merge: Ella does that after your yes. Going live is a separate question she asks when the test version is ready.
+
 New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 
 ## Learn more

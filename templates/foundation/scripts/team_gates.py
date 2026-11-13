@@ -20,7 +20,8 @@ classify  Prints the pull request's class from its branch name: ticket, trivial 
 tamper    Fails when the PR touches a protected zone (zones.yml, read from base) without
           the owner's approval label, or touches paths its class may not touch.
           Approval labels count only if the owner's own account added them after the
-          latest push (strip-approvals removes them on every push).
+          latest push (strip-approvals removes them on every push), and only with a
+          receipt before them (see "Receipts" below).
 verdict   Ticket PRs only. Fails unless verification/<issue>/verdict.json is a valid PASS
           for a revision in the branch, nothing the ticket wrote changed after that
           revision (except its own evidence), and, when TEAM_CHECKER is set, the checker
@@ -32,12 +33,19 @@ quality   Block new violations only. Runs SETUP_CMD then LINT_CMD at base and at
 limits    Ticket PRs only. Reads the team-event lines on the ticket's issue and PR. Fails when
           the sessions so far pass the cap the Budget Analyst set (the first cap_sessions
           event), or after three Verifier BLOCKs, unless the owner's own account added
-          spend-approved or rounds-approved to the issue. No cap recorded fails only when
+          spend-approved or rounds-approved to the issue, with a receipt. No cap recorded fails only when
           zones.yml requires "cap"; otherwise it is reported as not checked. Only comments by
           the owner, members and collaborators count, so an outsider can't post a cap or a verdict.
 docs      Keeps documentation lean. A new Markdown file may only appear in a folder made
           for it (DOC_FOLDERS); the standing docs (README, AGENTS, TEAM, DESIGN and
           docs/*.md) may not grow past DOCS_BUDGET words in total.
+
+Receipts: the owner approves by saying yes to Ella, who adds the label from the owner's
+sign-in. So a label counts only after a receipt on the same issue or PR: a comment by the
+owner's account whose team-event is {"kind":"approval","approves":"<label>"}, quoting the
+owner's words. It catches an agent that adds a label and forgets the receipt; it can't
+catch one that writes both, which is why Ops also audits receipts. TEAM_RECEIPTS=off (an
+owner who presses the buttons on GitHub themselves) turns the receipt rule off.
 
 Watch mode: a check listed under "watch:" in zones.yml (base branch) reports what it
 would block and passes, so a new check can be tried before it enforces. Only limits,
@@ -165,18 +173,51 @@ def paged(path):
         page += 1
 
 
+def approved_labels(label_events, comments, owner, receipts=True):
+    """Labels whose latest 'labeled' event was by the owner's account and, with receipts on,
+    came after the owner's account posted an approval receipt naming that label."""
+    last, removed = {}, {}   # removed: when each label last came off, so an old receipt can't be reused
+    for e in label_events:
+        name, at = e.get("label", {}).get("name"), e.get("created_at", "")
+        if e.get("event") == "labeled":
+            last[name] = (e["actor"]["login"], at, removed.get(name, ""))
+        elif e.get("event") == "unlabeled":
+            last.pop(name, None); removed[name] = at
+    receipts_at = {}
+    for c in comments:
+        if (c.get("user") or {}).get("login", "").lower() != owner.lower():
+            continue
+        ev = (team_events([c.get("body", "")]) or [{}])[0]
+        if ev.get("kind") == "approval" and isinstance(ev.get("approves"), str):
+            receipts_at.setdefault(ev["approves"], []).append(c.get("created_at", ""))
+    ok = set()
+    for name, (actor, at, since) in last.items():
+        if actor.lower() != owner.lower():
+            continue
+        if receipts and not any(since < t <= at for t in receipts_at.get(name, [])):
+            print(f"RECEIPT '{name}' was added without an approval receipt before it; it doesn't count")
+            continue
+        ok.add(name)
+    return ok
+
+
+def receipts_on():
+    return (os.environ.get("TEAM_RECEIPTS") or "on").lower() != "off"
+
+
 def owner_labels(number=None):
-    """Labels currently on the PR (or the given issue) whose latest 'labeled' event was by the owner's account."""
+    """Owner-approved labels on the PR (or the given issue), asked of GitHub."""
     pr, owner = number or os.environ.get("PR_NUMBER"), os.environ.get("TEAM_OWNER")
     if not pr or not owner:
         sys.exit("gates: PR_NUMBER and TEAM_OWNER must be set")
-    last_by = {}
-    for e in paged(f"issues/{pr}/events"):
-        if e.get("event") == "labeled":
-            last_by[e["label"]["name"]] = e["actor"]["login"]
-        elif e.get("event") == "unlabeled":
-            last_by.pop(e["label"]["name"], None)
-    return {name for name, actor in last_by.items() if actor.lower() == owner.lower()}
+    return approved_labels(paged(f"issues/{pr}/events"), paged(f"issues/{pr}/comments"), owner, receipts_on())
+
+
+def labels_from_log(path):
+    """Local tests: {"owner": login, "events": [...], "comments": [...]} in GitHub's shapes."""
+    with open(path) as f:
+        log = json.load(f)
+    return approved_labels(log.get("events", []), log.get("comments", []), log["owner"], log.get("receipts", True))
 
 
 def cmd_classify(a):
@@ -194,7 +235,10 @@ def cmd_tamper(a):
     if cls is None:
         print("tamper guard: FAIL, unknown branch class"); return 1
     zones = load_zones(git("show", f"{a.base}:zones.yml"))   # rules from base, so a PR cannot loosen them
-    approved = set(filter(None, a.approved.split(","))) if a.approved is not None else owner_labels()
+    if a.label_log:
+        approved = labels_from_log(a.label_log)
+    else:
+        approved = set(filter(None, a.approved.split(","))) if a.approved is not None else owner_labels()
     problems = []
     for status, path in changed(a.base, a.head):
         zone_hits = [z for z in ("gate", "deps", "red", "tests", "evidence") if matches(path, zones.get(z, []))]
@@ -272,7 +316,7 @@ def cmd_limits(a):
         with open(a.events) as f:  # strings are trusted comments; {"body", "trusted": false} is an outsider's
             bodies = [c if isinstance(c, str) else c.get("body", "") for c in json.load(f)
                       if isinstance(c, str) or c.get("trusted", True)]
-        approved = set(filter(None, (a.approved or "").split(",")))
+        approved = labels_from_log(a.label_log) if a.label_log else set(filter(None, (a.approved or "").split(",")))
     else:
         seen, bodies = set(), []
         for n in filter(None, (str(issue), os.environ.get("PR_NUMBER"))):
@@ -284,19 +328,19 @@ def cmd_limits(a):
     errs = []
     caps = [e["cap_sessions"] for e in events if e.get("from") == "budget-analyst"
             and type(e.get("cap_sessions")) is int and e["cap_sessions"] > 0]
-    sessions = sum(1 for e in events if e.get("from") != "budget-analyst")
+    sessions = sum(1 for e in events if e.get("from") != "budget-analyst" and e.get("kind") != "approval")
     if caps:
         cap = caps[0]  # the cap set before work started; raising it takes the owner's label
         print(f"LIMITS sessions {sessions} of cap {cap}")
         if sessions > cap and LIMIT_APPROVAL["spend"] not in approved:
-            errs.append(f"{sessions} sessions is over the cap of {cap}; the owner adds '{LIMIT_APPROVAL['spend']}' to issue #{issue} to allow more")
+            errs.append(f"{sessions} sessions is over the cap of {cap}; after the owner's yes, '{LIMIT_APPROVAL['spend']}' goes on issue #{issue} with a receipt")
     elif "cap" in load_zones(git("show", f"{a.base}:zones.yml")).get("require", []):
         errs.append("zones.yml requires a cap but issue has no budget-analyst event with cap_sessions")
     else:
         print("NOTE no cap recorded on the issue: spend not checked")
     blocks = sum(1 for e in events if e.get("kind") == "verdict" and e.get("verdict") == "BLOCK")
     if blocks >= MAX_BLOCKS and LIMIT_APPROVAL["rounds"] not in approved:
-        errs.append(f"{blocks} BLOCK verdicts: the ticket stops with a typed blocker; the owner adds '{LIMIT_APPROVAL['rounds']}' to issue #{issue} to allow another round")
+        errs.append(f"{blocks} BLOCK verdicts: the ticket stops with a typed blocker; after the owner's yes, '{LIMIT_APPROVAL['rounds']}' goes on issue #{issue} with a receipt")
     for e in errs:
         print("LIMITS", e)
     print("limits check:", "FAIL" if errs else "ok")
@@ -465,6 +509,7 @@ def main():
             p.add_argument("--branch", required=True)
         if name in ("tamper", "limits"):
             p.add_argument("--approved", help="comma-separated labels; local tests only (CI asks GitHub)")
+            p.add_argument("--label-log", dest="label_log", help="JSON label events and comments; local tests only (CI asks GitHub)")
         if name == "limits":
             p.add_argument("--events", help="JSON list of comment bodies; local tests only (CI asks GitHub)")
         if name == "verdict":

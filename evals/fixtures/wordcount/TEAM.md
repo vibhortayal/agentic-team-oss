@@ -5,8 +5,8 @@ This project is staffed from agentic-team, installed in `.team/`.
 - **Profile:** `hobby`. A personal tool, low stakes.
 - Team version: see `.team/VERSION`.
 - Agent tools in use: whichever tool runs the session. State follows `.team/docs/github-state.md`.
-- Main branch: `main`. Only the owner merges to it.
-- Autonomy stage: `1` (the owner merges everything).
+- Main branch: `main`. Only merged after the owner's yes.
+- Autonomy stage: `1` (every merge waits for the owner's yes).
 
 ## Limits
 
