@@ -46,22 +46,23 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
   <div class="step reveal">
     <div class="num">1<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Get three things ready</h2>
-      <p>Most are free. The coding assistant usually needs a paid plan. You only do this once. You don't need to install anything else: your coding assistant installs Git and GitHub's tool for you during setup. It asks first, and you click Yes when your computer asks.</p>
+      <h2>Get two things ready</h2>
+      <p>You only do this once. Ella installs everything else for you during setup, like Git, a program that keeps a history of your files. She asks first, and you click Yes when your computer asks.</p>
       <p class="note">Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.</p>
       <div class="doodles">
-        <div class="doodle"><b>GitHub account</b><small>A free website that keeps a safe copy of your app's files, a bit like Google Drive for code. You make the account yourself, because GitHub checks that you're a person.</small><br><a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create one →</a></div>
-        <div class="doodle"><b>A coding assistant</b><small>An AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Most need a paid plan, so check the price first. <a href="{{ '/learn/words.html' | relative_url }}">Why not ChatGPT?</a></small><br><a href="{{ '/adapters/#tools' | relative_url }}">Which ones work →</a></div>
+        <div class="doodle"><b>The Claude app</b><small>An AI like ChatGPT that can also work with the files on your computer. Install it and sign in. It usually needs a paid plan, so check the price first. Other coding assistants work too. <a href="{{ '/learn/words.html' | relative_url }}">Why not ChatGPT?</a></small><br><a href="https://claude.ai/download">Get the Claude app →</a> · <a href="{{ '/adapters/#tools' | relative_url }}">Others that work →</a></div>
         <div class="doodle"><b>A safe place for keys</b><small>Your app will need a few keys. A key is a long password that lets your app use another service. Keep them in a password manager (your phone or computer may already have one built in), or in a private file outside your project folder. Never paste a key into a chat.</small></div>
       </div>
+      <p>No GitHub account yet? That's fine. GitHub is a free website that keeps a safe copy of your app's files, a bit like Google Drive for code. During setup, Ella opens the sign-up page and helps you through it. You type the details yourself, because GitHub checks that you're a person.</p>
     </div>
   </div>
 
   <div class="step reveal">
     <div class="num">2<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
-      <h2>Open your coding assistant in a new folder</h2>
-      <p>Make a folder for your app, such as <code>my-grocery-list</code>. Then open your coding assistant there. With Claude Code, open the terminal in that folder. The terminal is a plain window where you type to your computer. On a Mac, press Command and Space, type Terminal and press Enter. Then type <code>cd</code> and a space, drag the folder from Finder into the window, and press Enter. On Windows, open the folder in File Explorer, right-click inside it and pick "Open in Terminal". Then type <code>claude</code> and press Enter. A chat starts right there, in the same window. With Codex, do the same but type <code>codex</code>. With Cursor, open the Cursor app and pick the folder.</p>
+      <h2>Open a new folder in the Claude app</h2>
+      <p>In the Claude app, click <b>Code</b> in the side bar. Pick <b>Local</b>, which means "work on this computer". Then click <b>Open folder…</b> and make a new folder for your app, such as <code>my-grocery-list</code>.</p>
+      <p class="note">Using a terminal instead? Open it in the folder and type <code>claude</code> (or <code>codex</code>). With Cursor, open the app and pick the folder.</p>
     </div>
   </div>
 
@@ -69,7 +70,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Paste one line</h2>
-      <p>Paste this into the chat, with your own idea at the end. Your coding assistant downloads the team's instruction files, adds them to your folder and saves a first snapshot. If Git or GitHub's tool is missing, it asks to install it. It also checks you have a GitHub account and asks you to sign in once in your browser.</p>
+      <p>Paste this into the chat, with your own idea at the end. Ella says hello and gets your computer ready. She asks before she installs anything. You'll click Yes a few times, make a GitHub account if you need one, and click Authorize once in your browser. Then she adds the team to your folder and makes your app's private home on GitHub. The first time takes about 15 minutes. After that, a new app takes a minute.</p>
       <div class="code"><button class="copy">Copy</button>Set up Agentic Team here by following https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/main/START.md. My idea: I want an app where my family can share a grocery list.</div>
       <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
       <span class="note">swap in your own idea, in your own words</span>
@@ -81,7 +82,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div class="num">4<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Meet Ella</h2>
-      <p>When setup is done, Ella says hello and asks about your idea. Next time, open your coding assistant in the same folder and paste this one line. It's the only prompt you need to remember.</p>
+      <p>When setup is done, Ella asks about your idea. Next time, open the same folder in the Claude app and paste this one line. It's the only prompt you need to remember.</p>
       <div class="code"><button class="copy">Copy</button>You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. I'd like to add a shopping budget.</div>
     </div>
   </div>

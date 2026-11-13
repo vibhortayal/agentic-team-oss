@@ -67,15 +67,14 @@ Ella needs you at a few points: to OK the plan and cost, to try each new version
 
 Here's the whole setup. The "Your first project" lesson on our website shows the same steps with more help.
 
-**1. Get three things ready.**
+**1. Get two things ready.**
 
-- A GitHub account. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github). Only you can make it, because GitHub checks you're a person.
-- A coding assistant. [See which ones work](adapters/README.md#tools).
+- A coding assistant: an AI like ChatGPT that can also work with the files on your computer. The Claude app is the one we've tested most; install it and sign in. [See which others work](adapters/README.md#tools).
 - A safe place for your app's keys. A key is a long password that lets your app use another service. Use any password manager you like (your phone or computer may have one built in), or a private file kept outside your project folder. Never paste a key into a chat.
 
-That's all you install by hand. Your coding assistant installs Git and GitHub's tool for you during setup, after asking. Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.
+That's all you do by hand. Ella installs Git and GitHub's tool for you during setup, after asking. No GitHub account yet? She opens the sign-up page and walks you through it; you type the details, because GitHub checks you're a person. Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.
 
-**2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal in that folder. On a Mac, type `cd` and a space, drag the folder from Finder into the window and press Enter. On Windows, right-click inside the folder in File Explorer and pick "Open in Terminal". Then type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
+**2. Open a new folder.** In the Claude app, click Code, pick Local, then Open folder… and make a new folder for your app. In a terminal, open it in the folder and type `claude`. With Cursor, open the app and pick the folder.
 
 **3. Paste this one line,** with your idea at the end:
 
@@ -83,7 +82,7 @@ That's all you install by hand. Your coding assistant installs Git and GitHub's 
 Set up Agentic Team here by following https://raw.githubusercontent.com/vibhortayal/agentic-team-oss/main/START.md. My idea: <what you want, in your own words>
 ```
 
-Your coding assistant downloads the team's instruction files and adds them to your folder. It saves a first snapshot, then Ella says hello. If Git or GitHub's tool is missing, it asks to install it, and it has you sign in to GitHub once in your browser.
+Ella says hello and gets your computer ready, asking before each install. You click Yes on your computer's pop-ups and Authorize once on GitHub. She adds the team to your folder, saves a first snapshot and makes your app's private repository on GitHub. Then she asks about your idea.
 
 In Claude Code you can use our plugin instead. Type `/plugin install agentic-team --marketplace vibhortayal/agentic-team-oss`, then `/agentic-team:start` and your idea.
 
