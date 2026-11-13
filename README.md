@@ -27,7 +27,7 @@ A chatbot can write code, but you copy, set up and fix it yourself. A coding ass
 
 - **A coding assistant.** This is an AI like ChatGPT that can also work with the files on your computer. Claude Code is the one we've tested most. Codex and Cursor work too. Most need a paid plan from the AI company, so check the price first.
 - **A free GitHub account.** GitHub is a website that keeps a safe copy of your app's files, a bit like Google Drive for code.
-- **About 10 minutes for setup.** You paste one line into your coding assistant, and it does the rest. In the Claude app's Code tab you never need the terminal, the plain window where people type commands.
+- **About 15 minutes for setup.** You paste one line into your coding assistant, and it does the rest. In the Claude app's Code tab you never need the terminal, the plain window where people type commands.
 
 ## Where your money goes
 
@@ -71,7 +71,7 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 
 **1. Get two things ready.**
 
-- A coding assistant: an AI like ChatGPT that can also work with the files on your computer. The Claude app is the one we've tested most; install it and sign in. [See which others work](adapters/README.md#tools).
+- A coding assistant: an AI like ChatGPT that can also work with the files on your computer. The Claude app is the one we've tested most; install it and sign in. [See which others work](https://agents.teamnightshift.org/learn/words.html#reach).
 - A safe place for your app's keys. A key is a long password that lets your app use another service. Use any password manager you like (your phone or computer may have one built in), or a private file kept outside your project folder. Never paste a key into a chat.
 
 That's all you do by hand. Ella installs Git and GitHub's tool for you during setup, after asking. No GitHub account yet? She opens the sign-up page and walks you through it; you type the details, because GitHub checks you're a person. Mac and Linux are tested. Windows should work, but nobody has tested it all the way yet.
@@ -94,7 +94,7 @@ In Claude Code you can use our plugin instead. Type `/plugin install agentic-tea
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
 ```
 
-**5. Set up GitHub for the team.** After you OK the plan, Ella asks you to do a few things on GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows every click, and which steps you can skip on a first try.
+**5. Let Ella set up GitHub for the team.** After you OK the plan, Ella turns on the automatic checks and fills in the settings. She uses your sign-in, and asks first. You don't need to find your way around GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows what she does, and which steps you can skip on a first try.
 
 **6. Try each change, then say yes.** Ella sends a link to try each new version. Say yes, or tell her what to change. You never need to open GitHub or press merge: Ella does that after your yes. Going live is a separate question she asks when the test version is ready.
 

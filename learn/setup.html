@@ -45,7 +45,7 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
 <div class="board">
   <header class="wb-hero">
     <h1>Set up GitHub for your team</h1>
-    <p>Do this after <a href="{{ '/learn/first-project.html' | relative_url }}">your first chat with Ella</a>. Part 1 is all you need for a first try. Part 2 makes the checks strict, for an app real people will use. Ella does most of the work and tells you when it's your turn.</p>
+    <p>Do this after <a href="{{ '/learn/first-project.html' | relative_url }}">your first chat with Ella</a>. Part 1 is all you need for a first try. Part 2 makes the checks strict, for an app real people will use. You don't need to find your way around GitHub: Ella changes its settings for you, using your sign-in, after your yes. You only click where GitHub needs a real person.</p>
   </header>
   <h2 class="part">Part 1 · For a first try</h2>
   <p class="part-sub">You need these. About 20 minutes, most of it waiting for Ella.</p>
@@ -98,17 +98,17 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <p>One honest note. On a first try, the agents use your own GitHub sign-in. So the checks can't tell your OK from an agent's. They still run and show problems, but they can't stop anything on their own. So before you say yes to a new version, try it yourself in the preview Ella sends, like a tester would. That's fine for a test app. Before real people use your app, do Part 2.</p>
   </div>
   <h2 class="part">Part 2 · Before real people use your app</h2>
-  <p class="part-sub">Skip these on a first try. They make the checks strict, so no agent can skip a step. About 40 minutes.</p>
+  <p class="part-sub">Skip these on a first try. They make the checks strict, so no agent can skip a step. About 30 minutes.</p>
   <div class="step reveal">
     <div class="num">5<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>A second GitHub account for the builders</h2>
       <p>The building agents need their own account, so GitHub can tell their work from yours. GitHub allows one free extra account like this per person, for this kind of job.</p>
+      <p>Only a person can make a GitHub account, so this part is yours. Ella opens each page and tells you what to click.</p>
       <ol>
-        <li>In a private browser window, create a new GitHub account. Use a name like <code>yourname-agents</code>. Turn on two-step sign-in.</li>
-        <li>Back in your own account, open your repository. Go to Settings, then Collaborators, then "Add people". Invite the new account with Write access. Then accept the invite from the new account.</li>
-        <li>In the new account, make a key: Settings, then "Developer settings", then "Personal access tokens", then "Fine-grained tokens", then "Generate new token".</li>
-        <li>Give it access to your app's repository only. Under Permissions, set Contents, Issues and Pull requests to "Read and write". Leave everything else off.</li>
+        <li>In a private browser window, make a new GitHub account. Use a name like <code>yourname-agents</code>. Turn on two-step sign-in.</li>
+        <li>Tell Ella the new name. She invites it to your app's repository. Open the invite email in the new account and click Accept.</li>
+        <li>Still in the new account, Ella opens the page where it makes a key, and tells you which boxes to tick. Click Generate.</li>
         <li>Save the key in your safe place for keys. Never paste it into a chat.</li>
       </ol>
       <span class="note">about 10 minutes</span>
@@ -121,13 +121,11 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
       <h2>A checker app for Vera</h2>
       <p>Vera checks the work. She gets her own GitHub app, so her approval can't be faked by the agents who built it.</p>
       <ol>
-        <li>In your own account: Settings, then "Developer settings", then "GitHub Apps", then "New GitHub App".</li>
-        <li>Name it, for example <code>yourname-team-checker</code>. For the homepage, use your repository's address. Under Webhook, untick Active.</li>
-        <li>Under Repository permissions, set Pull requests to "Read and write" and Contents to "Read-only". Leave everything else off. Pick "Only on this account", then create it.</li>
-        <li>Write down the App ID. Click "Generate a private key". A key file downloads. Put it in your safe place for keys.</li>
-        <li>Click "Install App", pick your account, choose "Only select repositories" and pick your app's repository.</li>
-        <li>Add one more setting from step 4: <code>TEAM_CHECKER</code>, set to the app's name.</li>
+        <li>Ella opens GitHub's page for a new app with everything already filled in. Check the name and click Create.</li>
+        <li>Click "Generate a private key". A key file downloads. Put it in your safe place for keys.</li>
+        <li>Click "Install App", then pick your app's repository.</li>
       </ol>
+      <p>Ella adds the app's name to your project's settings herself.</p>
       <span class="note">about 10 minutes</span>
     </div>
   </div>
@@ -147,11 +145,8 @@ next: {url: /learn/demo.html, title: "Watch a demo"}
     <div>
       <h2>Turn on the branch rules</h2>
       <p>These rules make GitHub refuse any change that hasn't passed the checks and your review. Before you start, Ella checks your GitHub plan. On a free plan, GitHub may only enforce these rules on public repositories. If you need a paid plan, she tells you the price first.</p>
-      <ol>
-        <li>In your repository: Settings, then Rules, then Rulesets, then "New branch ruleset".</li>
-        <li>Ella gives you the exact choices. In short: changes only through pull requests, the two checks <code>team-gates</code> and <code>team-checks</code> must pass, your yes is required, and nobody but you can skip the rules.</li>
-      </ol>
-      <span class="note">about 5 minutes</span>
+      <p>Ella tells you in plain words what the rules do. In short: every change must pass the checks and get your yes, and nobody but you can skip them. Say yes, and she turns them on.</p>
+      <span class="note">Ella does this. You just say yes.</span>
     </div>
   </div>
 
