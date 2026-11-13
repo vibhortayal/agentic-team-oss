@@ -71,10 +71,12 @@ Here's the whole setup. The "Your first project" lesson on our website shows the
 
 - A GitHub account. [Create an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
 - A coding assistant. [See which ones work](adapters/README.md#tools).
-- Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads).
+- Git, a free program that copies code between GitHub and your computer. [Get Git](https://git-scm.com/downloads). On Windows it comes with Git Bash, the terminal to use for setup.
+
+Mac and Linux are tested. Windows should work through Git Bash, but nobody has tested it yet.
 - A safe place for your app's keys. A key is a long password that lets your app use another service. Use any password manager you like (your phone or computer may have one built in), or a private file kept outside your project folder. Never paste a key into a chat.
 
-**2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal, go to the folder and type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
+**2. Make a folder for your app.** Open your coding assistant in it. With Claude Code, open the terminal in that folder. On a Mac, type `cd` and a space, drag the folder from Finder into the window and press Enter. On Windows, right-click inside the folder in File Explorer and pick "Open Git Bash here". Then type `claude`. A chat starts in the same window. With Cursor, open the app and pick the folder.
 
 **3. Paste this one line,** with your idea at the end:
 
@@ -91,6 +93,8 @@ In Claude Code you can use our plugin instead. Type `/plugin install agentic-tea
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
 ```
+
+**5. Set up GitHub for the team.** After you OK the plan, Ella asks you to do a few things on GitHub. The [Set up GitHub lesson](https://agents.teamnightshift.org/learn/setup.html) shows every click, and which steps you can skip on a first try.
 
 New ideas, changes, questions and OKs all go to Ella. She brings in the other agents and sets up the rest with you. The [install guide](adapters/README.md) has more detail for each tool.
 
