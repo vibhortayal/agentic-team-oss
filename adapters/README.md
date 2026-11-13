@@ -8,6 +8,7 @@ Most people never run them by hand. They paste one line into their coding assist
 adapters/generic/install.sh ~/code/my-project       # any tool that reads AGENTS.md
 adapters/claude-code/install.sh ~/code/my-project   # Claude Code (runs the generic install first)
 adapters/github/labels.sh <owner/repo>              # once per repo, needs gh signed in
+adapters/github/settings.py status|fill|ask NAME    # in the project folder: repo variables and secrets from team-settings.json
 ```
 
 The generic install writes `.team/` (every role, the principles, playbooks, templates, docs, the label script and a `VERSION` file) and, if the project has none, an `AGENTS.md` from the template. It builds the copy in a temporary folder and swaps it in only when complete, so a failed run leaves the old install alone. Every role is always installed so links resolve; a project hires roles in its `TEAM.md`. Commit the result and record the version in `TEAM.md`.
