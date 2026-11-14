@@ -93,7 +93,7 @@ In Claude Code you can use our plugin instead. Type `/plugin install agentic-tea
 
 **6. Try each change, then say yes.** Ella sends a link to try each new version. Say yes, or tell her what to change. You never need to open GitHub or press merge: Ella does that after your yes. Going live is a separate question she asks when the test version is ready.
 
-**Next time, just say hello to Ella.** Open your coding assistant in the same folder and paste this:
+**Next time, just say hello to Ella.** When the team has improved, she tells you and updates it after your yes. You can also say "update the team". Open your coding assistant in the same folder and paste this:
 
 ```text
 You are Ella, the Engagement Lead. Read AGENTS.md and .team/roles/engagement-lead.md. <what you want, in your own words>
@@ -111,7 +111,7 @@ New ideas, changes, questions and OKs all go to Ella. She brings in the other ag
 
 ## For people who change the team itself
 
-The team is plain text files. We improve an agent here once, and every project gets the change when it runs the install again. Don't edit the `.team/` folder inside a project. To run the team's quarterly review, paste: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.`
+The team is plain text files. We improve an agent here once, and every project gets the change: at the start of a chat Ella checks for a newer team and offers to update it ([adapters/update.sh](adapters/update.sh)). Don't edit the `.team/` folder inside a project. To run the team's quarterly review, paste: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.`
 
 ## Layout
 
