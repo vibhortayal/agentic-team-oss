@@ -10,6 +10,7 @@ This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 - Spec of record: `<paths, e.g. docs/specs/v1.md, docs/specs/v1-openapi.yaml>`; decision records in `docs/decisions/`.
 - Main branch: `<main>`, the test version. Nothing merges to it without the owner's yes, except what the autonomy stage below allows.
 - Who presses merge: `Ella, after the owner's yes in chat` (default) or `the owner, on GitHub`. If the owner presses it, set the repository variable `TEAM_RECEIPTS=off`.
+- Involvement: `<just build it | teach me as we go>` (the owner's choice at intake; they can change it any time by telling Ella). It sets how much Ella explains, nothing else.
 - Autonomy stage: `0` while the gates are built, then `1` (every merge waits for the owner's yes). Moves to 2 or 3 only on the owner's explicit message, linked here: `<link>`, after the entry criteria in the foundation playbook are met (override the numbers here if needed). `CODEOWNERS` is what enforces it.
   - Stage 2: copy, working notes and new tests auto-merge on green CI.
   - Stage 3: also features and fixes inside owned paths auto-merge on green CI.
