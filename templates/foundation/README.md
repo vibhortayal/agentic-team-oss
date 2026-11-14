@@ -6,7 +6,8 @@ Reference implementation of the gates in the [foundation playbook](../../playboo
 |---|---|---|
 | [scripts/team_gates.py](scripts/team_gates.py) | `.github/team/team_gates.py` | Tamper guard, verdict check, quality ratchet |
 | [scripts/run-checks.sh](scripts/run-checks.sh) | `.github/team/run-checks.sh` | Runs every Verifier check under `verification/*/checks/` |
-| [workflows/team-gates.yml](workflows/team-gates.yml) | `.github/workflows/team-gates.yml` | Two jobs: `team-gates` runs the guard and verdict check from the **base** branch and never runs PR code; `team-checks` runs the PR's Verifier checks and lint with no secrets |
+| [workflows/team-gates.yml](workflows/team-gates.yml) | `.github/workflows/team-gates.yml` | `team-gates` runs the guard and verdict check from the **base** branch and never runs PR code |
+| [workflows/team-checks.yml](workflows/team-checks.yml) | `.github/workflows/team-checks.yml` | `team-checks` runs the PR's Verifier checks and lint with no secrets. Skips drafts |
 | [zones.yml](zones.yml) | `zones.yml` | Gate, tests, deps, red, evidence and approved-document zones by path; edit the patterns for the project |
 | [scripts/app-token.sh](scripts/app-token.sh) | Verifier sessions only | Mints a short-lived token for the checker App, so the Verifier can approve the head as `TEAM_CHECKER` |
 | [verdict.schema.json](verdict.schema.json) | `.github/team/verdict.schema.json` | The shape of `verification/<issue>/verdict.json` |

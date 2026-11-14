@@ -3,6 +3,7 @@
 name: team-checks
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths: [roles/**, skills/**, playbooks/**, templates/**, adapters/**, docs/**, tools/**, evals/**, principles.md, README.md, AGENTS.md, .github/workflows/team-checks.yml]
 concurrency:
   group: team-checks-${{ github.ref }}
@@ -11,6 +12,7 @@ permissions:
   contents: read
 jobs:
   checks:
+    if: ${{ !github.event.pull_request.draft }}   # drafts can't merge; this runs when marked ready
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
