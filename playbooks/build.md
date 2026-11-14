@@ -46,7 +46,7 @@ Before anyone adds a third agent to the default, Max tests whether it beats the 
 
 The coordinator (Priya in ticket mode, Arjun in multi-unit) acts on a verdict like this:
 
-- **PASS:** Vera hands it to you. Wait for the gates to re-run after her `verified` label, and accept only with green CI at the exact head she reviewed. Fill in the PR's **receipt** line from the verdict and the issue: checks passed, BLOCK rounds, sessions against the cap, and cost (Bea's figure, or "unknown" until her ledger row). Then set `stage:review` with `needs-human` + `human:merge` for Ella.
+- **PASS:** Vera hands it to you. Mark the PR ready for review (the gate skips drafts) and wait for the gates to run, and accept only with green CI at the exact head she reviewed. Fill in the PR's **receipt** line from the verdict and the issue: checks passed, BLOCK rounds, sessions against the cap, and cost (Bea's figure, or "unknown" until her ledger row). Then set `stage:review` with `needs-human` + `human:merge` for Ella.
 - **BLOCK:** goes straight back to Ian, not through you. You can't waive a finding; if you dispute one with evidence and can't agree with Vera, record both views for the owner.
 - **INCONCLUSIVE:** get the missing evidence from whoever has it.
 - **Third BLOCK:** Vera hands it to you. Stop with a typed blocker and the evidence, and say whether you think the spec or the approach is wrong. If a finding survived a round with nothing new, look again at the requirement before blaming the build.
