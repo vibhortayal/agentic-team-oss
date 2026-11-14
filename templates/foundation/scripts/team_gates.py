@@ -261,6 +261,10 @@ def cmd_tamper(a):
     problems = []
     for status, path in changed(a.base, a.head):
         zone_hits = [z for z in ("gate", "deps", "red", "tests", "evidence") if matches(path, zones.get(z, []))]
+        if "gate" in zone_hits and "tests" in zone_hits and path.startswith(".team/"):
+            # The installed team carries its own self-tests. They are the team's files, not this
+            # project's tests, so a team update needs the gate label only.
+            zone_hits.remove("tests")
         if "evidence" in zone_hits:
             own = cls == "ticket" and path.startswith(f"verification/{issue}/")
             rehearsal = cls == "gate" and path.startswith("verification/foundation/") and APPROVAL["gate"] in approved

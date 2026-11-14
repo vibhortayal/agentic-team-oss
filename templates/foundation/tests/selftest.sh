@@ -20,6 +20,7 @@ PY
 mkdir -p tests src .github docs
 echo 'ok' > tests/a.test.js; echo 'x = 1  # TODO old' > src/app.py; echo ci > .github/ci.yml
 echo '{"scripts":{"test":"jest"}}' > package.json; echo '# brief' > docs/brief.md
+mkdir -p .team/templates/foundation/tests; echo old > .team/templates/foundation/tests/selftest.sh
 git add -A && git commit -qm base && base=$(git rev-parse HEAD)
 
 pass=0; fail=0
@@ -50,6 +51,10 @@ expect 0 "new test file allowed" tamper $T
 branch t2; echo weakened > tests/a.test.js; git commit -qam t2
 expect 1 "existing test changed is blocked" tamper $T
 expect 0 "existing test changed with owner label" tamper $T tests-approved
+branch tu; echo newer > .team/templates/foundation/tests/selftest.sh; git commit -qam tu
+expect 1 "team update without the gate label is blocked" tamper gate/team-update
+expect 0 "team update needs only the gate label, though the team ships its own self-test" tamper gate/team-update gate-change-approved
+expect 1 "the team's self-test can't be changed with only the tests label" tamper $T tests-approved
 branch t3; git rm -q tests/a.test.js; git commit -qm t3
 expect 1 "existing test deleted is blocked" tamper $T
 branch t4; echo hacked > .github/ci.yml; git commit -qam t4
