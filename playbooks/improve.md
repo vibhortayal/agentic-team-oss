@@ -86,12 +86,12 @@ The model layer never runs in CI. Each case gets a fresh copy of a tiny fixture 
 
 ## Frozen cases
 
-Each case is `evals/<case-id>/case.md`: frontmatter with `role` (a role, or `e2e` for a whole flow), `kind` (`negative` when the role must block, refuse or push back) and `fixture` (a starting project in `evals/fixtures/`), then these sections:
+Each case is `evals/<case-id>/case.md`: frontmatter with `role` (a role, or `e2e` for a whole flow), `kind` (`negative` when the role must block, refuse or push back) and `fixture` (a starting project in `evals/fixtures/`), plus `unsaved: yes` when the setup leaves unsaved changes in the folder on purpose, then these sections:
 
 - **Task:** the prompt exactly as the agent gets it.
 - **Setup:** a bash block that seeds issues, branches and earlier handoffs, using the helpers in `evals/fixtures/lib.sh`.
 - **Expected:** what a correct result does, and the planted defect for a negative case.
-- **Checks:** one per line, run against the result without a model: `event` and `no-event` (a new team comment whose event matches, e.g. `from=verifier verdict=BLOCK`), `label <n> has|lacks <label>`, `file` and `no-file <branch-glob> <path-glob> [contains <text>]`, `same <branch-glob> <path>` (unchanged since setup), `run <branch-glob> <shell command>`, `merged` and `not-merged <issue>`, `main-unchanged`.
+- **Checks:** one per line, run against the result without a model: `event` and `no-event` (a new team comment whose event matches, e.g. `from=verifier verdict=BLOCK`), `label <n> has|lacks <label>`, `file` and `no-file <branch-glob> <path-glob> [contains <text>]`, `same <branch-glob> <path>` (unchanged since setup), `run <branch-glob> <shell command>`, `merged` and `not-merged <issue>`, `main-unchanged`, `folder <shell command>` (run in the project folder as the session left it; the other checks read only the remote).
 - **Rubric:** yes/no questions for a judge model, only for what a check can't decide (did Ella explain the risk plainly). Every answer must be yes.
 - **Owner:** what the simulated owner says when asked (end-to-end cases).
 

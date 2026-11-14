@@ -339,7 +339,7 @@ def check_handoff_table(root=ROOT):
     return errs
 
 
-CHECK_WORDS = {"event", "no-event", "label", "file", "no-file", "same", "run", "merged", "not-merged", "main-unchanged"}
+CHECK_WORDS = {"event", "no-event", "label", "file", "no-file", "same", "run", "merged", "not-merged", "main-unchanged", "folder"}
 
 
 def check_cases(root=ROOT):
