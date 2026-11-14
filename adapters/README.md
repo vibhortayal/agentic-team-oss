@@ -13,7 +13,7 @@ adapters/github/settings.py status|fill|ask NAME    # in the project folder: rep
 
 The generic install writes `.team/` (every role, the principles, playbooks, templates, docs, the label script and a `VERSION` file) and, if the project has none, an `AGENTS.md` from the template. It builds the copy in a temporary folder and swaps it in only when complete, so a failed run leaves the old install alone. Every role is always installed so links resolve; a project hires roles in its `TEAM.md`. Commit the result and record the version in `TEAM.md`.
 
-To update a project later, `bash ~/agentic-team/adapters/update.sh check <project>` compares its `.team/VERSION` with the newest team on GitHub and lists the merged changes since; `apply` pulls the shared copy and reruns the right installer. Ella runs the check at the start of each chat ([engagement-lead](../roles/engagement-lead.md)), and the progress board can open the same `gate/team-update` pull request.
+To update a project later, `bash ~/agentic-team/adapters/update.sh check <project>` compares its `.team/VERSION` with the newest team on GitHub and lists the merged changes since; `apply` pulls the shared copy and reruns the right installer. Ella runs the check at the start of each chat ([engagement-lead](../roles/engagement-lead.md)), and the progress board tells the person when an update is out and sends them to Ella. Both read `.team/VERSION` (`git describe --tags --always`), so keep that format.
 
 To pick up a tuned role, pull this repo, run the script again and commit the diff. Never edit `.team/` or `.claude/agents/` by hand in a project: the next install overwrites it and no other project benefits. Tune here instead ([improve](../playbooks/improve.md)).
 
