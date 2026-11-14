@@ -51,6 +51,7 @@ def load_case(case_id):
     return {
         "id": case_id, "role": fm.get("role"), "kind": fm.get("kind"), "fixture": fm.get("fixture"),
         "tier": fm.get("tier"), "max_sessions": int(fm.get("max_sessions", "1")),
+        "unsaved": fm.get("unsaved") == "yes",
         "task": section(text, "Task"), "setup": "\n".join(setup), "owner": section(text, "Owner"),
         "checks": [l[2:].strip() for l in section(text, "Checks").splitlines() if l.startswith("- ")],
         "rubric": [l[2:].strip() for l in section(text, "Rubric").splitlines() if l.startswith("- ")],
@@ -100,7 +101,9 @@ class Run:
         self.sh(["bash", os.path.join(ROOT, "adapters", "github", "labels.sh"), "sandbox/project"])
         if self.case["setup"]:
             self.sh("source %s\nset -e\n%s" % (shlex.quote(os.path.join(EVALS, "fixtures", "lib.sh")), self.case["setup"]))
-        self.sh("git checkout -q main && git status --porcelain | grep -q . && exit 1 || true")
+        self.sh("git checkout -q main")
+        if not self.case["unsaved"]:  # a setup leaves the folder clean unless the case says it plants unsaved work
+            self.sh("git status --porcelain | grep -q . && exit 1 || true")
         self.start_refs = self.refs()
         self.start_comments = self.comment_ids()
 
@@ -246,7 +249,8 @@ class Run:
         results = []
         for line in self.case["checks"]:
             try:
-                ok, why = self.check(line.split(None, 2) if line.startswith("run ") else shlex.split(line))
+                words = line.split(None, 2) if line.startswith("run ") else line.split(None, 1) if line.startswith("folder ") else shlex.split(line)
+                ok, why = self.check(words)
             except Exception as e:  # a broken check is a failed check
                 ok, why = False, "check error: %s" % e
             results.append((line, ok, why))
@@ -317,6 +321,9 @@ class Run:
         if kind == "main-unchanged":
             ok = self.refs().get("main") == self.start_refs.get("main")
             return ok, "" if ok else "main moved"
+        if kind == "folder":  # the project folder on the owner's computer, as the session left it
+            r = self.sh(rest[0], check=False)
+            return r.returncode == 0, "" if r.returncode == 0 else "failed in the project folder: %s" % (r.stdout + r.stderr).strip()[-300:]
         if kind == "run":
             pattern, cmd = rest
             bs = self.branches(pattern)

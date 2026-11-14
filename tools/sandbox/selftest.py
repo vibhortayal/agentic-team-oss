@@ -228,6 +228,9 @@ def harness_tests():
     expect("the ledger has one row per session", os.path.exists(os.path.join(out, "ledger.csv")))
     code, report, _ = run("idle", "vera-blocks-planted-bug")
     expect("an idle Verifier fails the planted-bug case", code == 1 and "no new team comment matches" in report, report[-600:])
+    code, report, _ = run("idle", "ella-syncs-before-work")
+    expect("a case can plant unsaved work, and a folder left behind fails its folder check",
+           code == 1 and "✗ harness" not in report and "failed in the project folder" in report, report[-600:])
     code, report, out = run("good", "e2e-fix-loop")
     expect("a correct fix loop passes end to end (BLOCK, fix, PASS, owner merge)", code == 0, report[-1500:])
     state = json.load(open(os.path.join(out, "e2e-fix-loop", "github.json")))
