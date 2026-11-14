@@ -466,6 +466,31 @@ def install(root=ROOT):
             r = subprocess.run(["bash", script, proj], capture_output=True, text=True)
             if r.returncode or [d for d in os.listdir(proj) if d.startswith(".team.new")]:
                 errs.append("adapters/%s/install.sh: a second install failed or left a temp folder" % adapter)
+    return errs + refresh_gates(root)
+
+
+def refresh_gates(root=ROOT):
+    """refresh-gates.sh leaves a project without the kit alone, and brings a stale kit up to date."""
+    errs = []
+    script = os.path.join(root, "adapters", "refresh-gates.sh")
+    kit = os.path.join(root, "templates", "foundation", "scripts", "team_gates.py")
+    with tempfile.TemporaryDirectory() as proj:
+        r = subprocess.run(["bash", script, proj], capture_output=True, text=True)
+        if r.returncode or os.path.exists(os.path.join(proj, ".github")):
+            errs.append("adapters/refresh-gates.sh: touched a project that has no safety checks")
+        os.makedirs(os.path.join(proj, ".github", "team"))
+        stale = os.path.join(proj, ".github", "team", "team_gates.py")
+        zones = os.path.join(proj, "zones.yml")
+        for path, text in ((stale, "old\n"), (zones, "mine\n")):
+            with open(path, "w") as f:
+                f.write(text)
+        r = subprocess.run(["bash", script, proj], capture_output=True, text=True)
+        if r.returncode or open(stale).read() != open(kit).read():
+            errs.append("adapters/refresh-gates.sh: a stale team_gates.py was not replaced")
+        if not os.path.exists(os.path.join(proj, ".github", "workflows", "team-gates.yml")):
+            errs.append("adapters/refresh-gates.sh: the workflow was not refreshed")
+        if open(zones).read() != "mine\n":
+            errs.append("adapters/refresh-gates.sh: zones.yml was replaced; it holds the project's own choices")
     return errs
 
 

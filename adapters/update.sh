@@ -2,7 +2,8 @@
 # See whether a newer team is out, and install it into a project.
 #
 #   adapters/update.sh check <project-dir>   # prints "up to date" or "newer: <old> -> <new>" and what changed
-#   adapters/update.sh apply <project-dir>   # updates this copy of the team, then reinstalls it into the project
+#   adapters/update.sh apply <project-dir>   # updates this copy of the team, reinstalls it into the project,
+#                                            # and refreshes the project's safety checks if it has them
 #
 # Run from the shared copy of the team (usually ~/agentic-team). "What changed" is
 # one line per merged pull request since the project's installed version, for Ella
@@ -43,3 +44,4 @@ if [ -d "$project/.claude/agents" ]; then
 else
   bash "$team_root/adapters/generic/install.sh" "$project"
 fi
+bash "$team_root/adapters/refresh-gates.sh" "$project"

@@ -4,11 +4,11 @@ _An open-source multi-agent development framework. In plain words: an AI team th
 
 **Have an idea for an app? Build it, with an AI team to help.**
 
-You tell your idea to Ella, an AI you chat with, a bit like ChatGPT. She asks you some questions, writes a short plan and tells you what it will cost. When you say yes, her team of AI helpers builds it. We call these helpers agents. Each agent has one job. One agent builds, and a different one checks the work, like a teacher marking homework. Ella comes back to you only when you need to decide something.
+You tell your idea to Ella, an AI you chat with, a bit like ChatGPT. She asks you some questions, writes a short plan and tells you what it will cost. When you say yes, she gets it built. One AI builds, and a different one checks the work, like a teacher marking homework. Ella comes back to you only when you need to decide something. That's all you need to know to use it. How it works underneath is in [Learn more](#learn-more), for anyone curious.
 
 - **It's free.** Agentic Team is a set of written instructions anyone can read. This project makes no money, and nobody sells you anything here.
 - **It runs on your computer.** Your app's files stay on your computer and in your own accounts.
-- **It teaches as it goes.** This is a learning project. Ella explains each step, so you learn how good software is planned, built and checked. The aim is to help new builders do it safely and properly, instead of throwing away code an AI wrote in a hurry.
+- **You choose how involved you are.** Ella always runs your project. If you only want your app built, she keeps it short: what she needs from you, and what happens next. If you want to learn how apps are planned, built and checked, tell her, and she explains each step as it happens. You can change your mind at any time. Either way, the work is planned and checked properly, so you don't end up throwing away code an AI wrote in a hurry.
 
 ## Can't a chatbot or coding assistant do this?
 
@@ -21,7 +21,7 @@ A chatbot can write code, but you copy, set up and fix it yourself. A coding ass
 | Lets you try it first | No. | Yes. You try each new version and say yes or no before it goes live. |
 | Tells you the cost first | No. | Yes, and it stops before going over your budget. |
 | Remembers next week | Only what's in the chat. | Everything: plans, choices and test results, saved in your own account. |
-| Helps you learn | Only if you ask. | Yes. Ella explains each step in plain words. |
+| Fits how involved you want to be | You steer every step yourself. | Yes. Ella runs the project either way, and teaches each step if you want to learn. |
 
 ## What you'll need
 
