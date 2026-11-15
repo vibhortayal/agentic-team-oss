@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Antakshari scorekeeper</title>
+<style>
+:root {
+  --paper: #EDF4F3;
+  --ink: #11282D;
+  --soft: #3D585D;
+  --line: #B4C8C6;
+  --peacock: #0B5563;
+  --rani: #A3125A;
+  --marigold: #F6B300;
+  --marigold-pale: #FFE9A6;
+  --white: #FFFFFF;
+  --off-fill: #D3DDDC;
+  --off-ink: #66787B;
+  --display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --plain: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.45 var(--plain);
+  overflow-wrap: anywhere;
+}
+h1, h2, h3, p, ol { margin: 0; padding: 0; }
+ol { list-style: none; }
+
+#no-script, #app { max-width: 70rem; margin: 0 auto; padding: 0.75rem 1rem 2rem; }
+#no-script { font-size: 1.25rem; padding-top: 2rem; }
+
+.mast { font: 700 1.25rem/1.3 var(--display); color: var(--peacock); }
+#cant-save {
+  margin-top: 0.75rem; padding: 0.75rem 1rem;
+  background: var(--white); border: 2px solid var(--rani); border-left-width: 0.5rem;
+  color: var(--ink); font-weight: 600;
+}
+
+/* Controls */
+button, input, select { font: inherit; color: inherit; margin: 0; }
+button {
+  min-height: 3rem; min-width: 3rem; padding: 0.5rem 1.125rem;
+  border: 2px solid var(--peacock); border-radius: 0.625rem;
+  background: var(--white); color: var(--peacock);
+  font-weight: 650; line-height: 1.2; cursor: pointer; touch-action: manipulation;
+}
+button.solid { background: var(--peacock); color: var(--white); }
+button.go { background: var(--rani); border-color: var(--rani); color: var(--white); }
+button.quiet { border-color: var(--line); color: var(--ink); background: var(--paper); }
+button:disabled { background: var(--off-fill); border-color: var(--off-fill); color: var(--off-ink); cursor: not-allowed; }
+input[type="text"], select {
+  min-height: 3rem; padding: 0.5rem 0.75rem;
+  border: 2px solid var(--soft); border-radius: 0.625rem;
+  background: var(--white); color: var(--ink);
+}
+input[type="text"] { width: 100%; min-width: 0; }
+input:disabled { background: var(--off-fill); border-color: var(--off-fill); color: var(--off-ink); }
+label { display: block; font-weight: 650; margin-bottom: 0.25rem; }
+:focus-visible, #confirm button:focus { outline: 3px solid var(--rani); outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }
+.pair { display: flex; gap: 0.5rem; align-items: flex-start; }
+.pair > input { flex: 1 1 0; }
+.pair > button { flex: 0 0 auto; }
+.error { color: var(--rani); font-weight: 650; margin-top: 0.375rem; }
+.error:empty, .hint:empty { display: none; }
+
+/* The page's frame: one column on a phone, the scores beside the turn on a laptop */
+.board { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: 0.5rem; }
+#screen-setup, #screen-result { grid-row: 1; grid-column: 1 / -1; }
+#screen-game { grid-row: 1 / 4; grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+.stage { grid-row: 1; grid-column: 1; }
+.turnlog { grid-row: 2; grid-column: 1; }
+.tally { grid-row: 3; grid-column: 1; }
+.foot { grid-row: 4; grid-column: 1; }
+#help { grid-row: 5; grid-column: 1 / -1; }
+
+/* Setup */
+#screen-setup { max-width: 38rem; }
+#screen-setup h2, #screen-result h3, .tally h2 { font: 700 1.25rem/1.3 var(--display); }
+#screen-setup h2 { font-size: 1.75rem; margin: 0.5rem 0 1rem; }
+#team-list { margin: 1rem 0 1.25rem; border-top: 2px solid var(--ink); counter-reset: team; }
+#team-list:empty { display: none; }
+#team-list li {
+  display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line); counter-increment: team;
+}
+#team-list li::before { content: counter(team); flex: 0 0 1.5rem; font: 700 1.25rem/1 var(--display); color: var(--soft); }
+#team-list .team-name { flex: 1 1 0; min-width: 0; font: 700 1.25rem/1.3 var(--display); }
+#team-list .remove-team { flex: 0 0 auto; }
+.rounds { margin-bottom: 1.5rem; }
+.rounds select { min-width: 6rem; }
+.begin { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; }
+.begin .hint { flex: 1 1 12rem; color: var(--soft); }
+#start-game { font-size: 1.1875rem; min-height: 3.5rem; padding: 0.5rem 1.75rem; }
+
+/* The turn */
+.who { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; color: var(--soft); font-weight: 650; }
+#turn-team { font: 700 1.875rem/1.2 var(--display); }
+#letter-label { color: var(--soft); font-weight: 650; margin-top: 0.625rem; }
+#letter {
+  margin-top: 0.25rem; min-height: 6.5rem; padding: 0.25rem 0.75rem;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  background: var(--marigold); color: var(--ink); border-radius: 0.25rem;
+  font: 700 5rem/1.2 var(--display);
+}
+#letter.none { font: 650 1.1875rem/1.4 var(--plain); }
+.timer { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.625rem; }
+.clock { flex: 1 1 0; min-width: 0; display: flex; align-items: baseline; gap: 0.5rem; color: var(--soft); }
+#countdown { font: 700 2.75rem/1 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.clock.late #countdown { color: var(--rani); }
+.ends { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.625rem; margin-top: 0.625rem; }
+.ends button { min-height: 3.5rem; font-size: 1.1875rem; }
+#letter-step { margin-top: 0.75rem; padding: 0.875rem; background: var(--white); border: 2px solid var(--ink); border-radius: 0.25rem; }
+#letter-hint { margin-top: 0.5rem; color: var(--soft); }
+
+.turnlog { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; min-height: 3rem; }
+#last-turn { flex: 1 1 0; min-width: 0; font-weight: 650; }
+#undo { flex: 0 0 auto; margin-left: auto; }
+
+/* Scores */
+.tally { margin-top: 1.5rem; }
+.ledger { margin-top: 0.5rem; border-top: 2px solid var(--ink); }
+.ledger li { display: flex; align-items: baseline; gap: 1rem; padding: 0.5rem 0.625rem; border-bottom: 1px solid var(--line); }
+.ledger .team-name { flex: 1 1 0; min-width: 0; }
+.ledger .team-score { flex: 0 0 auto; font: 700 1.375rem/1.2 var(--display); font-variant-numeric: tabular-nums; }
+.ledger li[aria-current="true"], .ledger li.top { background: var(--marigold-pale); font-weight: 700; }
+
+/* Result */
+#result { font: 700 2rem/1.2 var(--display); margin: 0.75rem 0 1.25rem; }
+#screen-result h3 { margin-top: 0.5rem; }
+
+.foot { margin-top: 1.5rem; }
+#help { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+#help-text { list-style: decimal; padding-left: 1.75rem; margin-top: 0.75rem; max-width: 44rem; }
+#help-text li { margin-bottom: 0.5rem; }
+
+#confirm {
+  position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%);   /* low, so a timeout that lands behind it can still be read */
+  width: min(27rem, calc(100% - 2rem)); padding: 1.25rem;
+  background: var(--white); border: 3px solid var(--ink); border-radius: 0.25rem;
+  box-shadow: 0 0 0 0.5rem var(--marigold);
+}
+#confirm-question { font: 700 1.25rem/1.35 var(--display); }
+.answers { display: flex; flex-wrap: wrap; gap: 0.625rem; margin-top: 1rem; }
+.answers button { flex: 1 1 11rem; }
+
+@media (min-width: 60rem) {
+  #no-script, #app { padding: 1.5rem 2.5rem 3rem; }
+  .mast { font-size: 1.5rem; }
+  .board { grid-template-columns: minmax(0, 1fr) minmax(0, 23rem); column-gap: 4rem; margin-top: 1rem; }
+  .tally { grid-row: 1 / 4; grid-column: 2; margin-top: 0; }
+  #turn-team { font-size: 3.5rem; }
+  #letter { font-size: 9rem; min-height: 12rem; }
+  #letter.none { font-size: 1.5rem; }
+  #letter-label { margin-top: 1rem; }
+  .timer, .ends, .turnlog { margin-top: 1rem; }
+  #countdown { font-size: 4.5rem; }
+  .timer button { min-height: 3.5rem; font-size: 1.1875rem; padding: 0.5rem 1.75rem; }
+  .ends button { min-height: 4rem; font-size: 1.375rem; }
+  #last-turn { font-size: 1.1875rem; }
+  #result { font-size: 3rem; }
+  #screen-result .ledger { max-width: 38rem; }
+}
+</style>
+</head>
+<body>
+<p id="no-script">This page can't run here. Open the file on a laptop instead.</p>
+
+<div id="app" hidden>
+  <h1 class="mast">Antakshari</h1>
+  <p id="cant-save" role="alert" hidden>This browser can't save the game. If you refresh or close the page, the game will be lost.</p>
+
+  <main class="board">
+    <section id="screen-setup" aria-labelledby="setup-title">
+      <h2 id="setup-title">Who is singing tonight?</h2>
+      <label for="team-name">Team name</label>
+      <div class="pair">
+        <input id="team-name" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" aria-describedby="setup-error">
+        <button id="add-team" type="button" class="solid">Add team</button>
+      </div>
+      <p id="setup-error" class="error" role="alert"></p>
+      <ol id="team-list" aria-label="Teams, in the order they will sing"></ol>
+      <div class="rounds">
+        <label for="rounds">Rounds</label>
+        <select id="rounds" autocomplete="off">
+          <option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+        </select>
+      </div>
+      <div class="begin">
+        <button id="start-game" type="button" class="go" disabled>Start game</button>
+        <p id="setup-hint" class="hint"></p>
+      </div>
+    </section>
+
+    <section id="screen-game" aria-label="The game" hidden>
+      <div class="stage">
+        <p class="who"><span id="turn-label">Turn</span><span id="round"></span></p>
+        <h2 id="turn-team" tabindex="-1"></h2>
+        <p id="letter-label">Start your song with</p>
+        <p id="letter" class="none"></p>
+        <div class="timer">
+          <p class="clock" id="clock"><span id="countdown">30</span><span>seconds</span></p>
+          <button id="start-timer" type="button" class="go">Start timer</button>
+        </div>
+        <div class="ends">
+          <button id="sang-it" type="button" class="solid">Sang it</button>
+          <button id="passed" type="button">Passed</button>
+        </div>
+        <div id="letter-step" hidden>
+          <label for="letter-input">Last letter of the song</label>
+          <div class="pair">
+            <input id="letter-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="letter-error letter-hint">
+            <button id="save-letter" type="button" class="solid">Save letter</button>
+          </div>
+          <p id="letter-error" class="error" role="alert"></p>
+          <p id="letter-hint">Pressed "Sang it" by mistake? Save any letter, then press "Undo".</p>
+        </div>
+      </div>
+      <div class="tally">
+        <h2>Scores</h2>
+        <ol id="scores" class="ledger"></ol>
+      </div>
+    </section>
+
+    <section id="screen-result" aria-label="The result" hidden>
+      <h2 id="result" tabindex="-1"></h2>
+      <h3>Final scores</h3>
+      <ol id="final-scores" class="ledger"></ol>
+    </section>
+
+    <div class="turnlog" id="turnlog" hidden>
+      <p id="last-turn" aria-live="polite"></p>
+      <button id="undo" type="button" disabled>Undo</button>
+    </div>
+
+    <div class="foot" id="foot" hidden>
+      <button id="new-game" type="button" class="quiet">New game</button>
+    </div>
+
+    <section id="help">
+      <button id="help-toggle" type="button" class="quiet" aria-expanded="false" aria-controls="help-text">How this works</button>
+      <ol id="help-text" hidden>
+        <li>Add 2 to 6 teams. Pick how many rounds. Then press "Start game".</li>
+        <li>The page shows whose turn it is. Press "Start timer" when the team is ready. They have 30 seconds.</li>
+        <li>If they sing a song, press "Sang it". Then type the last letter of their song. They get 10 points.</li>
+        <li>If they give up, press "Passed". They get 0 points.</li>
+        <li>If the time runs out, they lose 5 points. The page moves to the next team by itself. "Sang it" and "Passed" switch off for one second after that, so a late press can't land on the wrong team.</li>
+        <li>The next team starts their song with the big letter.</li>
+        <li>Made a mistake? Press "Undo". It takes back the last turn, and only that one.</li>
+        <li>Your game is kept if you refresh the page. "New game" clears it.</li>
+        <li>If the laptop sleeps while the timer runs, the time still counts. If a team loses points that way, press "Undo".</li>
+        <li>This page is made for a laptop. It may work on a phone. Try it on your phone before game night. If the buttons do nothing there, use the laptop.</li>
+      </ol>
+    </section>
+  </main>
+
+  <div id="confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-question" hidden>
+    <p id="confirm-question">Are you sure? This clears the teams and the scores.</p>
+    <div class="answers">
+      <button id="confirm-no" type="button" class="solid">No, keep this game</button>
+      <button id="confirm-yes" type="button">Yes, clear everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'antakshari-v1';
+  var TURN_MS = 30000;      // the countdown
+  var WAIT_MS = 1000;       // "Sang it" and "Passed" stay off this long after a timeout
+  var MAX_TEAMS = 6, MAX_NAME = 30, MAX_LETTER = 6;
+  var NO_LETTER = 'No letter yet. Sing any song.';
+  var JOINING = [0x094D, 0x09CD, 0x0A4D, 0x0ACD, 0x0B4D, 0x0BCD, 0x0C4D, 0x0CCD, 0x0D4D];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var el = {};
+  ['no-script', 'app', 'cant-save', 'screen-setup', 'screen-game', 'screen-result', 'team-name', 'add-team', 'setup-error',
+    'team-list', 'rounds', 'setup-hint', 'start-game', 'round', 'turn-team', 'letter', 'clock', 'countdown', 'start-timer',
+    'sang-it', 'passed', 'letter-step', 'letter-input', 'save-letter', 'letter-error', 'scores', 'result', 'final-scores',
+    'turnlog', 'last-turn', 'undo', 'foot', 'new-game', 'help-toggle', 'help-text', 'confirm', 'confirm-yes', 'confirm-no'
+  ].forEach(function (id) { el[id] = $(id); });
+
+  // The controls whose on and off state draw() sets by a rule of their own.
+  var RULED = ['team-name', 'add-team', 'start-game', 'start-timer', 'sang-it', 'passed', 'undo', 'new-game'].map(function (id) { return el[id]; });
+
+  // ---- What is saved (section 8) ----
+  // screen: 'setup' | 'game' | 'result'. turn: how many turns have ended. undo: null, or the scores, turn and
+  // letter as they were before the last turn. letter: '' or a tidied letter (readLetter); showLetter draws it.
+  function fresh() { return { v: 1, screen: 'setup', teams: [], rounds: 3, scores: [], turn: 0, letter: '', last: '', undo: null }; }
+  var state = fresh();
+
+  // ---- What is not saved ----
+  var timer = null;        // T, the clock at the press on "Start timer"; null when not counting
+  var frozen = null;       // the seconds the countdown stopped at when "Sang it" was pressed
+  var stepOpen = false;    // the letter step
+  var wait = null;         // L, the clock at which a timeout was applied, while the one-second wait lasts
+  var confirmOpen = false;
+  var helpOpen = false;
+  var cantSave = false;
+  var setupError = '';
+  var letterError = '';
+
+  // ---- Names and letters ----
+  function chars(s) { return Array.from(s); }
+  function tidyName(typed) { return typed.normalize('NFC').trim().replace(/\s+/g, ' '); }
+  function isBlank(name) { return name.replace(/[\s\p{Cc}\p{Cf}]/gu, '') === ''; }
+  function sameName(a, b) { return a.toLowerCase() === b.toLowerCase(); }
+
+  // What was typed, tidied, or null when it is not exactly one letter. This is the form the game keeps and
+  // saves: tidying it again gives it back unchanged, which the letter as shown does not always do.
+  function readLetter(typed) {
+    var s = typed.trim().replace(/[‌‍]/g, '').normalize('NFC');
+    var cs = chars(s);
+    if (cs.length < 1 || cs.length > MAX_LETTER) return null;
+    if (!/^\p{L}$/u.test(cs[0])) return null;
+    for (var i = 1; i < cs.length; i++) {
+      if (/^\p{M}$/u.test(cs[i])) continue;
+      if (/^\p{L}$/u.test(cs[i]) && JOINING.indexOf(cs[i - 1].codePointAt(0)) >= 0) continue;
+      return null;
+    }
+    return s;
+  }
+  // The letter as the page shows it.
+  function showLetter(s) {
+    var upper = s.toUpperCase();
+    return chars(upper).length === chars(s).length ? upper : s;
+  }
+
+  // ---- Saving. Only these three calls touch saved data. ----
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { cantSave = true; }
+  }
+  function clearSaved() {
+    try { localStorage.removeItem(KEY); } catch (e) { cantSave = true; }
+  }
+  function load() {
+    var text = null;
+    try { text = localStorage.getItem(KEY); } catch (e) { cantSave = true; }
+    if (typeof text !== 'string') return null;
+    try { return asGame(JSON.parse(text)); } catch (e) { return null; }
+  }
+  function isInt(n) { return typeof n === 'number' && isFinite(n) && Math.floor(n) === n; }
+  function validScores(a, n) { return Array.isArray(a) && a.length === n && a.every(isInt); }
+  function validLetter(l) { return l === '' || (typeof l === 'string' && readLetter(l) === l); }
+  // Saved text that isn't a game is treated as nothing saved.
+  function asGame(d) {
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+    if (['setup', 'game', 'result'].indexOf(d.screen) < 0) return null;
+    if (!Array.isArray(d.teams) || d.teams.length > MAX_TEAMS) return null;
+    for (var i = 0; i < d.teams.length; i++) {
+      var t = d.teams[i];
+      if (typeof t !== 'string' || tidyName(t) !== t || isBlank(t) || chars(t).length > MAX_NAME) return null;
+      for (var j = 0; j < i; j++) if (sameName(d.teams[j], t)) return null;
+    }
+    if (!isInt(d.rounds) || d.rounds < 1 || d.rounds > 10) return null;
+    var g = fresh();
+    g.teams = d.teams.slice(); g.rounds = d.rounds;
+    if (d.screen === 'setup') return g;
+    var n = d.teams.length, total = n * d.rounds;
+    if (n < 2 || !validScores(d.scores, n) || !isInt(d.turn) || !validLetter(d.letter) || typeof d.last !== 'string') return null;
+    if (d.screen === 'game' ? (d.turn < 0 || d.turn >= total) : d.turn !== total) return null;
+    g.screen = d.screen; g.scores = d.scores.slice(); g.turn = d.turn; g.letter = d.letter; g.last = d.last;
+    if (d.undo !== null && d.undo !== undefined) {
+      var u = d.undo;
+      if (typeof u !== 'object' || !validScores(u.scores, n) || u.turn !== d.turn - 1 || u.turn < 0 || !validLetter(u.letter)) return null;
+      g.undo = { scores: u.scores.slice(), turn: u.turn, letter: u.letter };
+    }
+    return g;
+  }
+
+  // ---- Drawing. Every write is skipped when nothing changed, so the tick can call this freely. ----
+  function setText(node, text) { if (node.textContent !== text) node.textContent = text; }
+  function setOff(node, off) { if (node.disabled !== off) node.disabled = off; }
+  function setHidden(node, hidden) { if (node.hidden !== hidden) node.hidden = hidden; }
+
+  var drawnTeams = null, drawnScores = null, drawnFinal = null;
+  function drawTeams() {
+    var key = JSON.stringify(state.teams);
+    if (key === drawnTeams) return;
+    drawnTeams = key;
+    el['team-list'].textContent = '';
+    state.teams.forEach(function (name, i) {
+      var li = document.createElement('li');
+      var span = document.createElement('span'); span.className = 'team-name'; span.textContent = name;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'remove-team quiet'; b.textContent = 'Remove';
+      b.setAttribute('aria-label', 'Remove ' + name); b.setAttribute('data-index', String(i));
+      li.appendChild(span); li.appendChild(b); el['team-list'].appendChild(li);
+    });
+  }
+  function drawLedger(list, current, top) {
+    list.textContent = '';
+    state.teams.forEach(function (name, i) {
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.className = 'team-name'; a.textContent = name;
+      var b = document.createElement('span'); b.className = 'team-score'; b.textContent = String(state.scores[i]);
+      if (i === current) li.setAttribute('aria-current', 'true');
+      if (top && state.scores[i] === top.best) li.className = 'top';
+      li.appendChild(a); li.appendChild(b); list.appendChild(li);
+    });
+  }
+  function joinNames(names) {
+    if (names.length === 2) return names[0] + ' and ' + names[1];
+    return names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+  }
+  function secondsLeft(now) {
+    if (timer === null) return frozen === null ? 30 : frozen;
+    if (now < timer) return 30;
+    return Math.min(30, Math.max(1, Math.ceil((timer + TURN_MS - now) / 1000)));
+  }
+
+  function draw(now) {
+    var s = state, n = s.teams.length;
+    var onSetup = s.screen === 'setup', onGame = s.screen === 'game', onResult = s.screen === 'result';
+
+    setHidden(el['screen-setup'], !onSetup);
+    setHidden(el['screen-game'], !onGame);
+    setHidden(el['screen-result'], !onResult);
+    setHidden(el.turnlog, onSetup);
+    setHidden(el.foot, onSetup);
+    setHidden(el['cant-save'], !cantSave);
+    setHidden(el.confirm, !confirmOpen);
+    setHidden(el['help-text'], !helpOpen);
+    el['help-toggle'].setAttribute('aria-expanded', helpOpen ? 'true' : 'false');
+
+    // Setup
+    drawTeams();
+    if (el.rounds.value !== String(s.rounds)) el.rounds.value = String(s.rounds);
+    setText(el['setup-error'], setupError);
+    setText(el['setup-hint'], n < 2 ? 'Add at least 2 teams to start.' : n >= MAX_TEAMS ? 'That is 6 teams, the most you can have.' : '');
+    setOff(el['team-name'], n >= MAX_TEAMS);
+    setOff(el['add-team'], n >= MAX_TEAMS);
+    setOff(el['start-game'], n < 2);
+
+    // Game
+    if (onGame) {
+      var cur = s.turn % n;
+      setText(el.round, 'Round ' + (Math.floor(s.turn / n) + 1) + ' of ' + s.rounds);
+      setText(el['turn-team'], s.teams[cur]);
+      setText(el.letter, s.letter ? showLetter(s.letter) : NO_LETTER);
+      el.letter.classList.toggle('none', !s.letter);
+      var left = secondsLeft(now);
+      setText(el.countdown, String(left));
+      el.clock.classList.toggle('late', timer !== null && left <= 5);
+      var key = JSON.stringify([s.teams, s.scores, cur]);
+      if (key !== drawnScores) { drawnScores = key; drawLedger(el.scores, cur, null); }
+    }
+    setOff(el['start-timer'], stepOpen || timer !== null);
+    setOff(el['sang-it'], stepOpen || wait !== null);
+    setOff(el.passed, stepOpen || wait !== null);
+    setHidden(el['letter-step'], !stepOpen);
+    setText(el['letter-error'], letterError);
+
+    // Result
+    if (onResult) {
+      var best = Math.max.apply(null, s.scores);
+      var winners = s.teams.filter(function (name, i) { return s.scores[i] === best; });
+      setText(el.result, winners.length === 1 ? 'Winner: ' + winners[0] : "It's a tie: " + joinNames(winners));
+      var fkey = JSON.stringify([s.teams, s.scores]);
+      if (fkey !== drawnFinal) { drawnFinal = fkey; drawLedger(el['final-scores'], -1, { best: best }); }
+    }
+
+    // On the game and result screens
+    setText(el['last-turn'], onSetup ? '' : s.last);
+    setOff(el.undo, stepOpen || !s.undo);
+    setOff(el['new-game'], stepOpen);
+
+    // While the question is open, every other control is off. The controls with no rule above
+    // (help, the dropdown, the letter box, "Save letter", "Remove") are on at every other time.
+    var all = el.app.querySelectorAll('button, input, select');
+    for (var i = 0; i < all.length; i++) {
+      if (el.confirm.contains(all[i])) continue;
+      if (confirmOpen) setOff(all[i], true);
+      else if (RULED.indexOf(all[i]) < 0) setOff(all[i], false);
+    }
+  }
+
+  // ---- The clock. Date.now() is the only place the page learns the time. ----
+  // Looks at the clock: lands a timeout that is due, ends the one-second wait when it is over, redraws.
+  // Returns true when a timeout landed in this look.
+  function look() {
+    var now = Date.now(), landed = false;
+    if (timer !== null && now >= timer + TURN_MS) { timeOut(now); landed = true; }
+    if (wait !== null && (now < wait || now >= wait + WAIT_MS)) wait = null;
+    draw(now);
+    return landed;
+  }
+
+  // ---- Turns ----
+  function teamNow() { return state.teams[state.turn % state.teams.length]; }
+  function remember() { state.undo = { scores: state.scores.slice(), turn: state.turn, letter: state.letter }; }
+  function endTurn() {
+    state.turn += 1;
+    timer = null; frozen = null; stepOpen = false; letterError = '';
+    if (state.turn >= state.teams.length * state.rounds) state.screen = 'result';
+    save();
+  }
+  function timeOut(now) {
+    var name = teamNow();
+    remember();
+    state.scores[state.turn % state.teams.length] -= 5;
+    state.last = 'Time ran out for ' + name + ': -5 points. Press Undo if that is wrong.';
+    endTurn();
+    wait = state.screen === 'game' ? now : null;
+  }
+
+  function addTeam() {
+    if (state.screen !== 'setup' || state.teams.length >= MAX_TEAMS) return;
+    var name = tidyName(el['team-name'].value);
+    var twin = state.teams.filter(function (t) { return sameName(t, name); })[0];
+    if (isBlank(name)) setupError = 'Type a team name.';
+    else if (twin !== undefined) setupError = 'There is already a team called ' + twin + '.';
+    else if (chars(name).length > MAX_NAME) setupError = 'A team name can be 30 characters at most.';
+    else {
+      state.teams.push(name);
+      setupError = '';
+      el['team-name'].value = '';
+      save();
+    }
+    look();
+    if (!el['team-name'].disabled) el['team-name'].focus();
+    else el['start-game'].focus();
+  }
+  function removeTeam(i) {
+    if (state.screen !== 'setup' || !(i >= 0 && i < state.teams.length)) return;
+    state.teams.splice(i, 1);
+    setupError = '';
+    save();
+    look();
+    el['team-name'].focus();
+  }
+  function startGame() {
+    if (state.screen !== 'setup' || state.teams.length < 2) return;
+    if (!isBlank(el['team-name'].value)) { setupError = 'Add or clear the name in the box first.'; look(); return; }
+    state.screen = 'game';
+    state.scores = state.teams.map(function () { return 0; });
+    state.turn = 0; state.letter = ''; state.last = ''; state.undo = null;
+    timer = null; frozen = null; stepOpen = false; wait = null;
+    setupError = ''; el['team-name'].value = '';
+    save();
+    look();
+    el['turn-team'].focus();
+  }
+
+  function startTimer() {
+    if (look() || state.screen !== 'game' || stepOpen || timer !== null) return;
+    timer = Date.now();
+    look();
+  }
+  function sangIt() {
+    if (look() || state.screen !== 'game' || stepOpen || wait !== null) return;
+    frozen = secondsLeft(Date.now());
+    timer = null;                       // the countdown stops for good
+    stepOpen = true; letterError = '';
+    el['letter-input'].value = '';
+    look();
+    el['letter-input'].focus();
+  }
+  function saveLetter() {
+    look();
+    if (state.screen !== 'game' || !stepOpen) return;
+    var letter = readLetter(el['letter-input'].value);
+    if (letter === null) { letterError = 'Type exactly one letter.'; look(); el['letter-input'].focus(); return; }
+    var name = teamNow();
+    remember();
+    state.scores[state.turn % state.teams.length] += 10;
+    state.letter = letter;
+    state.last = name + ' sang it: +10 points. The letter is ' + showLetter(letter) + '.';
+    endTurn();
+    el['letter-input'].value = '';
+    look();
+    (state.screen === 'game' ? el['turn-team'] : el.result).focus();
+  }
+  function passed() {
+    if (look() || state.screen !== 'game' || stepOpen || wait !== null) return;
+    remember();
+    state.last = teamNow() + ' passed: 0 points.';
+    endTurn();
+    look();
+    if (state.screen === 'result') el.result.focus();
+  }
+  function undo() {
+    if (look() || state.screen === 'setup' || stepOpen || !state.undo) return;
+    state.scores = state.undo.scores.slice();
+    state.turn = state.undo.turn;
+    state.letter = state.undo.letter;
+    state.undo = null;
+    state.screen = 'game';
+    state.last = 'The last turn was taken back.';
+    timer = null; frozen = null; wait = null;
+    save();
+    look();
+    el['turn-team'].focus();
+  }
+
+  function askNewGame() {
+    if (look() || state.screen === 'setup' || stepOpen || confirmOpen) return;
+    confirmOpen = true;
+    look();
+    el['confirm-no'].focus();
+  }
+  function keepGame() {
+    if (!confirmOpen) return;
+    confirmOpen = false;
+    look();
+    el['new-game'].focus();
+  }
+  function clearGame() {
+    if (!confirmOpen) return;
+    look();
+    confirmOpen = false;
+    state = fresh();
+    timer = null; frozen = null; stepOpen = false; wait = null;
+    setupError = ''; letterError = '';
+    el['team-name'].value = ''; el['letter-input'].value = '';
+    clearSaved();
+    look();
+    el['team-name'].focus();
+  }
+
+  // ---- Presses ----
+  function onEnter(box, act) {
+    box.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' || e.isComposing || e.keyCode === 229) return;
+      e.preventDefault();
+      if (!e.repeat) act();
+    });
+  }
+  el['add-team'].addEventListener('click', addTeam);
+  onEnter(el['team-name'], addTeam);
+  el['team-list'].addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.remove-team') : null;
+    if (b) removeTeam(Number(b.getAttribute('data-index')));
+  });
+  el.rounds.addEventListener('change', function () {
+    var r = Number(el.rounds.value);
+    if (state.screen === 'setup' && isInt(r) && r >= 1 && r <= 10 && r !== state.rounds) { state.rounds = r; save(); }
+    look();
+  });
+  el['start-game'].addEventListener('click', startGame);
+  el['start-timer'].addEventListener('click', startTimer);
+  el['sang-it'].addEventListener('click', sangIt);
+  el.passed.addEventListener('click', passed);
+  el['save-letter'].addEventListener('click', saveLetter);
+  onEnter(el['letter-input'], saveLetter);
+  el.undo.addEventListener('click', undo);
+  el['new-game'].addEventListener('click', askNewGame);
+  el['confirm-no'].addEventListener('click', keepGame);
+  el['confirm-yes'].addEventListener('click', clearGame);
+  el['help-toggle'].addEventListener('click', function () { helpOpen = !helpOpen; look(); });
+
+  document.addEventListener('keydown', function (e) {
+    // A key held down on a button is one press.
+    if (e.repeat && (e.key === 'Enter' || e.key === ' ') && e.target && e.target.tagName === 'BUTTON') { e.preventDefault(); return; }
+    if (e.key === 'Escape' && confirmOpen && !e.repeat) { e.preventDefault(); keepGame(); }
+  }, true);
+
+  document.addEventListener('visibilitychange', look);
+  window.addEventListener('focus', look);
+  window.addEventListener('pageshow', look);
+
+  // ---- Start ----
+  var saved = load();
+  if (saved) state = saved;
+  save();                               // read, then save once: a browser that can't save is found at once
+  el['team-name'].value = '';
+  el['letter-input'].value = '';
+  look();
+  setInterval(look, 50);
+  el.app.hidden = false;
+  el['no-script'].hidden = true;        // last, so a script that fails on the way leaves the line showing
+})();
+</script>
+</body>
+</html>

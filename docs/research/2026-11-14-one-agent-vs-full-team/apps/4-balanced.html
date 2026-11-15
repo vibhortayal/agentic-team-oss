@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antakshari Scorekeeper</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:18px;line-height:1.35;background:#fdf6ec;color:#2b2118;overflow-x:hidden}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin:16px 0 8px}
+[hidden]{display:none!important}
+button,input,select{font:inherit;min-height:48px;border-radius:10px;border:2px solid #8a6d4b;padding:8px 12px;max-width:100%}
+input,select{background:#fff;color:inherit;width:100%}
+button{width:100%;background:#fff;color:#2b2118;font-weight:600;cursor:pointer;margin:6px 0}
+button.primary{background:#c2410c;border-color:#c2410c;color:#fff}
+button.good{background:#15803d;border-color:#15803d;color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+.err{color:#b91c1c;font-weight:600;min-height:1.4em;margin:6px 0;overflow-wrap:anywhere}
+.row{display:flex;gap:8px;align-items:center}
+.row>*{min-width:0}
+ul{list-style:none;margin:0;padding:0}
+li.team{display:flex;gap:8px;align-items:center;justify-content:space-between;background:#fff;border:2px solid #e2d3bd;border-radius:10px;padding:8px 12px;margin:6px 0}
+li.team .nm{overflow-wrap:anywhere;min-width:0;flex:1}
+li.team .sc{font-weight:700;white-space:nowrap}
+li.team.cur{border-color:#c2410c;background:#ffedd5}
+li.team button{width:auto;min-width:48px;margin:0}
+.card{background:#fff;border:2px solid #e2d3bd;border-radius:14px;padding:12px;text-align:center;margin:8px 0}
+.small{font-size:.9rem;color:#6b5a45}
+.team-name{font-size:1.6rem;font-weight:800;overflow-wrap:anywhere}
+.letter{font-size:120px;line-height:1.05;font-weight:800;color:#c2410c;overflow-wrap:anywhere}
+.letter.any{font-size:2.2rem;line-height:1.3;padding:30px 0}
+.timer{font-size:3rem;font-weight:800}
+.timer.warn{color:#b91c1c}
+#winner{font-size:1.6rem;font-weight:800;text-align:center;overflow-wrap:anywhere;margin:12px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Antakshari Scorekeeper</h1>
+
+<section id="setup" hidden>
+  <h2>Teams (2 to 6)</h2>
+  <div class="row">
+    <input id="name" type="text" maxlength="20" placeholder="Team name" autocomplete="off" aria-label="Team name">
+  </div>
+  <button id="add" class="primary" type="button">Add team</button>
+  <div id="nameErr" class="err" role="alert"></div>
+  <ul id="teamList"></ul>
+  <h2><label for="rounds">Rounds</label></h2>
+  <select id="rounds"></select>
+  <p class="small">A round means every team has had one turn.</p>
+  <button id="start" class="good" type="button">Start game</button>
+</section>
+
+<section id="game" hidden>
+  <div class="card">
+    <div class="small" id="roundLbl"></div>
+    <div class="small">Turn</div>
+    <div class="team-name" id="curName"></div>
+  </div>
+  <div class="card">
+    <div class="small">Letter to start with</div>
+    <div class="letter" id="letter"></div>
+  </div>
+  <div class="card"><div class="timer" id="timer">30</div></div>
+  <div id="turnBtns">
+    <button id="startTimer" class="primary" type="button">Start timer</button>
+    <button id="sang" class="good" type="button">Sang it</button>
+    <button id="passed" type="button">Passed</button>
+  </div>
+  <div id="letterStep" class="card" hidden>
+    <label for="lastLetter"><strong>Last letter of the song</strong></label>
+    <input id="lastLetter" type="text" maxlength="3" autocomplete="off" aria-label="Last letter of the song">
+    <div id="letterErr" class="err" role="alert"></div>
+    <button id="saveLetter" class="good" type="button">Save</button>
+    <button id="cancelLetter" type="button">Cancel</button>
+  </div>
+  <button id="undo" type="button">Undo</button>
+  <h2>Scores</h2>
+  <ul id="scoreList"></ul>
+  <button id="newGame" type="button">New game</button>
+</section>
+
+<section id="finished" hidden>
+  <h2>Game over</h2>
+  <div id="winner"></div>
+  <ul id="finalList"></ul>
+  <button id="undo2" type="button">Undo</button>
+  <button id="newGame2" type="button">New game</button>
+</section>
+</main>
+<script>
+(function(){
+"use strict";
+var KEY="antakshari-v1", TURN_MS=30000;
+var state=emptyState();
+var deadline=null, ticker=null, letterOpen=false;
+function $(id){return document.getElementById(id);}
+
+function emptyState(){return {phase:"setup",teams:[],rounds:3,turnsDone:0,letter:null,undo:null};}
+
+function validState(s){
+  if(!s||typeof s!=="object")return false;
+  if(["setup","playing","finished"].indexOf(s.phase)<0)return false;
+  if(!Array.isArray(s.teams)||s.teams.length>6)return false;
+  for(var i=0;i<s.teams.length;i++){var t=s.teams[i];
+    if(!t||typeof t.name!=="string"||typeof t.score!=="number"||!isFinite(t.score))return false;}
+  if(typeof s.rounds!=="number"||s.rounds%1!==0||s.rounds<1||s.rounds>10)return false;
+  if(typeof s.turnsDone!=="number"||s.turnsDone%1!==0||s.turnsDone<0)return false;
+  if(!(s.letter===null||(typeof s.letter==="string"&&/^[A-Z]$/.test(s.letter))))return false;
+  if(s.phase!=="setup"){
+    if(s.teams.length<2)return false;
+    var total=s.rounds*s.teams.length;
+    if(s.turnsDone>total)return false;
+    if((s.phase==="finished")!==(s.turnsDone===total))return false;
+  }
+  if(s.undo!==null){var u=s.undo;
+    if(!u||typeof u!=="object"||!Array.isArray(u.scores)||u.scores.length!==s.teams.length)return false;
+    for(var j=0;j<u.scores.length;j++)if(typeof u.scores[j]!=="number"||!isFinite(u.scores[j]))return false;
+    if(typeof u.turnsDone!=="number"||u.turnsDone<0)return false;
+    if(!(u.letter===null||(typeof u.letter==="string"&&/^[A-Z]$/.test(u.letter))))return false;
+    if(u.phase!=="playing"&&u.phase!=="finished")return false;
+  }
+  return true;
+}
+function load(){
+  try{var raw=localStorage.getItem(KEY);if(!raw)return emptyState();
+    var s=JSON.parse(raw);return validState(s)?s:emptyState();}
+  catch(e){return emptyState();}
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+function normName(n){return n.trim().replace(/\s+/g," ");}
+function cur(){return state.teams[state.turnsDone%state.teams.length];}
+
+/* timer */
+function stopTimer(){if(ticker!==null){clearInterval(ticker);ticker=null;}deadline=null;}
+function showTimer(secs,warn){var t=$("timer");t.textContent=String(secs);t.className="timer"+(warn?" warn":"");}
+function resetTimerDisplay(){stopTimer();showTimer(30,false);$("startTimer").disabled=false;}
+function tick(){
+  if(deadline===null)return;
+  var left=Math.ceil((deadline-Date.now())/1000);
+  if(left<=0){stopTimer();showTimer(0,true);endTurn("timeout");return;}
+  showTimer(left,left<=10);
+}
+function startTimer(){
+  if(ticker!==null||letterOpen||state.phase!=="playing")return;
+  deadline=Date.now()+TURN_MS;
+  $("startTimer").disabled=true;
+  tick();
+  ticker=setInterval(tick,250);
+}
+
+/* turns */
+function snapshot(){
+  state.undo={scores:state.teams.map(function(t){return t.score;}),turnsDone:state.turnsDone,letter:state.letter,phase:state.phase};
+}
+function endTurn(kind,letter){
+  if(state.phase!=="playing")return;
+  stopTimer();
+  snapshot();
+  var t=cur();
+  if(kind==="sang"){t.score+=10;state.letter=letter;}
+  else if(kind==="timeout"){t.score-=5;}
+  state.turnsDone+=1;
+  if(state.turnsDone>=state.rounds*state.teams.length)state.phase="finished";
+  closeLetterStep();
+  save();render();
+}
+function undo(){
+  if(!state.undo)return;
+  stopTimer();
+  var u=state.undo;
+  for(var i=0;i<state.teams.length;i++)state.teams[i].score=u.scores[i];
+  state.turnsDone=u.turnsDone;state.letter=u.letter;state.phase=u.phase;state.undo=null;
+  closeLetterStep();
+  save();render();
+}
+function closeLetterStep(){letterOpen=false;$("letterStep").hidden=true;$("turnBtns").hidden=false;$("lastLetter").value="";$("letterErr").textContent="";}
+function openLetterStep(){
+  stopTimer();letterOpen=true;
+  $("turnBtns").hidden=true;$("letterStep").hidden=false;$("letterErr").textContent="";
+  $("lastLetter").value="";$("lastLetter").focus();
+}
+function saveLetter(){
+  var v=$("lastLetter").value.trim();
+  if(!/^[A-Za-z]$/.test(v)){$("letterErr").textContent="Type one letter, A to Z";return;}
+  endTurn("sang",v.toUpperCase());
+}
+function cancelLetter(){closeLetterStep();resetTimerDisplay();}
+
+/* setup */
+function addTeam(){
+  var n=normName($("name").value),err=$("nameErr");
+  if(state.teams.length>=6){err.textContent="Six teams is the most.";return;}
+  if(!n){err.textContent="Type a team name.";return;}
+  var low=n.toLowerCase();
+  for(var i=0;i<state.teams.length;i++)if(state.teams[i].name.toLowerCase()===low){err.textContent="That team name is already used.";return;}
+  state.teams.push({name:n,score:0});
+  $("name").value="";err.textContent="";
+  save();render();$("name").focus();
+}
+function removeTeam(i){state.teams.splice(i,1);$("nameErr").textContent="";save();render();}
+function startGame(){
+  if(state.teams.length<2||state.teams.length>6)return;
+  state.teams.forEach(function(t){t.score=0;});
+  state.turnsDone=0;state.letter=null;state.undo=null;state.phase="playing";
+  save();render();
+}
+function newGame(){
+  if(!window.confirm("Start a new game? This clears all teams and scores."))return;
+  stopTimer();closeLetterStep();
+  state=emptyState();save();render();
+}
+
+/* render */
+function fillList(ul,showScore,curIdx,withRemove,order){
+  ul.textContent="";
+  order.forEach(function(i){
+    var t=state.teams[i];
+    var li=document.createElement("li");li.className="team"+(i===curIdx?" cur":"");
+    var nm=document.createElement("span");nm.className="nm";nm.textContent=t.name;li.appendChild(nm);
+    if(showScore){var sc=document.createElement("span");sc.className="sc";sc.textContent=String(t.score);li.appendChild(sc);}
+    if(withRemove){var b=document.createElement("button");b.type="button";b.textContent="Remove";b.setAttribute("aria-label","Remove "+t.name);
+      b.addEventListener("click",function(){removeTeam(i);});li.appendChild(b);}
+    ul.appendChild(li);
+  });
+}
+function range(n){var a=[];for(var i=0;i<n;i++)a.push(i);return a;}
+function render(){
+  $("setup").hidden=state.phase!=="setup";
+  $("game").hidden=state.phase!=="playing";
+  $("finished").hidden=state.phase!=="finished";
+  var n=state.teams.length;
+  if(state.phase==="setup"){
+    fillList($("teamList"),false,-1,true,range(n));
+    $("add").disabled=n>=6;$("name").disabled=n>=6;
+    $("start").disabled=n<2||n>6;
+    $("rounds").value=String(state.rounds);
+  }else if(state.phase==="playing"){
+    var idx=state.turnsDone%n;
+    $("roundLbl").textContent="Round "+(Math.floor(state.turnsDone/n)+1)+" of "+state.rounds;
+    $("curName").textContent=state.teams[idx].name;
+    var L=$("letter");
+    if(state.letter){L.textContent=state.letter;L.className="letter";}
+    else{L.textContent="Any song";L.className="letter any";}
+    if(!letterOpen&&ticker===null)resetTimerDisplay();
+    fillList($("scoreList"),true,idx,false,range(n));
+    $("undo").disabled=!state.undo;
+  }else{
+    stopTimer();
+    var top=-Infinity;state.teams.forEach(function(t){if(t.score>top)top=t.score;});
+    var winners=state.teams.filter(function(t){return t.score===top;}).map(function(t){return t.name;});
+    var w=$("winner");
+    if(winners.length===1)w.textContent="Winner: "+winners[0];
+    else w.textContent="It's a tie between "+winners.slice(0,-1).join(", ")+" and "+winners[winners.length-1];
+    var order=range(n).sort(function(a,b){return state.teams[b].score-state.teams[a].score||a-b;});
+    fillList($("finalList"),true,-1,false,order);
+    $("undo2").disabled=!state.undo;
+  }
+}
+
+/* wire up */
+(function init(){
+  var sel=$("rounds");
+  for(var r=1;r<=10;r++){var o=document.createElement("option");o.value=String(r);o.textContent=String(r);sel.appendChild(o);}
+  state=load();
+  $("add").addEventListener("click",addTeam);
+  $("name").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();addTeam();}});
+  $("rounds").addEventListener("change",function(){state.rounds=parseInt(this.value,10)||3;save();});
+  $("start").addEventListener("click",startGame);
+  $("startTimer").addEventListener("click",startTimer);
+  $("sang").addEventListener("click",function(){if(state.phase==="playing")openLetterStep();});
+  $("passed").addEventListener("click",function(){endTurn("pass");});
+  $("saveLetter").addEventListener("click",saveLetter);
+  $("cancelLetter").addEventListener("click",cancelLetter);
+  $("lastLetter").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();saveLetter();}});
+  $("undo").addEventListener("click",undo);
+  $("undo2").addEventListener("click",undo);
+  $("newGame").addEventListener("click",newGame);
+  $("newGame2").addEventListener("click",newGame);
+  render();
+})();
+})();
+</script>
+</body>
+</html>

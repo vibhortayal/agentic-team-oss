@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antakshari Scorekeeper</title>
+<style>
+  :root {
+    --bg: #fff8ee; --card: #ffffff; --ink: #2a1a3a; --soft: #6b5a7a; --line: #e6d8c6;
+    --main: #7a2e8e; --main-ink: #ffffff; --good: #1f7a4a; --warn: #b3261e; --gold: #f2b01e;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 18px; line-height: 1.4; overflow-wrap: anywhere;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; }
+  h1 { font-size: 26px; margin: 4px 0 14px; text-align: center; color: var(--main); }
+  h2 { font-size: 20px; margin: 0 0 10px; }
+  [hidden] { display: none !important; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+  label { display: block; font-weight: 600; margin-bottom: 6px; }
+  input[type=text], select {
+    width: 100%; min-height: 54px; font-size: 20px; padding: 8px 12px; color: var(--ink);
+    border: 2px solid var(--line); border-radius: 12px; background: #fff; font-family: inherit;
+  }
+  input[type=text]:focus, select:focus, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  button {
+    display: block; width: 100%; min-height: 58px; font-size: 20px; font-weight: 700; font-family: inherit;
+    border: 2px solid var(--main); border-radius: 14px; background: #fff; color: var(--main);
+    padding: 10px 14px; margin-top: 10px; cursor: pointer; touch-action: manipulation;
+  }
+  button.primary { background: var(--main); color: var(--main-ink); }
+  button.good { background: var(--good); border-color: var(--good); color: #fff; }
+  button.quiet { border-color: var(--line); color: var(--soft); font-weight: 600; }
+  button.danger { border-color: var(--warn); color: var(--warn); }
+  button.danger.solid { background: var(--warn); color: #fff; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .row { display: flex; gap: 10px; }
+  .row > * { flex: 1 1 0; min-width: 0; }
+  .error { color: var(--warn); font-weight: 600; margin: 8px 0 0; min-height: 1.4em; }
+  .hint { color: var(--soft); font-size: 16px; margin: 8px 0 0; }
+  ul.teams, ol.scores { list-style: none; margin: 0; padding: 0; }
+  ul.teams li, ol.scores li {
+    display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  ul.teams li:last-child, ol.scores li:last-child { border-bottom: 0; }
+  .num { color: var(--soft); flex: 0 0 auto; width: 1.6em; }
+  .name { flex: 1 1 auto; min-width: 0; font-weight: 600; }
+  ul.teams button { width: auto; flex: 0 0 auto; min-height: 48px; margin: 0; font-size: 16px; padding: 6px 12px; }
+  .score { flex: 0 0 auto; font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  ol.scores li.now { background: #f6e9fa; margin: 0 -8px; padding: 10px 8px; border-radius: 10px; border-bottom-color: transparent; }
+  ol.scores li.now .name::after { content: " (now)"; color: var(--main); font-weight: 600; }
+  ol.scores li.top .name::before { content: "★ "; color: var(--gold); }
+  .center { text-align: center; }
+  .round { color: var(--soft); font-weight: 600; margin: 0; }
+  .turnlabel { margin: 6px 0 0; color: var(--soft); }
+  .turnname { font-size: 34px; font-weight: 800; line-height: 1.15; margin: 0 0 6px; color: var(--main); }
+  .letterlabel { margin: 10px 0 0; color: var(--soft); }
+  .letter { font-size: 120px; line-height: 1; font-weight: 800; margin: 4px 0 6px; }
+  .letter.none { font-size: 34px; line-height: 1.2; padding: 26px 0; }
+  .timer { font-size: 72px; line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; margin: 4px 0 0; }
+  .timer.low { color: var(--warn); }
+  .timerlabel { color: var(--soft); margin: 0; }
+  .note { background: #fff3cf; border: 1px solid #ecd58a; border-radius: 12px; padding: 10px 12px; margin-bottom: 14px; font-weight: 600; }
+  .winner { font-size: 32px; font-weight: 800; line-height: 1.2; color: var(--main); margin: 6px 0; }
+  #letterInput { text-align: center; font-size: 40px; min-height: 76px; text-transform: uppercase; }
+  .overlay {
+    position: fixed; inset: 0; background: rgba(30, 15, 45, .6); display: flex; align-items: center;
+    justify-content: center; padding: 16px; z-index: 10;
+  }
+  .dialog { background: #fff; border-radius: 16px; padding: 20px; width: 100%; max-width: 420px; }
+  .dialog p { margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Antakshari Scorekeeper</h1>
+
+  <!-- Before the game -->
+  <section id="setup" hidden>
+    <div class="card">
+      <h2>1. Add the teams (2 to 6)</h2>
+      <form id="addForm" novalidate>
+        <label for="teamInput">Team name</label>
+        <input type="text" id="teamInput" maxlength="24" autocomplete="off" autocapitalize="words" enterkeyhint="done">
+        <p class="error" id="teamError" role="alert"></p>
+        <button type="submit" id="addBtn">Add team</button>
+      </form>
+      <p class="hint" id="teamHint"></p>
+      <ul class="teams" id="teamList"></ul>
+    </div>
+    <div class="card">
+      <h2>2. How many rounds?</h2>
+      <label for="roundsSelect">Rounds (every team gets one turn per round)</label>
+      <select id="roundsSelect"></select>
+    </div>
+    <button type="button" class="primary" id="startGameBtn">Start game</button>
+    <p class="hint center" id="startHint"></p>
+  </section>
+
+  <!-- During the game -->
+  <section id="play" hidden>
+    <div class="note" id="playNote" role="status" hidden></div>
+    <div class="card center">
+      <p class="round" id="roundText"></p>
+      <p class="turnlabel">Turn:</p>
+      <p class="turnname" id="turnName"></p>
+      <p class="letterlabel" id="letterLabel">Sing a song starting with</p>
+      <p class="letter" id="letterBig"></p>
+
+      <div id="turnControls">
+        <p class="timer" id="timer" aria-live="off">30</p>
+        <p class="timerlabel">seconds left</p>
+        <button type="button" class="primary" id="startTimerBtn">Start timer</button>
+        <div class="row">
+          <button type="button" class="good" id="sangBtn">Sang it</button>
+          <button type="button" id="passBtn">Passed</button>
+        </div>
+        <p class="hint">Sang it: +10 &nbsp;·&nbsp; Passed: 0 &nbsp;·&nbsp; Time runs out: -5</p>
+      </div>
+
+      <form id="letterForm" novalidate hidden>
+        <label for="letterInput" id="letterPrompt"></label>
+        <input type="text" id="letterInput" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="done">
+        <p class="error" id="letterError" role="alert"></p>
+        <button type="submit" class="primary" id="saveLetterBtn">Save letter</button>
+        <button type="button" class="quiet" id="letterBackBtn">Go back (they have not sung it yet)</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Scores</h2>
+      <ol class="scores" id="scoreList"></ol>
+    </div>
+    <button type="button" id="undoBtn">Undo last turn</button>
+    <button type="button" class="danger" id="newGameBtn">New game</button>
+  </section>
+
+  <!-- After the game -->
+  <section id="done" hidden>
+    <div class="card center">
+      <p class="round">Game over</p>
+      <p class="winner" id="winnerText"></p>
+    </div>
+    <div class="card">
+      <h2>Final scores</h2>
+      <ol class="scores" id="finalList"></ol>
+    </div>
+    <button type="button" id="undoBtn2">Undo last turn</button>
+    <button type="button" class="danger" id="newGameBtn2">New game</button>
+  </section>
+</main>
+
+<div class="overlay" id="confirm" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h2 id="confirmTitle">Are you sure?</h2>
+    <p>This clears everything: the teams, the scores and the letter.</p>
+    <button type="button" class="danger solid" id="confirmYes">Yes, clear everything</button>
+    <button type="button" id="confirmNo">No, keep this game</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'antakshari-scorekeeper-v1';
+  var TURN_MS = 30000, MIN_TEAMS = 2, MAX_TEAMS = 6, DEFAULT_ROUNDS = 3;
+  var SANG = 10, PASSED = 0, TIMEOUT = -5;
+
+  function $(id) { return document.getElementById(id); }
+
+  function fresh() {
+    return {
+      phase: 'setup',      // 'setup' | 'play' | 'done'
+      teams: [], rounds: DEFAULT_ROUNDS,
+      scores: [], turn: 0, // turn counts finished turns, 0-based
+      letter: null,
+      deadline: null,      // clock time (ms) when the running countdown hits zero
+      pending: null,       // set while waiting for the letter after "Sang it": { left: ms or null }
+      last: null,          // what to restore on Undo: { scores, turn, letter }
+      note: ''
+    };
+  }
+
+  // ---------- saving ----------
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* still playable without saving */ }
+  }
+
+  function isInt(n) { return typeof n === 'number' && isFinite(n) && Math.floor(n) === n; }
+
+  function valid(s) {
+    if (!s || typeof s !== 'object') return false;
+    if (['setup', 'play', 'done'].indexOf(s.phase) < 0) return false;
+    if (!Array.isArray(s.teams) || s.teams.length > MAX_TEAMS) return false;
+    if (!s.teams.every(function (t) { return typeof t === 'string' && t.length > 0; })) return false;
+    if (!isInt(s.rounds) || s.rounds < 1 || s.rounds > 10) return false;
+    if (s.letter !== null && typeof s.letter !== 'string') return false;
+    if (s.phase === 'setup') return true;
+    var n = s.teams.length, total = n * s.rounds;
+    if (n < MIN_TEAMS) return false;
+    if (!Array.isArray(s.scores) || s.scores.length !== n || !s.scores.every(isInt)) return false;
+    if (!isInt(s.turn) || s.turn < 0 || s.turn > total) return false;
+    if ((s.phase === 'done') !== (s.turn === total)) return false;
+    if (s.deadline !== null && typeof s.deadline !== 'number') return false;
+    if (s.pending !== null && typeof s.pending !== 'object') return false;
+    if (s.last !== null) {
+      var l = s.last;
+      if (typeof l !== 'object' || !Array.isArray(l.scores) || l.scores.length !== n || !l.scores.every(isInt)) return false;
+      if (!isInt(l.turn) || l.turn < 0 || l.turn >= total) return false;
+      if (l.letter !== null && typeof l.letter !== 'string') return false;
+    }
+    return true;
+  }
+
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY));
+      if (valid(s)) {
+        if (typeof s.note !== 'string') s.note = '';
+        if (s.phase !== 'play') { s.deadline = null; s.pending = null; }
+        return s;
+      }
+    } catch (e) { /* fall through to a fresh game */ }
+    return fresh();
+  }
+
+  var S = load();
+
+  // ---------- names ----------
+  function cleanName(raw) {
+    var s = String(raw);
+    if (s.normalize) s = s.normalize('NFC');
+    return s.replace(/\s+/g, ' ').trim();
+  }
+  function sameKey(name) { return cleanName(name).toLowerCase(); }
+
+  function addTeam(raw) {
+    var name = cleanName(raw);
+    if (S.teams.length >= MAX_TEAMS) return 'You already have 6 teams, which is the most.';
+    if (!name) return 'Please type a team name. It cannot be blank.';
+    var key = sameKey(name);
+    for (var i = 0; i < S.teams.length; i++) {
+      if (sameKey(S.teams[i]) === key) return 'There is already a team called "' + S.teams[i] + '". Pick a different name.';
+    }
+    S.teams.push(name);
+    save();
+    return '';
+  }
+
+  // ---------- game ----------
+  function totalTurns() { return S.teams.length * S.rounds; }
+  function currentTeam() { return S.turn % S.teams.length; }
+
+  function startGame() {
+    if (S.teams.length < MIN_TEAMS || S.teams.length > MAX_TEAMS) return;
+    S.phase = 'play';
+    S.scores = S.teams.map(function () { return 0; });
+    S.turn = 0; S.letter = null; S.deadline = null; S.pending = null; S.last = null; S.note = '';
+    save(); render();
+  }
+
+  function finishTurn(points, newLetter, note) {
+    if (S.phase !== 'play') return;
+    var i = currentTeam();
+    S.last = { scores: S.scores.slice(), turn: S.turn, letter: S.letter };
+    S.scores[i] += points;
+    if (newLetter) S.letter = newLetter;
+    S.turn += 1;
+    S.deadline = null; S.pending = null;
+    S.note = note;
+    if (S.turn >= totalTurns()) S.phase = 'done';
+    save(); render();
+  }
+
+  function timeUp(whileAway) {
+    var name = S.teams[currentTeam()];
+    finishTurn(TIMEOUT, null, (whileAway ? 'Time ran out while the page was closed. ' : 'Time is up! ') +
+      name + ' loses 5 points.');
+  }
+
+  // True if the countdown has already run out (and the turn was moved on).
+  function checkClock() {
+    if (S.phase === 'play' && S.deadline !== null && !S.pending && Date.now() >= S.deadline) {
+      timeUp(false);
+      return true;
+    }
+    return false;
+  }
+
+  function startTimer() {
+    if (S.phase !== 'play' || S.pending || S.deadline !== null) return;
+    S.deadline = Date.now() + TURN_MS;
+    S.note = '';
+    save(); render();
+  }
+
+  function sang() {
+    if (S.phase !== 'play' || S.pending || checkClock()) return;
+    // Stop the clock while the letter is typed.
+    S.pending = { left: S.deadline === null ? null : S.deadline - Date.now() };
+    S.deadline = null;
+    S.note = '';
+    save(); render();
+    $('letterInput').value = '';
+    $('letterError').textContent = '';
+    $('letterInput').focus();
+  }
+
+  function letterBack() {
+    if (S.phase !== 'play' || !S.pending) return;
+    if (typeof S.pending.left === 'number') S.deadline = Date.now() + Math.max(0, S.pending.left);
+    S.pending = null;
+    save(); render();
+  }
+
+  function readLetter(raw) {
+    var s = String(raw).trim();
+    if (s.normalize) s = s.normalize('NFC');
+    var chars = Array.from(s);
+    var isLetter;
+    try { isLetter = new RegExp('^\\p{L}$', 'u').test(s); }
+    catch (e) { isLetter = chars.length === 1 && s.toLowerCase() !== s.toUpperCase(); }
+    if (chars.length !== 1 || !isLetter) return null;
+    var up = s.toUpperCase();
+    return Array.from(up).length === 1 ? up : s;
+  }
+
+  function saveLetter() {
+    if (S.phase !== 'play' || !S.pending) return;
+    var letter = readLetter($('letterInput').value);
+    if (!letter) {
+      $('letterError').textContent = 'Type exactly one letter (A to Z). No numbers, spaces or extra letters.';
+      $('letterInput').focus();
+      return;
+    }
+    var name = S.teams[currentTeam()];
+    finishTurn(SANG, letter, name + ' sang it: +10 points. The next song starts with ' + letter + '.');
+  }
+
+  function passed() {
+    if (S.phase !== 'play' || S.pending || checkClock()) return;
+    finishTurn(PASSED, null, S.teams[currentTeam()] + ' passed: no points.');
+  }
+
+  function undo() {
+    if (!S.last || S.pending) return;
+    S.scores = S.last.scores.slice();
+    S.turn = S.last.turn;
+    S.letter = S.last.letter;
+    S.last = null;
+    S.phase = 'play';
+    S.deadline = null; S.pending = null;
+    S.note = 'Last turn undone. It is ' + S.teams[currentTeam()] + "'s turn again.";
+    save(); render();
+  }
+
+  function newGame() {
+    S = fresh();
+    try { localStorage.removeItem(KEY); } catch (e) { /* nothing saved */ }
+    $('teamInput').value = '';
+    $('teamError').textContent = '';
+    render();
+  }
+
+  // ---------- drawing ----------
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function joinNames(names) {
+    if (names.length === 1) return names[0];
+    return names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+  }
+
+  function drawScores(list, markNow, markTop) {
+    list.textContent = '';
+    var best = Math.max.apply(null, S.scores);
+    S.teams.forEach(function (name, i) {
+      var li = el('li');
+      if (markNow && i === currentTeam()) li.className = 'now';
+      if (markTop && S.scores[i] === best) li.className = 'top';
+      li.appendChild(el('span', 'name', name));
+      li.appendChild(el('span', 'score', String(S.scores[i])));
+      list.appendChild(li);
+    });
+  }
+
+  function drawTimer() {
+    var left = S.deadline === null ? TURN_MS : Math.max(0, S.deadline - Date.now());
+    var secs = Math.ceil(left / 1000);
+    $('timer').textContent = String(secs);
+    $('timer').className = 'timer' + (S.deadline !== null && secs <= 10 ? ' low' : '');
+  }
+
+  function render() {
+    $('setup').hidden = S.phase !== 'setup';
+    $('play').hidden = S.phase !== 'play';
+    $('done').hidden = S.phase !== 'done';
+
+    if (S.phase === 'setup') {
+      var n = S.teams.length, list = $('teamList');
+      list.textContent = '';
+      S.teams.forEach(function (name, i) {
+        var li = el('li');
+        li.appendChild(el('span', 'num', (i + 1) + '.'));
+        li.appendChild(el('span', 'name', name));
+        var b = el('button', 'quiet', 'Remove');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Remove ' + name);
+        b.addEventListener('click', function () {
+          S.teams.splice(i, 1); save();
+          $('teamError').textContent = '';
+          render();
+        });
+        li.appendChild(b);
+        list.appendChild(li);
+      });
+      var full = n >= MAX_TEAMS;
+      $('teamInput').disabled = full;
+      $('addBtn').disabled = full;
+      $('teamHint').textContent = full ? 'You have 6 teams, which is the most.'
+        : n === 0 ? 'No teams yet. Teams take turns in the order you add them.'
+        : n + (n === 1 ? ' team' : ' teams') + ' so far. Teams take turns in this order.';
+      $('roundsSelect').value = String(S.rounds);
+      $('startGameBtn').disabled = n < MIN_TEAMS;
+      $('startHint').textContent = n < MIN_TEAMS ? 'Add at least 2 teams to start.' : '';
+    }
+
+    if (S.phase === 'play') {
+      var teams = S.teams.length;
+      $('playNote').hidden = !S.note;
+      $('playNote').textContent = S.note;
+      $('roundText').textContent = 'Round ' + (Math.floor(S.turn / teams) + 1) + ' of ' + S.rounds;
+      $('turnName').textContent = S.teams[currentTeam()];
+      if (S.letter) {
+        $('letterLabel').textContent = 'Sing a song starting with';
+        $('letterBig').textContent = S.letter;
+        $('letterBig').className = 'letter';
+      } else {
+        $('letterLabel').textContent = 'No letter yet';
+        $('letterBig').textContent = 'Sing any song';
+        $('letterBig').className = 'letter none';
+      }
+      var asking = !!S.pending;
+      $('turnControls').hidden = asking;
+      $('letterForm').hidden = !asking;
+      $('letterPrompt').textContent = 'What is the last letter of the song ' + S.teams[currentTeam()] + ' sang?';
+      $('startTimerBtn').disabled = S.deadline !== null;
+      $('startTimerBtn').textContent = S.deadline !== null ? 'Timer is running' : 'Start timer';
+      drawTimer();
+      drawScores($('scoreList'), true, false);
+      $('undoBtn').disabled = !S.last || asking;
+    }
+
+    if (S.phase === 'done') {
+      var best = Math.max.apply(null, S.scores);
+      var winners = S.teams.filter(function (t, i) { return S.scores[i] === best; });
+      var pts = best + (best === 1 || best === -1 ? ' point' : ' points');
+      $('winnerText').textContent = winners.length === 1
+        ? winners[0] + ' wins with ' + pts + '!'
+        : "It's a tie between " + joinNames(winners) + ', with ' + pts + ' each!';
+      drawScores($('finalList'), false, true);
+      $('undoBtn2').disabled = !S.last;
+    }
+  }
+
+  // ---------- "are you sure" ----------
+  var askedFrom = null;
+  function askNewGame(e) {
+    askedFrom = e.currentTarget;
+    $('confirm').hidden = false;
+    $('confirmNo').focus();
+  }
+  function closeConfirm() {
+    $('confirm').hidden = true;
+    if (askedFrom && !askedFrom.closest('[hidden]')) askedFrom.focus();
+    askedFrom = null;
+  }
+
+  // ---------- wiring ----------
+  var sel = $('roundsSelect');
+  for (var r = 1; r <= 10; r++) {
+    var o = el('option', '', r + (r === 1 ? ' round' : ' rounds'));
+    o.value = String(r);
+    sel.appendChild(o);
+  }
+  sel.addEventListener('change', function () {
+    var v = parseInt(sel.value, 10);
+    S.rounds = v >= 1 && v <= 10 ? v : DEFAULT_ROUNDS;
+    save();
+  });
+
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (S.phase !== 'setup') return;
+    var err = addTeam($('teamInput').value);
+    $('teamError').textContent = err;
+    if (!err) $('teamInput').value = '';
+    render();
+    if (!$('teamInput').disabled) $('teamInput').focus();
+  });
+  $('teamInput').addEventListener('input', function () { $('teamError').textContent = ''; });
+
+  $('startGameBtn').addEventListener('click', startGame);
+  $('startTimerBtn').addEventListener('click', startTimer);
+  $('sangBtn').addEventListener('click', sang);
+  $('passBtn').addEventListener('click', passed);
+  $('letterForm').addEventListener('submit', function (e) { e.preventDefault(); saveLetter(); });
+  $('letterInput').addEventListener('input', function () { $('letterError').textContent = ''; });
+  $('letterBackBtn').addEventListener('click', letterBack);
+  $('undoBtn').addEventListener('click', undo);
+  $('undoBtn2').addEventListener('click', undo);
+  $('newGameBtn').addEventListener('click', askNewGame);
+  $('newGameBtn2').addEventListener('click', askNewGame);
+  $('confirmNo').addEventListener('click', closeConfirm);
+  $('confirmYes').addEventListener('click', function () { askedFrom = null; closeConfirm(); newGame(); });
+  $('confirm').addEventListener('click', function (e) { if (e.target === $('confirm')) closeConfirm(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !$('confirm').hidden) closeConfirm();
+  });
+
+  // The countdown is worked out from the clock, so it stays right even if the
+  // phone slows the page down in the background.
+  function tick() {
+    if (S.phase === 'play' && S.deadline !== null && !S.pending) {
+      if (!checkClock()) drawTimer();
+    }
+  }
+  setInterval(tick, 100);
+  document.addEventListener('visibilitychange', tick);
+  window.addEventListener('pageshow', tick);
+
+  // A countdown that ran out while the page was closed still counts.
+  if (S.phase === 'play' && S.deadline !== null && !S.pending && Date.now() >= S.deadline) {
+    timeUp(true);
+  } else {
+    render();
+  }
+  if (S.phase === 'play' && S.pending) $('letterInput').focus();
+})();
+</script>
+</body>
+</html>
