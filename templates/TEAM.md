@@ -4,6 +4,7 @@ This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 
 - **Profile:** `<research | prototype | hobby | internal | production | other: reason>`, set at intake (see `.team/playbooks/engagement.md`, Project profiles). Changes only on the owner's message.
 - **How the AI tool is paid for:** `<monthly plan | pay as you use>`.
+- **Path:** `<light | full>`. Light is the default for a small app (see `.team/playbooks/engagement.md`, The light path); it sets how much process runs. Ella moves to full, telling the owner why, when a change breaks the small-app line.
 - **Way of building:** `<cheaper | usual | quick>` (default: usual), agreed with the owner at intake (see the Engagement Lead's role, Intake step 10). Changes only on the owner's yes.
 - **Product type:** `<web | mobile | ai | api | other: reason>` (one or more), set at intake (see `.team/playbooks/engagement.md`, Product types).
 - Team version: `<tag or commit>`. Roles and playbooks at that version win over anything here about how agents work.

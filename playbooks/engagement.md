@@ -19,6 +19,26 @@ Ella's first question is what kind of project this is, because the answer sets h
 
 Moving up a profile (say prototype to production) is a change request. Bea prices a hardening pass first: the strict checks turned on in `zones.yml` (`require:` checker, lint and cap, with the checker App and a linter in place), tests for untested paths, a security, dependency and red-zone review, monitoring, a rollback rehearsal, and the [launch readiness](production.md#launch-readiness) items for the product type. The owner approves it before the profile changes.
 
+## The light path (small apps)
+
+Most first projects are small, and the full set of playbooks costs far more than a small app needs: in [our build-off](../docs/research/2026-11-14-one-agent-vs-full-team/README.md) it used about 140 times the cheapest way on a one-page app, with 16 sessions before any code, and caught one fault the light ways missed, at the critique. So a small app takes the light path by default, and keeps the critique.
+
+**A small app** is a prototype or hobby project that Ella can describe in about ten lines, used by one person or a small group they know, with no payments, no sign-in for people the owner doesn't know, no personal data beyond names, and no AI feature inside the app. If any of those is unclear, ask the owner one question; if it's still unclear, take the full path.
+
+**Who:** Ella, Quinn once, Bea for the price, Ian to build, Vera to check. Nobody else.
+
+1. **Intake, short.** Profile, product type, the idea, who uses it and the owner's must-haves. No research, no practice and skill review.
+2. **The plan is the spec.** Ella writes the [brief](../templates/documents.md#project-brief) in short and lists the owner's must-haves in their own words, numbered, each followed by one testable row ([testable-criteria](../skills/testable-criteria/SKILL.md)). That list is what Ian builds and Vera checks; there is no separate spec or spec review. Ella may add rows. She never changes or softens a must-have without the owner's yes to that one line, whatever earlier yes they gave.
+3. **One critique.** A fresh Quinn reads only the plan, says its goal back in two lines, then finds how the app could go wrong in use (timing, repeated taps, odd input, a refresh, a small screen). This one fresh run is the brief's checker ([scale review to risk](../principles.md#who-checks-whom-the-review-matrix)). Ella adds rows for what holds and lists what she rejected.
+4. **Price and yes.** Bea posts the session cap and the cost range on the project's issue (on a smaller model, inside Ella's session if the tool allows). The owner says yes to the plan and cost together, as in Ella's [intake](../roles/engagement-lead.md#intake-new-project-or-big-change).
+5. **Build and check** as one ticket on the project's issue: [build](build.md) steps 6 to 9, with the plan's commit as the spec. Vera prepares checks from the rows before any code, Ian builds, a fresh Vera that didn't build it gives the verdict. Ella does the coordinator's jobs herself (branch, handoffs, accepting the verdict, the receipt line).
+
+Later changes to a small app take the [trivial path](build.md#trivial-changes) where it fits, otherwise one light ticket like step 5 with the change's rows added to the plan.
+
+**What the light path never drops:** the issue and team comments, the independent check, the cap, the share check on every preview, and the owner's yes before anything merges or goes live.
+
+**Moving to the full path.** When a change would break the small-app line (payments, strangers signing in, personal data, an AI feature, or a plan Ella can no longer hold in ten lines), Ella tells the owner in one line why the next step needs more checking and what it costs, and that change goes through [research to spec](research-to-spec.md) and the normal ticket flow. A change of profile is still a change request, as above.
+
 ## Product types
 
 The profile says how much process applies; the product type says which checks apply. Ella records it next to the profile in `TEAM.md`. A product can be more than one type (a phone app with an AI assistant is both).
