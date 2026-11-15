@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antakshari Scorekeeper</title>
+<style>
+  :root {
+    --bg: #fdf6ec;
+    --card: #ffffff;
+    --ink: #222222;
+    --muted: #5f5a52;
+    --accent: #2d6a4f;
+    --warn: #b5462b;
+    --line: #e3d9c8;
+    --current: #e4f1e9;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.6rem; margin: 8px 0 12px; text-align: center; }
+  h2 { font-size: 1.3rem; margin: 0 0 8px; }
+  p { margin: 6px 0; overflow-wrap: anywhere; }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  .muted { color: var(--muted); }
+  .error { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: 6px 0; }
+
+  button {
+    font: inherit;
+    font-weight: 700;
+    font-size: 1.15rem;
+    min-height: 56px;
+    padding: 12px 16px;
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  button.secondary { background: #fff; color: var(--ink); border: 2px solid var(--line); }
+  button.pass { background: #7a5c2e; }
+  button.undo { background: #5f5a52; }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  input, select {
+    font: inherit;
+    font-size: 1.15rem;
+    min-height: 52px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+  }
+  label { display: block; font-weight: 600; margin-bottom: 6px; }
+
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > * { flex: 1 1 140px; }
+  .stack > * + * { margin-top: 10px; }
+
+  /* Setup */
+  .team-list { list-style: none; padding: 0; margin: 0; }
+  .team-list li {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .team-list li .name { min-width: 0; overflow-wrap: anywhere; }
+  .team-list li button { width: auto; min-height: 44px; padding: 8px 14px; font-size: 1rem; flex-shrink: 0; }
+
+  /* Game */
+  .round { color: var(--muted); font-weight: 600; text-align: center; margin: 0; }
+  .turn-name { font-size: 1.9rem; font-weight: 800; text-align: center; overflow-wrap: anywhere; margin: 4px 0 12px; }
+  .letter-box { text-align: center; }
+  .letter-box .label { color: var(--muted); font-weight: 600; margin: 0; }
+  .letter-big { font-size: 6rem; font-weight: 800; line-height: 1.05; color: var(--accent); overflow-wrap: anywhere; }
+  .letter-note { color: var(--muted); margin: 0; }
+  .timer { text-align: center; }
+  .timer-num { font-size: 4.5rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .timer-num.urgent { color: var(--warn); }
+  .timer-note { color: var(--muted); text-align: center; margin: 0; }
+  .actions { display: flex; flex-direction: column; gap: 10px; }
+  .actions .row > button { min-height: 64px; font-size: 1.25rem; }
+  #lastMessage { text-align: center; font-weight: 600; }
+  .scores { list-style: none; padding: 0; margin: 0; }
+  .scores li {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 10px 8px; border-bottom: 1px solid var(--line); font-size: 1.2rem;
+  }
+  .scores li.current { background: var(--current); font-weight: 700; border-radius: 8px; }
+  .scores .name { min-width: 0; overflow-wrap: anywhere; }
+  .scores .points { flex-shrink: 0; font-variant-numeric: tabular-nums; font-size: 1.3rem; }
+  .winner { font-size: 1.5rem; font-weight: 800; text-align: center; overflow-wrap: anywhere; }
+  .new-game { margin-top: 8px; }
+
+  /* Are you sure? box */
+  #confirmBox {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5);
+    display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 10;
+  }
+  #confirmBox .card { width: 100%; max-width: 420px; margin: 0; }
+  #confirmBox .stack > button { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Antakshari Scorekeeper</h1>
+
+  <!-- SETUP SCREEN -->
+  <section id="setup" class="card stack" hidden>
+    <h2>Add the teams</h2>
+    <p class="muted">Add 2 to 6 teams. Each team needs a different name.</p>
+    <div>
+      <label for="teamName">Team name</label>
+      <div class="row">
+        <input id="teamName" type="text" maxlength="25" autocomplete="off" placeholder="For example: Tigers">
+        <button id="addTeam" class="secondary" type="button">Add team</button>
+      </div>
+      <div id="setupError" class="error" role="alert"></div>
+    </div>
+    <ol id="teamList" class="team-list"></ol>
+    <div>
+      <label for="rounds">How many rounds?</label>
+      <select id="rounds"></select>
+    </div>
+    <button id="startGame" type="button">Start game</button>
+  </section>
+
+  <!-- GAME SCREEN (playing and finished) -->
+  <section id="game" hidden>
+    <p id="roundLabel" class="round"></p>
+
+    <div id="playing" class="card stack" hidden>
+      <p class="muted" style="text-align:center;margin:0">Now singing</p>
+      <div id="turnName" class="turn-name"></div>
+
+      <div class="letter-box">
+        <p class="label">Start the song with</p>
+        <div id="letterBig" class="letter-big">&mdash;</div>
+        <p id="letterNote" class="letter-note"></p>
+      </div>
+
+      <div class="timer">
+        <div id="timerNum" class="timer-num">30</div>
+        <p id="timerNote" class="timer-note">seconds left</p>
+        <button id="startTimer" type="button">Start timer</button>
+      </div>
+
+      <div id="letterPanel" class="stack" hidden>
+        <label for="letterInput">Type the last letter of the song</label>
+        <input id="letterInput" type="text" maxlength="3" autocomplete="off" autocapitalize="characters">
+        <div id="letterError" class="error" role="alert"></div>
+        <div class="row">
+          <button id="confirmLetter" type="button">Save letter</button>
+          <button id="cancelLetter" class="secondary" type="button">Cancel</button>
+        </div>
+      </div>
+
+      <div id="actions" class="actions">
+        <div class="row">
+          <button id="sang" type="button">Sang it (+10)</button>
+          <button id="passed" class="pass" type="button">Passed (0)</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="finished" class="card" hidden>
+      <h2 style="text-align:center">Game over</h2>
+      <p id="winnerText" class="winner"></p>
+    </div>
+
+    <p id="lastMessage" class="card" role="status" style="padding:12px;margin-bottom:16px;"></p>
+
+    <div class="card">
+      <h2>Scores</h2>
+      <ol id="scores" class="scores"></ol>
+    </div>
+
+    <div class="card stack">
+      <button id="undo" class="undo" type="button">Undo last turn</button>
+      <button id="newGame" class="secondary new-game" type="button">New game</button>
+    </div>
+  </section>
+</div>
+
+<!-- Are you sure? -->
+<div id="confirmBox" hidden role="dialog" aria-modal="true" aria-labelledby="sureTitle">
+  <div class="card stack">
+    <p id="sureTitle" style="font-size:1.4rem;font-weight:800;margin:0">Are you sure?</p>
+    <p>This clears all the teams and scores.</p>
+    <button id="yesNew" type="button" class="pass">Yes, clear everything</button>
+    <button id="noNew" class="secondary" type="button">No, keep playing</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'antakshari-scorekeeper-v1';
+  var SECONDS = 30;
+  var SANG_POINTS = 10;
+  var PASS_POINTS = 0;
+  var TIMEOUT_POINTS = -5;
+  var MIN_TEAMS = 2;
+  var MAX_TEAMS = 6;
+  var MAX_ROUNDS = 10;
+  var DEFAULT_ROUNDS = 3;
+
+  function $(id) { return document.getElementById(id); }
+
+  function fresh() {
+    return {
+      phase: 'setup',          // 'setup' | 'playing' | 'finished'
+      teams: [],               // [{name, score}]
+      rounds: DEFAULT_ROUNDS,
+      round: 1,                // 1-based
+      turn: 0,                 // index into teams
+      letter: '',
+      timer: { running: false, endsAt: 0 },
+      pending: false,          // "Sang it" pressed, letter not yet typed
+      lastMessage: '',
+      undo: null               // snapshot of the state before the last turn
+    };
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (!s || typeof s !== 'object' || !Array.isArray(s.teams)) return null;
+      var base = fresh();
+      for (var k in s) { if (Object.prototype.hasOwnProperty.call(s, k)) base[k] = s[k]; }
+      return base;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* no storage: game lasts this page visit */ }
+  }
+
+  var state = load() || fresh();
+
+  // ---------- names ----------
+  function cleanName(text) {
+    return String(text).trim().replace(/\s+/g, ' ');
+  }
+  function sameName(a, b) {
+    return cleanName(a).toLocaleLowerCase() === cleanName(b).toLocaleLowerCase();
+  }
+
+  // ---------- setup ----------
+  function addTeam() {
+    var name = cleanName($('teamName').value);
+    var err = '';
+    if (name === '') {
+      err = 'Type a team name first.';
+    } else if (state.teams.some(function (t) { return sameName(t.name, name); })) {
+      err = 'There is already a team called "' + name + '".';
+    } else if (state.teams.length >= MAX_TEAMS) {
+      err = 'Six teams is the most. Remove one to add another.';
+    }
+    $('setupError').textContent = err;
+    if (err) { $('teamName').focus(); return; }
+    state.teams.push({ name: name, score: 0 });
+    $('teamName').value = '';
+    $('teamName').focus();
+    save();
+    render();
+  }
+
+  function removeTeam(index) {
+    state.teams.splice(index, 1);
+    $('setupError').textContent = '';
+    save();
+    render();
+  }
+
+  function startGame() {
+    if (state.teams.length < MIN_TEAMS || state.teams.length > MAX_TEAMS) return;
+    state.teams.forEach(function (t) { t.score = 0; });
+    state.phase = 'playing';
+    state.round = 1;
+    state.turn = 0;
+    state.letter = '';
+    state.timer = { running: false, endsAt: 0 };
+    state.pending = false;
+    state.undo = null;
+    state.lastMessage = state.teams[0].name + ' goes first.';
+    save();
+    render();
+  }
+
+  // ---------- game ----------
+  function startTimer() {
+    if (state.phase !== 'playing' || state.timer.running || state.pending) return;
+    state.timer = { running: true, endsAt: Date.now() + SECONDS * 1000 };
+    save();
+    render();
+  }
+
+  // Ends the current turn. kind: 'sang' | 'passed' | 'timeout'
+  function endTurn(kind, letter) {
+    var snapshot = {
+      teams: state.teams.map(function (t) { return { name: t.name, score: t.score }; }),
+      round: state.round,
+      turn: state.turn,
+      letter: state.letter,
+      phase: state.phase,
+      lastMessage: state.lastMessage
+    };
+    var team = state.teams[state.turn];
+    var msg;
+    if (kind === 'sang') {
+      team.score += SANG_POINTS;
+      state.letter = letter;
+      msg = team.name + ' sang it. +' + SANG_POINTS + ' points.';
+    } else if (kind === 'passed') {
+      team.score += PASS_POINTS;
+      msg = team.name + ' passed. ' + PASS_POINTS + ' points.';
+    } else {
+      team.score += TIMEOUT_POINTS;
+      msg = 'Time is up for ' + team.name + '. ' + TIMEOUT_POINTS + ' points.';
+    }
+    state.lastMessage = msg;
+    state.timer = { running: false, endsAt: 0 };
+    state.pending = false;
+
+    state.turn += 1;
+    if (state.turn >= state.teams.length) {
+      state.turn = 0;
+      state.round += 1;
+    }
+    if (state.round > state.rounds) {
+      state.phase = 'finished';
+      state.lastMessage = msg + ' Game over.';
+    } else if (state.phase === 'playing') {
+      state.lastMessage = msg + ' Next: ' + state.teams[state.turn].name + '.';
+    }
+    state.undo = snapshot;
+    save();
+    render();
+  }
+
+  function sangIt() {
+    if (state.phase !== 'playing' || state.pending) return;
+    // The team sang in time, so the countdown no longer applies while the letter is typed.
+    state.pending = true;
+    save();
+    render();
+    $('letterInput').focus();
+  }
+
+  function saveLetter() {
+    var typed = $('letterInput').value.trim();
+    if (!/^\p{L}\p{M}*$/u.test(typed)) {
+      $('letterError').textContent = 'Type exactly one letter, for example S.';
+      $('letterInput').focus();
+      return;
+    }
+    var upper = typed.toUpperCase();
+    endTurn('sang', upper.length === 1 ? upper : typed);
+    $('letterInput').value = '';
+    $('letterError').textContent = '';
+  }
+
+  function cancelLetter() {
+    state.pending = false;
+    $('letterInput').value = '';
+    $('letterError').textContent = '';
+    save();
+    render();
+    tick(); // if the countdown ran out meanwhile, the turn ends now
+  }
+
+  function undo() {
+    if (!state.undo) return;
+    var u = state.undo;
+    state.teams = u.teams;
+    state.round = u.round;
+    state.turn = u.turn;
+    state.letter = u.letter;
+    state.phase = u.phase;
+    state.lastMessage = u.lastMessage;
+    state.timer = { running: false, endsAt: 0 };
+    state.pending = false;
+    state.undo = null;
+    $('letterInput').value = '';
+    $('letterError').textContent = '';
+    save();
+    render();
+  }
+
+  function resetGame() {
+    state = fresh();
+    $('letterInput').value = '';
+    $('letterError').textContent = '';
+    $('teamName').value = '';
+    $('setupError').textContent = '';
+    hideConfirm();
+    save();
+    render();
+  }
+
+  function showConfirm() { $('confirmBox').hidden = false; $('yesNew').focus(); }
+  function hideConfirm() { $('confirmBox').hidden = true; }
+
+  // ---------- timer tick ----------
+  function tick() {
+    if (state.phase === 'playing' && state.timer.running && !state.pending && Date.now() >= state.timer.endsAt) {
+      endTurn('timeout');
+      return;
+    }
+    updateTimer();
+  }
+
+  function updateTimer() {
+    var num = $('timerNum');
+    var note = $('timerNote');
+    num.classList.remove('urgent');
+    if (state.pending) {
+      num.textContent = 'Sang!';
+      note.textContent = 'Type the last letter below.';
+    } else if (state.timer.running) {
+      var left = Math.max(0, Math.ceil((state.timer.endsAt - Date.now()) / 1000));
+      num.textContent = String(left);
+      note.textContent = 'seconds left';
+      if (left <= 10) num.classList.add('urgent');
+    } else {
+      num.textContent = String(SECONDS);
+      note.textContent = 'seconds. Press Start timer when the song begins.';
+    }
+  }
+
+  // ---------- rendering ----------
+  function winnerText() {
+    var best = null;
+    state.teams.forEach(function (t) { if (best === null || t.score > best) best = t.score; });
+    var tied = state.teams.filter(function (t) { return t.score === best; }).map(function (t) { return t.name; });
+    if (tied.length === 1) {
+      return 'Winner: ' + tied[0] + ' with ' + best + ' points.';
+    }
+    var list = tied.slice(0, -1).join(', ') + ' and ' + tied[tied.length - 1];
+    return "It's a tie for first place: " + list + ' (' + best + ' points each).';
+  }
+
+  function renderSetup() {
+    var list = $('teamList');
+    list.innerHTML = '';
+    state.teams.forEach(function (t, i) {
+      var li = document.createElement('li');
+      var name = document.createElement('span');
+      name.className = 'name';
+      name.textContent = t.name;
+      var remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'secondary';
+      remove.textContent = 'Remove';
+      remove.setAttribute('aria-label', 'Remove ' + t.name);
+      remove.addEventListener('click', function () { removeTeam(i); });
+      li.appendChild(name);
+      li.appendChild(remove);
+      list.appendChild(li);
+    });
+    $('addTeam').disabled = state.teams.length >= MAX_TEAMS;
+    $('startGame').disabled = state.teams.length < MIN_TEAMS || state.teams.length > MAX_TEAMS;
+    $('startGame').textContent = state.teams.length < MIN_TEAMS
+      ? 'Add at least 2 teams to start'
+      : 'Start game';
+    $('rounds').value = String(state.rounds);
+  }
+
+  function renderGame() {
+    var playing = state.phase === 'playing';
+    $('playing').hidden = !playing;
+    $('finished').hidden = playing;
+
+    if (playing) {
+      $('roundLabel').textContent = 'Round ' + state.round + ' of ' + state.rounds;
+      $('turnName').textContent = state.teams[state.turn].name;
+      $('letterBig').textContent = state.letter ? state.letter : '—';
+      $('letterNote').textContent = state.letter
+        ? 'Sing a song that starts with this letter.'
+        : 'No letter yet. Sing any song.';
+      $('startTimer').disabled = state.timer.running || state.pending;
+      $('sang').disabled = state.pending;
+      $('passed').disabled = state.pending;
+      $('actions').hidden = state.pending;
+      $('letterPanel').hidden = !state.pending;
+    } else {
+      $('roundLabel').textContent = 'Finished after ' + state.rounds + ' rounds';
+      $('winnerText').textContent = winnerText();
+    }
+
+    $('undo').disabled = !state.undo;
+    $('lastMessage').textContent = state.lastMessage;
+
+    var scores = $('scores');
+    scores.innerHTML = '';
+    state.teams.forEach(function (t, i) {
+      var li = document.createElement('li');
+      if (playing && i === state.turn) li.className = 'current';
+      var name = document.createElement('span');
+      name.className = 'name';
+      name.textContent = t.name;
+      var pts = document.createElement('span');
+      pts.className = 'points';
+      pts.textContent = String(t.score);
+      li.appendChild(name);
+      li.appendChild(pts);
+      scores.appendChild(li);
+    });
+    updateTimer();
+  }
+
+  function render() {
+    var setup = state.phase === 'setup';
+    $('setup').hidden = !setup;
+    $('game').hidden = setup;
+    if (setup) renderSetup();
+    else renderGame();
+  }
+
+  // ---------- wiring ----------
+  var roundSelect = $('rounds');
+  for (var r = 1; r <= MAX_ROUNDS; r++) {
+    var opt = document.createElement('option');
+    opt.value = String(r);
+    opt.textContent = r + (r === 1 ? ' round' : ' rounds');
+    roundSelect.appendChild(opt);
+  }
+  roundSelect.addEventListener('change', function () {
+    state.rounds = parseInt(roundSelect.value, 10);
+    save();
+  });
+
+  $('addTeam').addEventListener('click', addTeam);
+  $('teamName').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); addTeam(); }
+  });
+  $('startGame').addEventListener('click', startGame);
+  $('startTimer').addEventListener('click', startTimer);
+  $('sang').addEventListener('click', sangIt);
+  $('passed').addEventListener('click', function () { endTurn('passed'); });
+  $('confirmLetter').addEventListener('click', saveLetter);
+  $('letterInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); saveLetter(); }
+  });
+  $('cancelLetter').addEventListener('click', cancelLetter);
+  $('undo').addEventListener('click', undo);
+  $('newGame').addEventListener('click', showConfirm);
+  $('yesNew').addEventListener('click', resetGame);
+  $('noNew').addEventListener('click', hideConfirm);
+
+  setInterval(tick, 250);
+  render();
+  tick();
+})();
+</script>
+</body>
+</html>
