@@ -47,7 +47,7 @@ Every piece of work has a named checker. The checker is:
 | Monthly health report | Ops | Verifier re-runs the committed script and confirms every number | Owner reads it |
 | Docs and tooling PR | Ops or Product Manager | The other one (peer review) | Merged after APPROVE and the owner's yes (Stage 2 and above: as `TEAM.md` allows) |
 
-**Scale review to risk.** Red-zone work and new products get the full row. Docs, copy and small chores get one fresh check. Do not add a checker whose findings nobody acts on.
+**Scale review to risk.** Red-zone work and new products get the full row. Docs, copy and small chores get one fresh check. A small app on the [light path](playbooks/engagement.md#the-light-path-small-apps) is the one new product that doesn't: one fresh Critic run checks the brief, the brief's must-have rows are the spec, Vera's readiness check comes when she prepares, and Ella is the ticket coordinator in the Code and Verdict rows. Do not add a checker whose findings nobody acts on.
 
 **Same-model blind spots.** A checker on a different model than the maker is allowed as an experiment, not required. The claim that same-model critique is weakest traces back to a course lecture remark (on Constitutional AI), not a controlled study (checked 2026-11-12). Record it in the decision log if a project tries it.
 
