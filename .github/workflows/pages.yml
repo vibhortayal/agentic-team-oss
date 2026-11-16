@@ -1,0 +1,38 @@
+# Publishes the website from main: the usual Jekyll build, then the search index (Pagefind, free,
+# runs here, no server). It replaces GitHub's built-in Pages build, so it adds no extra runs.
+# Needs Settings > Pages > Source set to "GitHub Actions".
+name: site
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/jekyll-build-pages@v1
+      - name: Add the search index
+        run: |
+          sudo chown -R "$USER" _site
+          npx -y pagefind@1.5.2
+      - uses: actions/upload-pages-artifact@v3
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

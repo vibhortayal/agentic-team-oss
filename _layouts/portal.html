@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600;800&family=Caveat:wght@600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ '/assets/portal/portal.css' | relative_url }}">
 </head>
-<body class="theme-{{ page.theme | default: 'dark' }}">
+<body class="theme-{{ page.theme | default: 'dark' }}" data-pagefind-meta="kind:lesson">
 <nav class="top"><div class="wrap">
   <a class="brand" href="{{ '/' | relative_url }}">Agentic<span>.</span>Team</a>
   <details class="menu">
@@ -28,6 +28,7 @@
     </div>
   </details>
   <a class="link hide-sm" href="{{ '/options.html' | relative_url }}">Other options</a>
+  <a class="link" href="{{ '/search.html' | relative_url }}">Search</a>
   <a class="link" href="{{ '/about.html' | relative_url }}">About</a>
   <a class="link hide-sm" href="{{ '/start/' | relative_url }}">Docs</a>
   <a class="link hide-sm" href="{{ site.github.repository_url }}">GitHub</a>

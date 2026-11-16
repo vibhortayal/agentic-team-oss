@@ -1,0 +1,7 @@
+# Site search (Pagefind). The Pages workflow runs it on the built site; nothing runs in the browser
+# until someone searches. Only pages written for readers are indexed: lessons and the docs menu.
+site: _site
+glob: "{index.html,about.html,options.html,principles.html,ROADMAP.html,learn/*.html,start/index.html,docs/*.html,playbooks/*.html,roles/*.html,adapters/index.html}"
+# The lessons say "en" and the docs theme says "en-US"; one index keeps both searchable together.
+force_language: en
+exclude_selectors: ["nav", "footer", "section.next", ".side-bar", ".main-header", ".search", ".breadcrumb-nav"]

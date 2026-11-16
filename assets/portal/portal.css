@@ -24,6 +24,7 @@ nav.top .brand span { color: var(--warm); }
 nav.top a.link { text-decoration: none; color: var(--muted); font-size: .95rem; }
 nav.top a.link:hover { color: var(--text); }
 @media (max-width: 640px) { nav.top a.hide-sm { display: none; } }
+@media (max-width: 440px) { nav.top .wrap { gap: 12px; } }
 
 .btn { display: inline-flex; align-items: center; gap: .5em; padding: .85em 1.4em; border-radius: 999px; font-weight: 600; text-decoration: none; transition: transform .2s, box-shadow .2s; }
 .btn.primary { background: linear-gradient(135deg, var(--warm), var(--pink)); color: #1a1020; box-shadow: 0 8px 30px -8px var(--pink); }
@@ -78,7 +79,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; justify-content: space
 }
 
 .menu { position: relative; }
-.menu summary { list-style: none; cursor: pointer; color: var(--text); font-weight: 600; font-size: .95rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); }
+.menu summary { white-space: nowrap; list-style: none; cursor: pointer; color: var(--text); font-weight: 600; font-size: .95rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); }
 .menu summary::-webkit-details-marker { display: none; }
 .menu summary::after { content: " ▾"; color: var(--muted); }
 .menu-panel { position: absolute; right: 0; top: 46px; width: min(340px, 90vw); background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 8px; box-shadow: 0 20px 50px -10px #0008; display: grid; }
