@@ -36,7 +36,7 @@ and end your turn. Reach the owner only through issue labels and comments, or yo
 """
 NEXT_PROMPT = re.compile(r"You are (?:the )?[A-Z][\w -]+?\. Read \.team/roles/([a-z-]+)\.md and act on (?:issue|PR|pull request) #(\d+)\.?")
 LEDGER = ["ticket", "size", "estimate_low", "estimate_high", "cap_sessions", "cap_rounds", "sessions", "rounds", "role",
-          "tier", "input_tokens", "cached_input_tokens", "output_tokens", "cost", "usage_source", "outcome", "date"]
+          "tier", "input_tokens", "cached_input_tokens", "output_tokens", "cost", "usage_source", "outcome", "date", "style"]
 
 
 def section(text, name):
@@ -403,7 +403,7 @@ def write_ledger(path, case, run, outcome):
             w.writerow([case["id"], "", "", "", case["max_sessions"], "", 1, "", s["role"], s["tier"],
                         s.get("input_tokens", ""), s.get("cached_input_tokens", ""), s.get("output_tokens", ""),
                         "" if s.get("cost_usd") is None else "%.4f" % s["cost_usd"], run.args.adapter, outcome,
-                        time.strftime("%Y-%m-%d")])
+                        time.strftime("%Y-%m-%d"), ""])
 
 
 def main():
