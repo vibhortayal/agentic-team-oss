@@ -111,7 +111,7 @@ New ideas, changes, questions and OKs all go to Ella. She brings in the other ag
 
 ## For people who change the team itself
 
-The team is plain text files. We improve an agent here once, and every project gets the change: at the start of a chat Ella checks for a newer team and offers to update it ([adapters/update.sh](adapters/update.sh)). Don't edit the `.team/` folder inside a project. To run the team's quarterly review, paste: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.`
+The team is plain text files, and this repo is its home repo: the one place where the roles, skills and rules live, shared by every project you build. Each project keeps its own copy so it stands on its own, and your copy of the team keeps a list of your projects. We improve an agent here once, and every project gets the change: at the start of a chat Ella checks for a newer team and offers to update it ([adapters/update.sh](adapters/update.sh)). Don't edit the `.team/` folder inside a project. To run the team's quarterly review, paste: `You are Max, the Evaluator. Read roles/evaluator.md and playbooks/improve.md. Run the quarterly team review.`
 
 ## Layout
 
