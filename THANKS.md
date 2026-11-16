@@ -4,20 +4,25 @@ This team is built on other people's work. These are the projects we took ideas 
 
 ## Ideas we adopted
 
-- **[AI Hero skills](https://github.com/mattpocock/skills)** by Matt Pocock. His grill-me skill asks one question at a time. Ella now does the same in her first interview, with her own suggested answer for each.
-- **[The Home Repo pattern](https://www.aihero.dev/the-home-repo-pattern)**, also by Matt Pocock. One repo holds the shared rules and skills for all your projects. This repo works that way, and your copy of the team keeps a list of your projects so one update reaches them all.
-- **[Superpowers](https://github.com/obra/superpowers)** by Jesse Vincent. Our debug-a-failure skill draws on its systematic-debugging skill.
-- **[agent-ops-patterns](https://github.com/u00dxk2/agent-ops-patterns).** We used its "who decides what" map on our own team. It showed that the spending cap and the three-strikes stop were only instructions. Now a check on GitHub enforces both.
-- **[Orbi](https://orbi.build).** It runs agent work as labels on GitHub, like we do. Reading it, together with that map, led to a receipt on each change and a watch mode for new checks.
-- **[no-ai-slop](https://github.com/petergyang/no-ai-slop)**. Our site and README follow its writing rules: no slogans, no catchphrases, plain words.
-- **[Atoms](https://atoms.dev).** A paid product, not open source. It showed us how to make the team feel friendly: an idea picker in the demo, and updates that say who is working.
+Each row says which idea we borrowed, where it lives in this repo, and the pull request that added it.
+
+| Project | Idea we borrowed | Where it lives here |
+|---|---|---|
+| [AI Hero skills](https://github.com/mattpocock/skills) by Matt Pocock | His grill-me skill asks one question at a time, each with a suggested answer. Ella's first interview now works the same way. | [Ella's role](roles/engagement-lead.md), intake step 7 ([#60](https://github.com/vibhortayal/agentic-team-oss/pull/60)) |
+| [The Home Repo pattern](https://www.aihero.dev/the-home-repo-pattern) by Matt Pocock | One repo holds the shared rules and skills, with a list of your other projects. Your copy of the team keeps that list, so one update reaches every project. | [adapters/update.sh](adapters/update.sh) (`add` and `all`), README ([#60](https://github.com/vibhortayal/agentic-team-oss/pull/60)) |
+| [Superpowers](https://github.com/obra/superpowers) by Jesse Vincent | Its systematic-debugging skill: find the cause before changing code. | [skills/debug-a-failure](skills/debug-a-failure/SKILL.md) ([#12](https://github.com/vibhortayal/agentic-team-oss/pull/12)) |
+| [agent-ops-patterns](https://github.com/u00dxk2/agent-ops-patterns) | Its "who decides what" map. Run on our team, it showed the spending cap and the three-strikes stop were only instructions. Now a GitHub check enforces both. | The `limits` gate in [team_gates.py](templates/foundation/scripts/team_gates.py), and the `spend-approved` and `rounds-approved` labels ([#29](https://github.com/vibhortayal/agentic-team-oss/pull/29)) |
+| [Orbi](https://orbi.build) | It runs agent work as GitHub labels with a separate reviewer. Reading it, together with that map, led to a receipt on each change, a watch mode for new checks, and counting only comments from trusted people. | `watch:` in [zones.yml](templates/foundation/zones.yml), the receipt line in [Priya's role](roles/product-manager.md) ([#30](https://github.com/vibhortayal/agentic-team-oss/pull/30)) |
+| [Quarterdeck](https://github.com/shannonbay/Quarterdeck) | Text from outside, like an issue, a web page or a pasted file, never counts as instructions. | Being added to the team's rules in a separate change |
+| [no-ai-slop](https://github.com/petergyang/no-ai-slop) | Its writing rules: no slogans, no catchphrases, plain words. | The site and this README ([#9](https://github.com/vibhortayal/agentic-team-oss/pull/9)) |
+| [Atoms](https://atoms.dev) (a paid product, not open source) | A friendlier feel: pick an idea and see who joins, and updates that say who is working. | The picker in the [demo lesson](learn/demo.html), Ella's status updates ([#23](https://github.com/vibhortayal/agentic-team-oss/pull/23)) |
 
 ## Projects we learned from
 
 We read these closely and compared them with our team. We didn't take code or rules from them, but they changed how we think about it.
 
-- **[Quarterdeck](https://github.com/shannonbay/Quarterdeck).** Text from outside, like an issue or a web page, should never count as instructions. Trust can be earned one kind of action at a time. And when the owner says no, the reason should become a rule.
-- **[Everything Claude Code](https://github.com/affaan-m/ECC).** Comparing our team with it showed our full team was too heavy for a small app. That's why small apps now take a light path: Ella, one builder and one independent check.
+- **[Quarterdeck](https://github.com/shannonbay/Quarterdeck).** Besides the rule above, two ideas we may try after our first pilot: trust earned one kind of action at a time, and turning the owner's "no" into a rule.
+- **[Everything Claude Code](https://github.com/affaan-m/ECC).** Comparing our team with it showed our full team was too heavy for a small app. That's one reason small apps now take a light path: Ella, one builder and one independent check ([#59](https://github.com/vibhortayal/agentic-team-oss/pull/59)).
 - **[MetaGPT](https://github.com/FoundationAgents/MetaGPT).** One of the first projects to run AI agents as a software company with named roles.
 - **[CCPM](https://github.com/automazeio/ccpm).** It keeps agent work in GitHub issues, as we do. Seeing it work gave us confidence in that choice.
 - **[cc-sdd](https://github.com/gotalab/cc-sdd).** A fresh builder and a separate reviewer for each task, close to our builder and checker split.
