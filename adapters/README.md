@@ -9,6 +9,7 @@ adapters/generic/install.sh ~/code/my-project       # any tool that reads AGENTS
 adapters/claude-code/install.sh ~/code/my-project   # Claude Code (runs the generic install first)
 adapters/github/labels.sh <owner/repo>              # once per repo, needs gh signed in
 adapters/github/settings.py status|fill|ask NAME    # in the project folder: repo variables and secrets from team-settings.json
+adapters/github/settings.py checks                  # in the project folder: are the safety checks really on?
 ```
 
 The generic install writes `.team/` (every role, the principles, playbooks, templates, docs, the label script and a `VERSION` file) and, if the project has none, an `AGENTS.md` from the template. It builds the copy in a temporary folder and swaps it in only when complete, so a failed run leaves the old install alone. Every role is always installed so links resolve; a project hires roles in its `TEAM.md`. Commit the result and record the version in `TEAM.md`.
@@ -46,6 +47,8 @@ Role files say `tier: deep | standard | fast` (the Balanced tier, with optional 
 ## Claude Code
 
 The installer runs the generic install, then writes each role as a subagent in `.claude/agents/<role>.md`. Its agent step, `agents.sh`, maps each role's tier for the project's working style to `model` (deep to opus, standard to sonnet, fast to haiku), and sets `model` in the project's `.claude/settings.json` to Ella's, so new chats start on it (other settings there are kept). Run `agents.sh <project>` alone after a style change: it reads the installed `.team/roles/`, so the team version stays put. It also maps `capabilities` to `tools` (`all` leaves tools out, so the agent inherits everything), turns `skills:` into a list, so Claude Code loads those skills when the subagent starts. It drops `memory:`; Claude Code ignores the other extra fields. It writes a one-line `CLAUDE.md` (`@AGENTS.md`), or adds that line to an existing one, and removes the old `.claude/team/` copy if present.
+
+It also adds the team's guard rails ([claude-code/guard-rails.json](claude-code/guard-rails.json)) to `permissions.deny` in `.claude/settings.json`, keeping the project's own rules. They stop any agent, whatever it has read, from opening secret files (`.env`, sign-in keys), changing GitHub secrets, force-pushing, deleting a repo, or throwing away unsaved work (`git reset --hard`, `git clean`). Claude Code refuses these without asking, so they add no prompts. They are a seatbelt, not a wall: a script an agent writes can still open a file, which is why secrets also stay out of the folder and the checks run on GitHub. In plain words for the owner: "There's a short list of things no agent on your team can do, like reading your passwords or deleting your project. If one tries, it's simply refused."
 
 The aliases follow the current model of each tier. For Ella's own model, a new chat picks up the project's model; in the terminal, `/model` switches the current one. To pin an exact model for one project, edit the installed subagent after each install and record why in that project's decision log. Never put a vendor model id in a role file here.
 

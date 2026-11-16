@@ -9,6 +9,10 @@ project folder; it reads the list in `team-settings.json` there and acts on that
                               missing secret marked "random"; add --force to also reset known values
   settings.py ask NAME        for the owner's own terminal: asks for one value with hidden typing
                               and saves it; the value never passes through a chat
+  settings.py checks          are the safety checks really on? Says in plain words whether GitHub
+                              enforces them on main (ruleset, required checks, code-owner review),
+                              whether CODEOWNERS exists, and whether the installed checks match
+                              this team's copy. Exits 1 if anything is off. Needs no team-settings.json.
 
 The list (Ella keeps it; it holds names and help, never a secret's value):
 
@@ -29,6 +33,7 @@ the owner change them there.
 """
 import getpass
 import json
+import os
 import re
 import secrets
 import subprocess
@@ -137,7 +142,90 @@ def ask(name):
     return 0
 
 
+KIT_PAIRS = (  # installed safety-check file, and the team's own copy of it
+    (".github/team/team_gates.py", ".team/templates/foundation/scripts/team_gates.py"),
+    (".github/workflows/team-gates.yml", ".team/templates/foundation/workflows/team-gates.yml"),
+    (".github/workflows/team-checks.yml", ".team/templates/foundation/workflows/team-checks.yml"),
+)
+REQUIRED_CHECKS = ("team-gates", "team-checks")
+
+
+def same_file(a, b):
+    try:
+        with open(a, "rb") as f, open(b, "rb") as g:
+            return f.read() == g.read()
+    except OSError:
+        return False
+
+
+def branch_rules(branch):
+    """The rules GitHub enforces on a branch (from every active ruleset), or None if it won't say."""
+    r = subprocess.run(["gh", "api", "repos/{owner}/{repo}/rules/branches/" + branch],
+                       stdin=subprocess.DEVNULL, capture_output=True, text=True)
+    if r.returncode:
+        return None
+    try:
+        return json.loads(r.stdout or "[]")
+    except ValueError:
+        return None
+
+
+def checks():
+    """Are the safety checks really on? One plain line each; exit 1 if anything is off."""
+    ok, off = [], []
+    if not os.path.exists(KIT_PAIRS[0][0]):
+        print("OFF  The safety checks aren't installed in this project (fine for a quick prototype; "
+              "Ops adds them at foundation).")
+        return 1
+    stale = [mine for mine, team in KIT_PAIRS if os.path.exists(team) and not same_file(mine, team)]
+    if not os.path.exists(KIT_PAIRS[0][1]):
+        off.append("The team isn't installed here (.team/ is missing), so the checks can't be compared with it.")
+    elif stale:
+        off.append("The installed checks differ from this team's copy (%s). Run the team update, or ask why "
+                   "they were changed." % ", ".join(stale))
+    else:
+        ok.append("The installed checks match this team's copy.")
+    if any(os.path.exists(p) for p in ("CODEOWNERS", ".github/CODEOWNERS", "docs/CODEOWNERS")):
+        ok.append("CODEOWNERS is there, so the owner's review is needed where it names them.")
+    else:
+        off.append("There's no CODEOWNERS file, so nothing asks for the owner's review.")
+    branch = gh(["api", "repos/{owner}/{repo}", "--jq", ".default_branch"]).strip() or "main"
+    rules = branch_rules(branch)
+    if rules is None:
+        off.append("GitHub wouldn't show the rules on %s, so it can't be confirmed that they're enforced." % branch)
+    elif not rules:
+        off.append("GitHub enforces nothing on %s: every check is only advice. Turn on the ruleset (on a "
+                   "private repo this may need a paid GitHub plan)." % branch)
+    else:
+        types = {r.get("type") for r in rules}
+        contexts = {c.get("context") for r in rules if r.get("type") == "required_status_checks"
+                    for c in (r.get("parameters") or {}).get("required_status_checks", [])}
+        owners = any(r.get("type") == "pull_request" and (r.get("parameters") or {}).get("require_code_owner_review")
+                     for r in rules)
+        missing = [c for c in REQUIRED_CHECKS if c not in contexts]
+        if missing:
+            off.append("%s doesn't require %s to pass, so a change could merge without passing them." % (branch, " or ".join(missing)))
+        else:
+            ok.append("Changes to %s must pass %s." % (branch, " and ".join(REQUIRED_CHECKS)))
+        if owners:
+            ok.append("Changes to %s need a code owner's review." % branch)
+        else:
+            off.append("%s doesn't require a code owner's review." % branch)
+        if {"non_fast_forward", "deletion"} <= types:
+            ok.append("%s can't be force-pushed or deleted." % branch)
+        else:
+            off.append("%s can still be force-pushed or deleted." % branch)
+    for line in ok:
+        print("ON   " + line)
+    for line in off:
+        print("OFF  " + line)
+    print("All safety checks are on." if not off else "%d thing(s) to fix before the checks fully protect this project." % len(off))
+    return 1 if off else 0
+
+
 def main(argv):
+    if argv[:1] == ["checks"]:
+        return checks()
     if argv[:1] == ["status"]:
         return status()
     if argv[:1] == ["fill"]:

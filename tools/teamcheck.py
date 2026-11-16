@@ -464,6 +464,7 @@ def install(root=ROOT):
                     if not os.path.exists(os.path.join(linked, name, "SKILL.md")):
                         errs.append("adapters/%s/install.sh: skill %s not reachable from %s" % (adapter, name, folder))
             if adapter == "claude-code":
+                errs += guard_rails(script, proj)
                 errs += styles(script, proj)
             if not os.path.exists(os.path.join(proj, "AGENTS.md")):
                 errs.append("adapters/%s/install.sh: no AGENTS.md written" % adapter)
@@ -472,6 +473,24 @@ def install(root=ROOT):
             if r.returncode or [d for d in os.listdir(proj) if d.startswith(".team.new")]:
                 errs.append("adapters/%s/install.sh: a second install failed or left a temp folder" % adapter)
     return errs + refresh_gates(root)
+
+
+def guard_rails(script, proj):
+    """The Claude Code install puts every guard rail in permissions.deny, keeps the owner's own
+    rules, and adds nothing twice on a second run."""
+    errs, here = [], os.path.dirname(script)
+    settings = os.path.join(proj, ".claude", "settings.json")
+    want = json.load(open(os.path.join(here, "guard-rails.json")))["deny"]
+    if not want or any(not re.fullmatch(r"(Read|Edit|Bash)\(.+\)", r) for r in want):
+        errs.append("adapters/claude-code/guard-rails.json: deny must list Read(...), Edit(...) or Bash(...) rules")
+    data = json.load(open(settings))
+    data["permissions"]["deny"].append("Bash(curl *)")
+    json.dump(data, open(settings, "w"))
+    r = subprocess.run(["bash", script, proj], capture_output=True, text=True)
+    deny = json.load(open(settings)).get("permissions", {}).get("deny", [])
+    if r.returncode or [x for x in want if x not in deny] or "Bash(curl *)" not in deny or len(deny) != len(set(deny)):
+        errs.append("adapters/claude-code/install.sh: guard rails missing, duplicated, or the project's own deny rules dropped")
+    return errs
 
 
 def styles(script, proj):
