@@ -108,7 +108,6 @@ New ideas, changes, questions and OKs all go to Ella. She brings in the other ag
 - [How we work](docs/how-we-work.md): our way of working, and a list of words you'll see.
 - [Principles](principles.md): the rules every agent follows.
 - [Roadmap](ROADMAP.md), and [the research behind the team](docs/research/agentic-software-company-practices.md).
-- [Thanks](THANKS.md): the projects we learned from, and what we took from each.
 
 ## For people who change the team itself
 
@@ -126,6 +125,10 @@ docs/         how we work, the GitHub state contract, the research behind the de
 evals/        test cases for the roles and two end-to-end sample projects (see improve)
 tools/        the free checks and the sandbox that runs the cases
 ```
+
+## Thanks for contributions
+
+This team learned from many other open-source projects. [THANKS.md](https://github.com/vibhortayal/agentic-team-oss/blob/main/THANKS.md) lists them and what we took from each.
 
 ## Licence
 
