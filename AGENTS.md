@@ -5,6 +5,7 @@ This repo is an open-source multi-agent development framework: a company of AI a
 - Read `README.md` and `principles.md` before changing anything. The evidence behind the design is in `docs/research/`.
 - Role files use neutral frontmatter (`tier`, `capabilities`). Never put one vendor's model names or tool names in a role, playbook or template. Vendor-specific mapping belongs only in `adapters/<tool>/`.
 - Keep the repo generic: no names of specific users, companies or projects in any file.
+- This repo keeps the hygiene it teaches: Otto's [housekeeping](playbooks/production.md#housekeeping) applies here too, and a PR that changes what a user sees updates the README or site in the same PR.
 - Tune roles here, never in a project's installed copy ([playbooks/improve.md](playbooks/improve.md)). Explain each change to a rule or role in its pull request.
 - After changing the gate kit, run `bash templates/foundation/tests/selftest.sh`; every planted violation must be caught.
 - After changing a role, skill, playbook, template, adapter or tool, run `python3 tools/teamcheck.py` (it also runs every installer into a scratch folder and checks the links) and `python3 tools/sandbox/selftest.py`. Both are free and CI runs them too. Run model cases only on demand, in Docker, with a spend cap ([testing the team](playbooks/improve.md#testing-the-team)).
