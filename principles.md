@@ -51,7 +51,7 @@ Every piece of work has a named checker. The checker is:
 
 **Scale review to risk.** Red-zone work and new products get the full row. Docs, copy and small chores get one fresh check. A small app on the [light path](playbooks/engagement.md#the-light-path-small-apps) is the one new product that doesn't: one fresh Critic run checks the brief, the brief's must-have rows are the spec, Vera's readiness check comes when she prepares, and Ella is the ticket coordinator in the Code and Verdict rows. Do not add a checker whose findings nobody acts on.
 
-**Same-model blind spots.** A checker on a different model than the maker is allowed as an experiment, not required. The claim that same-model critique is weakest traces back to a course lecture remark (on Constitutional AI), not a controlled study (checked 2026-11-12). Record it in the decision log if a project tries it.
+**Same-model blind spots.** A checker on a different model than the maker is allowed, not required. One controlled study ([Song 2026](https://arxiv.org/abs/2610.01471), 30 documents and code files with planted errors) found that for code, a fresh session of the same model found as many errors as a model from another company, while for written documents every cross-company reviewer beat every same-model one. So if the owner already pays for a second company's model, it is the better choice for checking a brief or spec; it isn't worth a new subscription on one small study. Record it in the decision log if a project tries it.
 
 ## Evidence
 
