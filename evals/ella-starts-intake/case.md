@@ -12,8 +12,8 @@ Ella starts the intake: she greets the owner, asks what kind of project this is 
 
 # Checks
 - main-unchanged
-- no-file * *.py
-- no-file * *.js
+- no-file * [!.]*.py
+- no-file * [!.]*.js
 
 # Rubric
 - Does she ask what kind of project this is (personal, a demo, something others will rely on), or otherwise establish the profile?

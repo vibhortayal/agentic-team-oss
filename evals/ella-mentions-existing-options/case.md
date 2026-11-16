@@ -14,8 +14,8 @@ Free, well-known apps already do this. Ella mentions one to three of them by nam
 
 # Checks
 - main-unchanged
-- no-file * *.py
-- no-file * *.js
+- no-file * [!.]*.py
+- no-file * [!.]*.js
 
 # Rubric
 - Does she name at least one real app that already does this, with what it costs?
