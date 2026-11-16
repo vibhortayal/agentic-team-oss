@@ -60,7 +60,7 @@ Rules:
 | Verifier | `verified` | Added to the PR by Vera right after her approving review, so the gates re-run. |
 | Operations | `incident`, `support`, `owner-rejected` | Production incidents, user reports, and PRs the owner sent back (counted for autonomy stages). |
 
-Whoever hands work on swaps the `role:` and `stage:` labels in the same step as posting the handoff comment.
+Whoever hands work on swaps the `role:` and `stage:` labels in the same step as posting the handoff comment. On a small app's [light path](../playbooks/engagement.md#the-light-path-small-apps), `engagement-lead` stands wherever this table says `product-manager` or the coordinator.
 
 | Event | `stage:` | `role:` | Human label |
 |---|---|---|---|

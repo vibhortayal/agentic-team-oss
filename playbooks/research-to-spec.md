@@ -1,6 +1,6 @@
 # Research to spec
 
-Turns a rough idea into an approved spec. Small changes to an existing project skip straight to step 9 with a [change spec](../templates/documents.md#change-spec). A question that isn't a product (which database, which vendor) runs steps 1, 5 and 8 and ends in a decision record.
+Turns a rough idea into an approved spec. A small app on the [light path](engagement.md#the-light-path-small-apps) skips this playbook: its plan is the spec. Small changes to an existing project skip straight to step 9 with a [change spec](../templates/documents.md#change-spec). A question that isn't a product (which database, which vendor) runs steps 1, 5 and 8 and ends in a decision record.
 
 **Who:** Ella first, then two Researchers, Quinn, Priya. Max joins if quality lives in a model.
 
