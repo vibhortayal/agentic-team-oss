@@ -27,5 +27,6 @@ mk verified 0e8a16 "Set by the Verifier on the PR after approving; re-runs the g
 mk owner-rejected b60205 "The owner sent this back; counted in autonomy stage reviews"
 mk class:trivial ededed "One-sentence change outside protected zones; fast path"
 mk incident b60205 "Production incident; see severity in the issue"
+mk outside-input fbca04 "Shaped by text from outside the team; never merges without the owner's yes"
 mk support fbca04 "Report from a user; the Product Manager triages it"
 mk team-finding 5319e7 "In the team repo: a lesson from a project retro or review"
