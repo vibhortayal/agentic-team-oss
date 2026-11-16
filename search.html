@@ -1,0 +1,79 @@
+---
+layout: portal
+theme: plain
+title: Search
+summary: Search every lesson and doc on this site.
+---
+<style>
+.sr { max-width: 760px; padding-top: 72px; padding-bottom: 88px; }
+.sr h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); margin: 0 0 .3em; }
+.sr label { display: block; font-size: 1.15rem; margin: 0 0 10px; }
+.sr input { width: 100%; font: 1.3rem Geist, Inter, system-ui, sans-serif; padding: 14px 16px; border: 2px solid var(--text); border-radius: 6px; background: var(--card); color: var(--text); }
+.sr input:focus { outline: 3px solid var(--warm); outline-offset: 2px; }
+.sr .try { color: var(--muted); margin: 14px 0 0; }
+.sr .try button { font: inherit; color: var(--text); background: var(--bg2); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; margin: 4px 2px; cursor: pointer; }
+.sr .try button:hover { border-color: var(--muted); }
+.sr .status { margin: 28px 0 0; font-size: 1.1rem; }
+.sr h2 { font-size: 1.3rem; margin: 36px 0 4px; }
+.sr ol { list-style: none; padding: 0; margin: 0; }
+.sr li { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.sr li a { font-size: 1.2rem; font-weight: 600; color: var(--warm); }
+.sr li p { margin: 6px 0 0; color: #2e2e34; }
+.sr li small { color: var(--muted); font-size: .85rem; }
+.sr mark { background: #ffe2c9; color: inherit; padding: 0 2px; border-radius: 2px; }
+</style>
+<div class="wrap sr">
+  <h1>Search</h1>
+  <form role="search" onsubmit="return false">
+    <label for="q">What do you want to find?</label>
+    <input id="q" name="q" type="search" autocomplete="off" placeholder="Type a word, like GitHub">
+  </form>
+  <p class="try">Try:
+    <button type="button">GitHub</button>
+    <button type="button">cost</button>
+    <button type="button">Ella</button>
+    <button type="button">key</button>
+    <button type="button">launch</button>
+  </p>
+  <div id="out" aria-live="polite"></div>
+  <noscript><p class="status">Search needs JavaScript. The <a href="{{ '/learn/words.html' | relative_url }}">lessons menu</a> lists every page.</p></noscript>
+</div>
+<script type="module">
+const box = document.getElementById("q");
+const out = document.getElementById("out");
+let pf;
+try {
+  pf = await import("{{ '/pagefind/pagefind.js' | relative_url }}");
+  await pf.options({ excerptLength: 26 });
+  pf.init();
+} catch {
+  out.innerHTML = '<p class="status">Search isn\'t ready on this copy of the site. It works on the live site.</p>';
+}
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const item = (r) => `<li><a href="${esc(r.url)}">${esc(r.meta.title || r.url)}</a><p>${r.excerpt}</p><small>${esc(r.url)}</small></li>`;
+async function run(q) {
+  const u = new URL(location.href);
+  q ? u.searchParams.set("q", q) : u.searchParams.delete("q");
+  history.replaceState(null, "", u);
+  if (!pf) return;
+  if (!q.trim()) { out.innerHTML = ""; return; }
+  const s = await pf.debouncedSearch(q, {}, 250);
+  if (s === null) return;  // a newer search replaced this one
+  const all = await Promise.all(s.results.slice(0, 20).map((r) => r.data()));
+  if (!all.length) {
+    out.innerHTML = `<p class="status">Nothing found for “${esc(q)}”. Try a shorter word, or one of the words above.</p>`;
+    return;
+  }
+  // Lessons first: they're written for beginners. The docs go into more detail.
+  const lessons = all.filter((r) => r.meta.kind === "lesson");
+  const docs = all.filter((r) => r.meta.kind !== "lesson");
+  const n = s.results.length;
+  out.innerHTML = `<p class="status">${n} ${n === 1 ? "page" : "pages"} found.${n > all.length ? ` Here are the best ${all.length}.` : ""}</p>`
+    + (lessons.length ? `<h2>On the learning pages</h2><ol>${lessons.map(item).join("")}</ol>` : "")
+    + (docs.length ? `<h2>In the docs (more detail)</h2><ol>${docs.map(item).join("")}</ol>` : "");
+}
+box.addEventListener("input", () => run(box.value));
+document.querySelectorAll(".try button").forEach((b) => b.addEventListener("click", () => { box.value = b.textContent; run(box.value); box.focus(); }));
+const start = new URLSearchParams(location.search).get("q");
+if (start) { box.value = start; run(start); } else { box.focus(); }
+</script>
