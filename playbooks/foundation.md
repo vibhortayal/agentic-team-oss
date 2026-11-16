@@ -118,6 +118,7 @@ Builders and the Verifier never act through the owner's GitHub account. If they 
 - [ ] Machine account and token, and the checker App; the owner's own token never goes to an agent
 - [ ] Foundation kit installed: workflow, scripts, owner-approved `zones.yml` with `checker`, `lint` and `cap` turned on under `require:`, PR and issue templates, the `TEAM_OWNER`, `TEAM_CHECKER`, `LINT_CMD` and `SETUP_CMD` variables, labels
 - [ ] Ruleset on `main`: PRs only; squash merge only; branches must be up to date; `team-gates`, `team-checks` and the project's tests required; review from code owners required, with `CODEOWNERS` naming the owner for every path; no force-push or deletion; owner-only bypass
+- [ ] Repository settings: delete head branches after merge, so merged branches don't pile up
 - [ ] CI also runs tests, type check and secret scan
 - [ ] `CODEOWNERS` gives the owner the gate files and red-zone paths
 - [ ] Dependabot and secret scanning on; seven-day release age and install scripts off

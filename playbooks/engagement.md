@@ -35,7 +35,7 @@ Most first projects are small, and the full set of playbooks costs far more than
 
 Later changes to a small app take the [trivial path](build.md#trivial-changes) where it fits, with Ella doing Priya's part (the label and the criteria in her handoff). Anything bigger is a new light ticket: the change's rows added to the plan in a `docs/` pull request, Bea's cap on the new issue, and the owner's yes to those rows, after which Ella merges it; then step 5.
 
-**What the light path never drops:** the issue and team comments, the independent check, the cap, the share check on every preview, and the owner's yes before anything merges or goes live.
+**What the light path never drops:** the issue and team comments, the independent check, the cap, the share check on every preview, weekly [housekeeping](production.md#housekeeping) (Ella does it), and the owner's yes before anything merges or goes live.
 
 **Changing path.** The path is recorded in `TEAM.md` and changes only on the owner's yes. When a change would break the small-app line (payments, strangers signing in, personal data, an AI feature, an app-store release, or a plan Ella can no longer hold in ten lines), Ella recommends the full path in one line, with why the next step needs more checking and what it costs. After the yes, that change goes through [research to spec](research-to-spec.md) and the normal ticket flow. A change of profile is still a change request, as above.
 

@@ -128,14 +128,15 @@ When the owner decides to switch a product off, Priya writes a change request an
 
 ## Housekeeping
 
-Weekly, before the owner resets or merges anything, and whenever the owner asks, Otto checks this repo and every project repo with a `TEAM.md`. Repos the owner put on hold are left alone.
+Every project needs this, whatever its path, and so does the team's own repo. Weekly, before the owner resets or merges anything, and whenever the owner asks, Otto checks this repo and every project repo with a `TEAM.md` (on the [light path](engagement.md#the-light-path-small-apps), where there is no Otto, Ella does it). Repos the owner put on hold are left alone. It's chores and a report only: it never changes a role, rule, playbook or gate file; those go to the owner as a draft pull request.
 
 1. `git fetch --prune origin`.
 2. `git status` in every checkout from `git worktree list`. Name the agent that owns each dirty tree; never commit, stash or discard another agent's work.
 3. Unpushed commits per branch (`git log --oneline origin/<branch>..<branch>`). A local `main` ahead of `origin/main` is always reported.
 4. Delete branches whose tip is in `origin/main` and whose PR merged. Never delete `main`, an active branch, one with an open PR, or one with unmerged commits; ask its owner.
 5. `git worktree prune`, and remove only your own clean, merged worktrees.
-6. Match every merge to `main`, owner label and release since last week to an approval receipt from before it ([principle 1](../principles.md#authority)). One without a receipt is an incident: report it to the owner through Ella.
-7. Post one short summary: what was deleted, what's dirty or unpushed and whose, receipts matched, what's left for the owner.
+6. Check the repo itself: `main` is protected as the [foundation](foundation.md#setup-checklist-ops) says, merged branches are deleted automatically, no check on `main` is failing, and no pull request has sat untouched for a week without a `needs-human` label saying who it waits on. Flag docs that contradict what was merged since last week (README, site pages, `TEAM.md`, `ROADMAP.md`) as a trivial docs ticket.
+7. Match every merge to `main`, owner label and release since last week to an approval receipt from before it ([principle 1](../principles.md#authority)). One without a receipt is an incident: report it to the owner through Ella.
+8. Post one short summary: what was deleted, what's dirty or unpushed and whose, receipts matched, what's left for the owner. If nothing needs anyone, post nothing.
 
 Resetting `main`, force-pushes and deleting a repo stay with the owner. Merges, release tags and deploys wait for the owner's yes.
