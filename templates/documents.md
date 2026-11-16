@@ -24,6 +24,7 @@ Read: <repos, docs, research reviewed> · Not verified: <what couldn't be checke
                   Hosting, data, sign-in, email, AI model keys, domain, app store developer accounts and their fees: whatever applies. Options and prices checked this week, with links.
                   Recommended = easiest managed option for the owner's skill level.
 ## What exists     Code, research and decisions to reuse, with links. What was rejected before and why.
+                  Already out there: similar apps or projects found, what each costs, and the owner's choice (use, build on, borrow from, or build our own).
 ## Advice          Risks, the recommended approach, alternatives, anything we advise against.
 ## Open questions  | Question | Proposed default | Who answers | Blocking? |
 ## Team            | Agent | Hired? | Why | Skills (team's own, plus any adopted for this project) |

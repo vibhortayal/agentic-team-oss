@@ -241,6 +241,8 @@ def create(s, kind, opts):
     check_labels(s, labels)
     it = {"number": s["next"], "kind": kind, "title": title, "body": body, "state": "OPEN",
           "author": ACTOR, "createdAt": now(), "labels": list(dict.fromkeys(labels)), "comments": [], "reviews": []}
+    if labels:  # labels given at creation count as added, like GitHub's "labeled" events
+        s.setdefault("label_events", []).append({"number": s["next"], "actor": ACTOR, "add": list(labels), "remove": [], "at": now()})
     if kind == "pr":
         head = opts.get("head") or git("rev-parse", "--abbrev-ref", "HEAD")
         base = opts.get("base", "main")
