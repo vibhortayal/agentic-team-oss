@@ -108,6 +108,7 @@ New ideas, changes, questions and OKs all go to Ella. She brings in the other ag
 - [How we work](docs/how-we-work.md): our way of working, and a list of words you'll see.
 - [Principles](principles.md): the rules every agent follows.
 - [Roadmap](ROADMAP.md), and [the research behind the team](docs/research/agentic-software-company-practices.md).
+- [Thanks](THANKS.md): the projects we learned from, and what we took from each.
 
 ## For people who change the team itself
 
