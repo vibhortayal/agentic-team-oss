@@ -48,6 +48,7 @@ def static_tests():
             open(p, "w").write(s.replace(old, new, 1))
 
         edit("roles/critic.md", "tier: deep", "tier: huge")
+        edit("roles/implementer.md", "fast-tier: deep", "fast-tier: turbo")
         edit("roles/ops.md", "name: ops", "name: opz")
         edit("roles/researcher.md", "# Researcher", "# Researcher\n\nUse opus for this.")
         edit("roles/verifier.md", "# Verifier", "# Verifier\n\n[x](../playbooks/build.md#no-such-heading) [y](missing.md)")
@@ -68,7 +69,7 @@ def static_tests():
         edit("docs/lifecycle.md", "[Handover test](../playbooks/production.md#handover-test)", "nothing yet")
         edit("skills/k6/UPSTREAM.md", "Copied unchanged", "Adapted")
         errs = teamcheck.static(tmp)
-        for name, text in [("bad tier", "tier 'huge'"), ("name differs from file", "name is 'opz'"),
+        for name, text in [("bad tier", "tier 'huge'"), ("bad working-style tier", "fast-tier 'turbo'"), ("name differs from file", "name is 'opz'"),
                            ("vendor model name in a role", "vendor name 'opus'"), ("broken anchor", "no heading for #no-such-heading"),
                            ("broken link", "broken link missing.md"), ("role without a label", "no label role:critic"),
                            ("label nobody creates", "`human:dance`"), ("unknown role in the handoff table", "'designer'"),

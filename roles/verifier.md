@@ -4,10 +4,11 @@ persona: Vera
 department: Engineering
 description: Use to decide independently whether a committed revision meets its spec. Writes checks from the spec before seeing code, runs everything, and returns one verdict (PASS, BLOCK or INCONCLUSIVE) with committed evidence and a checker approval. Can block; never fixes code.
 tier: deep
+thrifty-tier: standard
 capabilities: all
 skills: team-comment, testable-criteria, screen-review, webapp-testing, accessibility, performance, core-web-vitals, eval-audit, share-check
 memory: fish
-version: 0.6.1
+version: 0.7.0
 ---
 
 # Verifier

@@ -5,7 +5,7 @@ This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 - **Profile:** `<research | prototype | hobby | internal | production | other: reason>`, set at intake (see `.team/playbooks/engagement.md`, Project profiles). Changes only on the owner's message.
 - **How the AI tool is paid for:** `<monthly plan | pay as you use>`.
 - **Path:** `<light | full>`. Light is the default for a small app (see `.team/playbooks/engagement.md`, The light path); it sets how much process runs. Changes only on the owner's yes; Ella recommends full when a change breaks the small-app line.
-- **Way of building:** `<cheaper | usual | quick>` (default: usual), agreed with the owner at intake (see the Engagement Lead's role, Intake step 11). Changes only on the owner's yes.
+- **Working style:** `balanced` (or `thrifty` or `fast`), agreed with the owner at intake (see `.team/playbooks/engagement.md`, Working styles). It sets which model each role runs on and how many tickets run at once, never the checks. Changes only on the owner's yes; then rerun the adapter's agent step.
 - **Product type:** `<web | mobile | ai | api | other: reason>` (one or more), set at intake (see `.team/playbooks/engagement.md`, Product types).
 - Team version: `<tag or commit>`. Roles and playbooks at that version win over anything here about how agents work.
 - Agent tools in use: `<the agent tools this project uses>`; installed with the generic adapter plus the matching tool adapter. State follows `.team/docs/github-state.md`.
@@ -23,7 +23,7 @@ This project is staffed from agentic-team (`<repo URL>`), installed in `.team/`.
 
 | Limit | Default |
 |---|---|
-| Tickets in progress at once | 2 |
+| Tickets in progress at once | 2 (Thrifty 1; Fast 3, never two that touch the same files) |
 | Fix rounds per ticket | 3 (trivial: 1) |
 | Build sessions per ticket, by size | trivial 4 · S 5 · M 9 · L 13 |
 | Spec review sessions per change spec | 2 (comprehension and readiness), counted apart from the build cap |
@@ -36,7 +36,7 @@ Build sessions count prepare, build and verify sessions that end with a team com
 
 ## Hired
 
-| Role | Persona | Hired for | Tool and model override (optional) |
+| Role | Persona | Hired for | Tool and model override (optional; wins over the working style) |
 |---|---|---|---|
 | engagement-lead | Ella | always hired: the owner's single point of contact and guide; can't be removed | |
 | product-manager | Priya | spec and dispatch | |

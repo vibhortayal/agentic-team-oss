@@ -39,6 +39,27 @@ Later changes to a small app take the [trivial path](build.md#trivial-changes) w
 
 **Changing path.** The path is recorded in `TEAM.md` and changes only on the owner's yes. When a change would break the small-app line (payments, strangers signing in, personal data, an AI feature, an app-store release, or a plan Ella can no longer hold in ten lines), Ella recommends the full path in one line, with why the next step needs more checking and what it costs. After the yes, that change goes through [research to spec](research-to-spec.md) and the normal ticket flow. A change of profile is still a change request, as above.
 
+## Working styles
+
+The working style sets which model each role runs on and how much runs at once. It never changes the checks: the profile and the path set those, and in every style a second AI that didn't build the work checks it. Ella offers the choice at [intake](../roles/engagement-lead.md#intake-new-project-or-big-change) and records it in `TEAM.md`; the owner can change it any time by telling her.
+
+| | Thrifty | Balanced (default) | Fast |
+|---|---|---|---|
+| Builds (Ian) | fast | standard | deep |
+| Checks (Vera) | standard | deep | deep |
+| The one critique (Quinn) | deep | deep | deep |
+| Ella | deep | deep | deep |
+| Planning and research (Priya, Arjun, Rohan, Max) | standard | deep | deep |
+| Estimates and operations (Bea, Otto) | fast | standard | standard |
+| Tickets in progress at once | 1 | 2 | 3, never two that touch the same files |
+| In [the build-off](../docs/research/2026-11-14-one-agent-vs-full-team/README.md) | passed every check, the cheapest | passed every check, a few times the cheapest | not tested |
+
+Each role file holds its tiers: `tier` is its Balanced tier, and `thrifty-tier` or `fast-tier` replace it in those styles. Each adapter maps tiers to its tool's models, and sets the main session's default model to Ella's tier where the tool allows it. Ella stays on the deep tier in every style, because she plans and tracks the whole project and is the one voice the owner hears; Thrifty saves on the builder and helpers instead. The critique stays on the deep tier in Thrifty because it is one short session and it found the only fault the cheaper builds missed. Fast only saves time when work can run side by side, so it suits bigger apps; on a small app the strongest model alone was slower and many times the cost.
+
+**Which to suggest.** Thrifty for a small hobby or family app, or when the owner's plan or budget is tight. Balanced for everything else. Fast only for a bigger app with work that can run in parallel, when the owner wants it sooner and accepts the higher use.
+
+**Changing style.** Only on the owner's yes. Ella updates `TEAM.md` and reruns the adapter's agent step from the shared copy of the team, which keeps the installed team version. Her own model doesn't change with the style.
+
 ## Product types
 
 The profile says how much process applies; the product type says which checks apply. Ella records it next to the profile in `TEAM.md`. A product can be more than one type (a phone app with an AI assistant is both).
