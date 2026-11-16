@@ -126,6 +126,10 @@ evals/        test cases for the roles and two end-to-end sample projects (see i
 tools/        the free checks and the sandbox that runs the cases
 ```
 
+## Thanks for contributions
+
+This team learned from many other open-source projects. [THANKS.md](https://github.com/vibhortayal/agentic-team-oss/blob/main/THANKS.md) lists them and what we took from each.
+
 ## Licence
 
 Apache-2.0 ([LICENSE](LICENSE)), except folders in `skills/` that have an `UPSTREAM.md`: those are copied unchanged from other projects and stay under the licence in their own LICENSE file (Apache-2.0, MIT or CC BY-SA 4.0).

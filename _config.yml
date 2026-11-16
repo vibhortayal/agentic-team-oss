@@ -14,7 +14,7 @@ heading_anchors: true
 aux_links:
   "Learning portal": "/"
 include: [README.md]  # the docs start page; the portal is the home page
-exclude: [AGENTS.md, CLAUDE.md, evals, tools]
+exclude: [AGENTS.md, CLAUDE.md, THANKS.md, evals, tools]  # THANKS.md lives in the repo only
 defaults:
   - {scope: {path: "learn"}, values: {nav_exclude: true, search_exclude: true}}
   - {scope: {path: "index.html"}, values: {nav_exclude: true, search_exclude: true}}

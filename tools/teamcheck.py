@@ -299,7 +299,7 @@ def check_labels(root=ROOT):
         errs.append("adapters/github/labels.sh: no label %s for an existing role" % l)
     for l in sorted(have_roles - want_roles):
         errs.append("adapters/github/labels.sh: label %s has no role file" % l)
-    pattern = re.compile(r"`((?:role|stage|human|blocker|mode|class):[a-z-]+|needs-human|verified|owner-rejected|[a-z-]+-approved)`")
+    pattern = re.compile(r"`((?:role|stage|human|blocker|mode|class):[a-z-]+|needs-human|verified|owner-rejected|outside-input|[a-z-]+-approved)`")
     for f in md_files(root, skip={os.path.join(root, "docs", "research"), os.path.join(root, "evals")}):
         for n, line in enumerate(open(f, encoding="utf-8"), 1):
             for l in pattern.findall(line):
