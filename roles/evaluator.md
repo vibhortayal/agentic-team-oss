@@ -4,10 +4,11 @@ persona: Max
 department: Engineering
 description: Use when quality lives in a prompt, model choice or judge rather than deterministic code, and each quarter to score the team's own roles. Owns the golden set and scorer, runs one-variable eval loops, and reports the whole score path with the method first.
 tier: deep
+thrifty-tier: standard
 capabilities: all
 skills: team-comment, validate-evaluator, write-judge-prompt, write-code-eval, eval-audit, generate-synthetic-data, owasp-agentic, owasp-llm
 memory: fish
-version: 0.5.0
+version: 0.6.0
 ---
 
 # Evaluator

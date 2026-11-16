@@ -96,6 +96,9 @@ def check_roles(root=ROOT):
             errs.append("%s: name is %r but the file is %s.md" % (where, fm["name"], name))
         if fm.get("tier") and fm["tier"] not in TIERS:
             errs.append("%s: tier %r is not one of %s" % (where, fm["tier"], ", ".join(sorted(TIERS))))
+        for key in ("thrifty-tier", "fast-tier"):
+            if fm.get(key) and fm[key] not in TIERS:
+                errs.append("%s: %s %r is not one of %s" % (where, key, fm[key], ", ".join(sorted(TIERS))))
         caps = fm.get("capabilities", "")
         if caps and caps != "all":
             bad = [c for c in re.split(r"[ ,]+", caps) if c and c not in CAPS]
@@ -460,6 +463,8 @@ def install(root=ROOT):
                 for name in sorted(os.listdir(os.path.join(team, "skills"))):
                     if not os.path.exists(os.path.join(linked, name, "SKILL.md")):
                         errs.append("adapters/%s/install.sh: skill %s not reachable from %s" % (adapter, name, folder))
+            if adapter == "claude-code":
+                errs += styles(script, proj)
             if not os.path.exists(os.path.join(proj, "AGENTS.md")):
                 errs.append("adapters/%s/install.sh: no AGENTS.md written" % adapter)
             # A second run must succeed and leave one copy.
@@ -467,6 +472,42 @@ def install(root=ROOT):
             if r.returncode or [d for d in os.listdir(proj) if d.startswith(".team.new")]:
                 errs.append("adapters/%s/install.sh: a second install failed or left a temp folder" % adapter)
     return errs + refresh_gates(root)
+
+
+def styles(script, proj):
+    """The working style in TEAM.md picks each subagent's model and the main session's, keeping other settings."""
+    errs, here = [], os.path.dirname(script)
+    agents = os.path.join(here, "agents.sh")
+    settings = os.path.join(proj, ".claude", "settings.json")
+
+    def models():
+        out = {}
+        for role in ("implementer", "verifier", "critic"):
+            text = open(os.path.join(proj, ".claude", "agents", role + ".md"), encoding="utf-8").read()
+            out[role] = re.search(r"^model: (\w+)$", text, re.M).group(1)
+        out["main"] = json.load(open(settings)).get("model")
+        return out
+
+    want = {"balanced": {"implementer": "sonnet", "verifier": "opus", "critic": "opus", "main": "opus"},
+            "thrifty": {"implementer": "haiku", "verifier": "sonnet", "critic": "opus", "main": "opus"},
+            "fast": {"implementer": "opus", "verifier": "opus", "critic": "opus", "main": "opus"}}
+    if models() != want["balanced"]:
+        errs.append("adapters/claude-code: without a working style in TEAM.md the models aren't balanced: %s" % models())
+    with open(settings, "w") as f:
+        json.dump({"model": "opus", "permissions": {"allow": ["Bash(ls)"]}}, f)
+    for style in ("thrifty", "fast", "balanced"):
+        with open(os.path.join(proj, "TEAM.md"), "w") as f:
+            f.write("- **Working style:** `%s`, agreed at intake.\n" % style)
+        r = subprocess.run(["bash", agents, proj], capture_output=True, text=True)
+        if r.returncode:
+            errs.append("adapters/claude-code/agents.sh failed: %s" % r.stderr.strip()[-300:])
+            continue
+        if models() != want[style]:
+            errs.append("adapters/claude-code: %s working style gave %s, expected %s" % (style, models(), want[style]))
+    if json.load(open(settings)).get("permissions") != {"allow": ["Bash(ls)"]}:
+        errs.append("adapters/claude-code/agents.sh: dropped other settings from .claude/settings.json")
+    os.remove(os.path.join(proj, "TEAM.md"))
+    return errs
 
 
 def refresh_gates(root=ROOT):

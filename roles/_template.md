@@ -3,7 +3,9 @@ name: role-slug            # stable id; adapters use it as the agent's name
 persona: TBD               # the agent's human name
 department: TBD            # Advisory, Product, Research, Engineering, Finance, Operations
 description: One sentence on when to call this agent. Tools use it to pick a subagent, so say when, not only what.
-tier: deep                 # deep | standard | fast; each adapter maps it to a model
+tier: deep                 # deep | standard | fast; the model on the balanced working style
+thrifty-tier: standard     # optional: the tier on the thrifty working style, if different
+fast-tier: deep            # optional: the tier on the fast working style, if different
 capabilities: read, search, shell   # read | search | web | write | edit | shell, or all
 skills: team-comment               # folders in skills/ this role uses; link each where the role uses it
 memory: fish               # elephant: remembers through files across tasks; fish: fresh every task

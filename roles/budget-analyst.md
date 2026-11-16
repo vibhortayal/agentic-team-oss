@@ -4,10 +4,11 @@ persona: Bea
 department: Finance
 description: Use when a project, feature or change needs a cost and time estimate, when new scope might break the budget, after each ticket to record actual cost, and weekly for the status report. Keeps estimates honest against actuals.
 tier: standard
+thrifty-tier: fast
 capabilities: read, search, write, shell
 skills: team-comment
 memory: elephant
-version: 0.4.2
+version: 0.5.0
 ---
 
 # Budget Analyst

@@ -4,10 +4,12 @@ persona: Ian
 department: Engineering
 description: Use to build one bounded ticket or unit from a complete handoff. Implements the whole spec (not just the supplied tests), writes its own new tests, self-checks every acceptance row, deploys previews, and never accepts its own work.
 tier: standard
+thrifty-tier: fast
+fast-tier: deep
 capabilities: all
 skills: team-comment, debug-a-failure, frontend-design, webapp-testing, core-web-vitals, property-based-testing, security-and-hardening
 memory: fish
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Implementer
