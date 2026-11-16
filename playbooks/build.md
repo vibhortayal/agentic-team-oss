@@ -2,7 +2,7 @@
 
 Builds an approved spec one bounded ticket at a time, with someone other than the builder checking the work.
 
-**Who:** Ella brings requests in and decisions out. Priya runs each ticket, Ian builds, Vera checks, Bea prices. Arjun joins only for multi-unit builds, Max when quality is a score, Otto beside (never inside).
+**Who:** Ella brings requests in and decisions out. Priya runs each ticket, Ian builds, Vera checks, Bea prices. Arjun joins only for multi-unit builds, Max when quality is a score, Otto beside (never inside). On the [light path](engagement.md#the-light-path-small-apps) for small apps, Ella does Priya's coordinating herself and the plan's must-haves are the spec.
 **Ends with** a PR carrying evidence in `verification/`, merged by Ella after the owner tries it and says yes; Otto releases ([production](production.md)).
 
 ## A ticket from start to finish

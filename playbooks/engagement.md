@@ -19,6 +19,26 @@ Ella's first question is what kind of project this is, because the answer sets h
 
 Moving up a profile (say prototype to production) is a change request. Bea prices a hardening pass first: the strict checks turned on in `zones.yml` (`require:` checker, lint and cap, with the checker App and a linter in place), tests for untested paths, a security, dependency and red-zone review, monitoring, a rollback rehearsal, and the [launch readiness](production.md#launch-readiness) items for the product type. The owner approves it before the profile changes.
 
+## The light path (small apps)
+
+Most first projects are small, and the full set of playbooks costs far more than a small app needs: in [our build-off](../docs/research/2026-11-14-one-agent-vs-full-team/README.md) it used about 140 times the cheapest way on a one-page app, with 16 sessions before any code, and caught one fault the light ways missed, at the critique. So a small app takes the light path by default, and keeps the critique.
+
+**A small app** is a prototype or hobby project that Ella can describe in about ten lines, used by one person or a small group they know, with no payments, no sign-in for people the owner doesn't know, no personal data beyond first names, no AI feature inside the app, and no app-store release (a web page that works on phones is fine). If any of those is unclear, ask the owner one question; if it's still unclear, take the full path.
+
+**Who:** Ella, Quinn once, Bea for the price, Ian to build, Vera to check. Nobody else.
+
+1. **Intake, short.** Profile, product type, the idea, who uses it and the owner's must-haves. No research, no practice and skill review.
+2. **The plan is the spec.** Ella writes the [brief](../templates/documents.md#project-brief) in short and lists the owner's must-haves in their own words, numbered, each followed by one testable row ([testable-criteria](../skills/testable-criteria/SKILL.md)). That list is what Ian builds and Vera checks; there is no separate spec or spec review. Ella may add rows only before the owner's yes in step 4; a row added after it needs a new yes. She never changes or softens a must-have without the owner's yes to that one line, whatever earlier yes they gave.
+3. **One critique.** A fresh Quinn reads only the plan, says its goal back in two lines, then finds how the app could go wrong in use (timing, repeated taps, odd input, a refresh, a small screen). This one fresh run is the brief's checker ([scale review to risk](../principles.md#who-checks-whom-the-review-matrix)). Ella adds rows for what holds and lists what she rejected.
+4. **Ticket, price and yes.** The plan goes up as `docs/brief.md` in a `docs/` pull request, like any brief. Ella opens one ticket issue for the build, linked from the project's issue. Bea, in her own fresh session on a smaller model, posts the session cap and the cost range on the ticket issue, so the gate's `limits` check counts only the build. The owner says yes to the plan and cost together, as in Ella's [intake](../roles/engagement-lead.md#intake-new-project-or-big-change); Ella posts the receipt naming the plan's commit and merges the `docs/` pull request. The ticket's `team/<issue>-<slug>` branch starts from that merge.
+5. **Build and check** on that ticket: [build](build.md) steps 6 to 9, with the merged plan as the spec. Vera prepares checks from the rows before any code (a row she can't test is a NO-GO back to Ella), Ian builds, a fresh Vera that didn't build it gives the verdict. Ella is the coordinator: the `role:engagement-lead` label takes the place of `role:product-manager` in the [label table](../docs/github-state.md), and she does Priya's jobs (handoffs, accepting the verdict, the receipt line).
+
+Later changes to a small app take the [trivial path](build.md#trivial-changes) where it fits, with Ella doing Priya's part (the label and the criteria in her handoff). Anything bigger is a new light ticket: the change's rows added to the plan in a `docs/` pull request, Bea's cap on the new issue, and the owner's yes to those rows, after which Ella merges it; then step 5.
+
+**What the light path never drops:** the issue and team comments, the independent check, the cap, the share check on every preview, and the owner's yes before anything merges or goes live.
+
+**Changing path.** The path is recorded in `TEAM.md` and changes only on the owner's yes. When a change would break the small-app line (payments, strangers signing in, personal data, an AI feature, an app-store release, or a plan Ella can no longer hold in ten lines), Ella recommends the full path in one line, with why the next step needs more checking and what it costs. After the yes, that change goes through [research to spec](research-to-spec.md) and the normal ticket flow. A change of profile is still a change request, as above.
+
 ## Product types
 
 The profile says how much process applies; the product type says which checks apply. Ella records it next to the profile in `TEAM.md`. A product can be more than one type (a phone app with an AI assistant is both).
