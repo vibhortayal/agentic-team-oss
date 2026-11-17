@@ -56,7 +56,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
         <div class="doodle"><b>The Claude app</b><small>An AI like ChatGPT that can also work with the files on your computer. Install it and sign in. It usually needs a paid plan, so check the price first. Other coding assistants work too. <a href="{{ '/learn/words.html' | relative_url }}">Why not ChatGPT?</a></small><br><a href="https://claude.ai/download">Get the Claude app →</a> · <a href="{{ '/learn/words.html#reach' | relative_url }}">Others that work →</a></div>
         <div class="doodle"><b>A safe place for keys</b><small>Your app will need a few keys. A key is a long password that lets your app use another service. Keep them in a password manager (your phone or computer may already have one built in), or in a private file outside your project folder. When Ella asks for one, you paste it into your progress board (step 6), never into a chat.</small></div>
       </div>
-      <p>No GitHub account yet? That's fine. GitHub is a free website that keeps a safe copy of your app's files, a bit like Google Drive for code. During setup, Ella opens the sign-up page and helps you through it. You type the details yourself, because GitHub checks that you're a person.</p>
+      <p>No GitHub account yet? That's fine. GitHub is a free website that keeps a safe copy of your app's files, a bit like Google Drive for code. During setup, Ella opens the sign-up page and helps you through it. You type the details yourself, because GitHub checks that you're a person. It's the only time you'll need it: after that, Ella does everything there for you. If someone is helping you get started, they can do this part with you.</p>
     </div>
   </div>
 
@@ -74,7 +74,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div class="num">3<svg class="draw" viewBox="0 0 110 110"><circle cx="40" cy="48" r="44" stroke="#e2442f" stroke-width="3" style="--len:290"/></svg></div>
     <div>
       <h2>Paste one line</h2>
-      <p>Paste this into the chat, with your own idea at the end. Ella says hello and gets your computer ready. She asks before she installs anything. You'll click Yes a few times, make a GitHub account if you need one, and click Authorize once in your browser. Then she adds the team to your folder and makes your project: your app's private home on GitHub. The first time takes about 15 minutes. After that, a new app takes a minute.</p>
+      <p>Paste this into the chat, with your own idea at the end. Ella says hello and gets your computer ready. She asks before she installs anything. You'll click Yes a few times, make a free GitHub account if you need one, and click Authorize once in your browser. That's the only time you'll see GitHub. Then she adds the team to your folder and makes your project's private online copy. The first time takes about 15 minutes. After that, a new app takes a minute.</p>
       <div class="code"><button class="copy">Copy</button>Set up Agentic Team here by following https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/main/START.md. My idea: I want an app where my family can share a grocery list.</div>
       <svg class="draw" viewBox="0 0 300 60" width="300" height="60"><path d="M10 50 C 80 10, 180 10, 260 30 M 245 18 L 262 31 L 244 42" stroke="#1f4fbf" stroke-width="3" style="--len:340"/></svg>
       <span class="note">swap in your own idea, in your own words</span>
@@ -98,7 +98,7 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div>
       <h2>Read the plan and say yes</h2>
       <p>You'll get one page. It says what we'll build and what it costs each month. It lists the few steps that are yours, who's on the team, and when Ella will need you. Ask "tell me more" about anything. When you say yes, the team gets to work. Ella comes back when you're needed: to try a new version and say yes or what to change, to OK any spending, and to say go for the launch. You never press merge on GitHub; Ella does it after your yes.</p>
-      <p>After your yes, Ella gets your project ready on GitHub: the automatic checks and their settings. She does it for you, so you mostly say yes. <a href="{{ '/learn/setup.html' | relative_url }}">Set up GitHub for your team</a> shows what she does, if you're curious.</p>
+      <p>After your yes, Ella turns on the automatic checks and their settings. She does it for you, so you mostly say yes, and you never need to open GitHub. <a href="{{ '/learn/setup.html' | relative_url }}">Set up GitHub for your team</a> shows what she does, if you're curious.</p>
     </div>
   </div>
 
@@ -107,27 +107,25 @@ next: {url: /learn/setup.html, title: "Set up GitHub for your team"}
     <div>
       <h2>Open your progress board</h2>
       <p>The progress board is a free app that shows how your project is going, in plain words. It shows what's waiting for you, with a <b>Try it</b> button for each new version of your app. It's also where you paste keys. You only download it once.</p>
-      <p>Your project exists now, so the board has something to show. When the team starts work, Ella opens the <a href="https://github.com/vibhortayal/agentic-team-dashboard/releases/latest">board's download page</a> for you. Under <b>Assets</b>, click the file for your computer. It's about 110 MB.</p>
+      <p>Your project exists now, so the board has something to show. When the team starts work, Ella downloads the board for you and opens it. It's about 110 MB. You may see one warning the first time, because the board isn't signed yet:</p>
       <div class="doodles">
-        <div class="doodle"><b>On a Mac</b><small>Take <code>Team-Board-mac-arm64.zip</code>. It needs a Mac with an Apple chip (M1 or newer). To check, open the Apple menu and click About This Mac. Under Chip, it should say Apple. Older Intel Macs can't run it yet.</small>
+        <div class="doodle"><b>On a Mac</b><small>It needs a Mac with an Apple chip (M1 or newer). To check, open the Apple menu and click About This Mac. Under Chip, it should say Apple. Older Intel Macs can't run it yet.</small>
           <ol>
-            <li>Open Downloads and double-click the zip. A file called <code>Team-Board-mac-arm64</code> appears.</li>
-            <li>Double-click it. The Mac says it can't check the app ("Apple could not verify…"). Click <b>Done</b>. That's normal, because the app isn't signed yet.</li>
+            <li>If the Mac says it can't check the app ("Apple could not verify…"), click <b>Done</b>. That's normal, because the app isn't signed yet.</li>
             <li>Open the Apple menu, then <b>System Settings</b>, then <b>Privacy &amp; Security</b>. Scroll down and click <b>Open Anyway</b>. Type your Mac password, then click <b>Open</b>.</li>
             <li>A Terminal window opens. That's the board running. Leave it open, and close it when you want to stop the board.</li>
           </ol>
         </div>
-        <div class="doodle"><b>On Windows</b><small>Take <code>Team-Board-windows-x64.exe</code>. If your browser says the file "isn't commonly downloaded", choose <b>Keep</b> (in Edge, click the three dots first, then Keep, then Keep anyway).</small>
+        <div class="doodle"><b>On Windows</b>
           <ol>
-            <li>Open Downloads and double-click <code>Team-Board-windows-x64.exe</code>.</li>
-            <li>A blue box says "Windows protected your PC". Click <b>More info</b>, then <b>Run anyway</b>. That's normal, because the app isn't signed yet.</li>
+            <li>If a blue box says "Windows protected your PC", click <b>More info</b>, then <b>Run anyway</b>. That's normal, because the app isn't signed yet.</li>
             <li>A black window opens. That's the board running. Leave it open, and close it when you want to stop the board.</li>
           </ol>
         </div>
       </div>
-      <p>You only see those warnings the first time. Next time, double-click the same file and the board opens straight away.</p>
-      <p>The board opens in your web browser, straight on your project. Ella signed you in to GitHub during setup, so there's nothing to type. Made more than one app? Click the one you want.</p>
-      <p class="note">If the board asks you to sign in: click <b>Sign in with GitHub</b>, copy the short code, click <b>Open GitHub</b>, paste it and click <b>Authorize</b>.</p>
+      <p>You only see those warnings the first time. Next time, double-click <code>Team-Board</code> in your Downloads folder and the board opens straight away.</p>
+      <p>The board opens in your web browser, straight on your project. It uses the sign-in Ella made during setup, so there's nothing to type. Made more than one app? Click the one you want.</p>
+      <p class="note">If the board ever asks to connect, tell Ella "Connect the progress board to my project". She sorts it out.</p>
     </div>
   </div>
 
